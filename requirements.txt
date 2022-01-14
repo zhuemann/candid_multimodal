@@ -1,0 +1,19 @@
+numpy
+matplotlibopencv-python
+pandas
+sklearn
+
+torchvision
+torch
+Pillow
+
+transformers
+
+timm
+tqdm
+openpyxl
+pydicom
+
+#can delete these later
+opencv-python
+matplotlib
