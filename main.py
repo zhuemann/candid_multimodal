@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        acc, matrix = training_loop(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 10, n_classes = 2)
+        acc, matrix = training_loop(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 10, n_classes = 2)
         accuracy_list.append(acc)
 
         df = pd.DataFrame(matrix)

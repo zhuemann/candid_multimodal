@@ -28,7 +28,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     # model specific global variables
     IMG_SIZE = 384
     BATCH_SIZE = batch_size
-    LR = 8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 1e-6 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
     N_CLASS = n_classes
     seed = seed
@@ -39,7 +39,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #df.to_excel(dataframe_location, index=False)
 
     # reads in the dataframe as it doesn't really change to save time
-    df = pd.read_excel(dataframe_location)
+    df = pd.read_excel(dataframe_location, engine='openpyxl')
     print(df)
     df.set_index("image_id", inplace=True)
     print(df)
@@ -247,7 +247,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             targets = data['targets'].to(device, dtype=torch.long)
             images = data['images'].to(device)
 
-            outputs = model_obj(ids, mask, token_type_ids, images)
+            # outputs = model_obj(ids, mask, token_type_ids, images)
+            outputs = model_obj(images)
+
             row_ids.extend(data['row_ids'])
             fin_targets.extend(targets.cpu().detach().numpy().tolist())
             fin_outputs.extend(torch.sigmoid(outputs).cpu().detach().numpy().tolist())  # for two class
