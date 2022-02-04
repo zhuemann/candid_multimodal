@@ -29,16 +29,32 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
     for image in xray_files:
         # checks to see if an xray image is in the fracture list
         if fracture_df['anon_SOPUID'].str.contains(image).any():
-            data_with_labels.loc[i] = [image, image, "", 0]
-            num_fractures += 1
-            i = i + 1
+            mask = fracture_df.loc[fracture_df['anon_SOPUID'] == image]
+            mask_str = mask.iloc[0]['mask_rle']
+            if mask_str == "-1":
+                continue
+            else:
+                data_with_labels.loc[i] = [image, image, "", mask_str]
+                num_fractures += 1
+                i = i + 1
         elif chest_tube_df['anon_SOPUID'].str.contains(image).any():
-            data_with_labels.loc[i] = [image, image, "", 1]
-            num_tubes += 1
-            i = i + 1
+            mask = chest_tube_df.loc[chest_tube_df['anon_SOPUID'] == image]
+            mask_str = mask.iloc[0]['mask_rle']
+            if mask_str == "-1":
+                continue
+            else:
+                data_with_labels.loc[i] = [image, image, "", mask_str]
+                num_tubes += 1
+                i = i + 1
         elif pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
-            # data_with_labels.loc[i] = [image, image, "", 2]
-            num_pneumothorax += 1
+            mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
+            mask_str = mask.iloc[0]['EncodedPixels']
+            if mask_str == "-1":
+                continue
+            else:
+                data_with_labels.loc[i] = [image, image, "", mask_str]
+                num_pneumothorax += 1
+                i = i + 1
         else:
             total += 1
             # i = i - 1

@@ -8,9 +8,11 @@ import io
 import pydicom as pdcm
 import matplotlib.pyplot as plt
 from os.path import exists
+from utility import rle_decode_modified
+import torchvision.transforms as transforms
 
 class TextImageDataset(Dataset):
-    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode="train", transforms = None): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
+    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode="train", transforms = None, resize = None): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text
@@ -22,6 +24,8 @@ class TextImageDataset(Dataset):
         self.transforms = transforms
         self.mode = mode
         self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
+
+        self.resize = resize
 
     def __len__(self):
         return len(self.text)
@@ -65,29 +69,45 @@ class TextImageDataset(Dataset):
             img_raw = DCM_Img.pixel_array
             #img_raw = io.imread(img_path)
             img_norm = img_raw * (255 / 65535)
-            img = Image.fromarray(np.uint8(img_norm)).convert("RGB")
+            #img = Image.fromarray(np.uint8(img_norm)).convert("RGB")
+            img = Image.fromarray(np.uint8(img_norm))
 
         except:
             print("can't open")
             print(img_path)
 
         if self.transforms is not None:
-            image = self.transforms(img)
+            #image = self.transforms(img)
             try:
-                # image = self.transforms(img)
                 image = self.transforms(img)
+                # image = self.transforms(img)
             except:
                 print("can't transform")
                 print(img_path)
         else:
             image = img
 
+        #decodes the rle
+        segmentation_mask = rle_decode_modified(self.targets[index], (1024, 1024))
 
+        segmentation_mask = Image.fromarray(segmentation_mask)      #makes the image into a PIL image
+        segmentation_mask = self.resize(segmentation_mask)          #resizes the image to be the same as the model size
+        #thresh = .3                                                 #if the value is less than .3 set to 1
+        #fn = lambda x: 1 if x > thresh else 0
+        #segmentation_mask = segmentation_mask.point(fn)
+        #plt.imshow(segmentation_mask, cmap=plt.cm.bone)
+        #test = plt.imshow(segmentation_mask.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+        #plt.show()
+        #tensor_transform = transforms.PILToTensor()
+        #segmentation_mask = tensor_transform(segmentation_mask)
+        #plt.imshow(segmentation_mask.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+        #plt.show()
         return {
             'ids': torch.tensor(ids, dtype=torch.long),
             'mask': torch.tensor(mask, dtype=torch.long),
             'token_type_ids': torch.tensor(token_type_ids, dtype=torch.long),
-            'targets': torch.tensor(self.targets[index], dtype=torch.float),
+            #'targets': torch.tensor(self.targets[index], dtype=torch.float),
+            'targets': segmentation_mask,
             'row_ids': self.row_ids[index],
             'images': image
         }

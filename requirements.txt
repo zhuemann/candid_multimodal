@@ -1,5 +1,5 @@
 numpy
-matplotlibopencv-python
+#matplotlibopencv-python
 pandas
 sklearn
 
@@ -17,3 +17,5 @@ pydicom
 #can delete these later
 opencv-python
 matplotlib
+
+segmentation-models-pytorch
