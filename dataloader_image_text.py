@@ -96,15 +96,17 @@ class TextImageDataset(Dataset):
         #plt.show()
         #tensor_transform = transforms.PILToTensor()
         #segmentation_mask = tensor_transform(segmentation_mask)
+
+        # for showing the images with maps and such
         #plt.figure()
-        DCM_Img = pdcm.read_file(img_path)
-        img_raw = DCM_Img.pixel_array
-        f, ax = plt.subplots(1, 3)
-        ax[0].imshow(img_raw, cmap=plt.cm.bone,)
-        ax[1].imshow(segmentation_mask_org, cmap=plt.cm.bone)
-        ax[2].imshow(segmentation_mask_org, cmap="jet", alpha = 1)
-        ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha = .5)
-        plt.show()
+        #DCM_Img = pdcm.read_file(img_path)
+        #img_raw = DCM_Img.pixel_array
+        #f, ax = plt.subplots(1, 3)
+        #ax[0].imshow(img_raw, cmap=plt.cm.bone,)
+        #ax[1].imshow(segmentation_mask_org, cmap=plt.cm.bone)
+        #ax[2].imshow(segmentation_mask_org, cmap="jet", alpha = 1)
+        #ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha = .5)
+        #plt.show()
         return {
             'ids': torch.tensor(ids, dtype=torch.long),
             'mask': torch.tensor(mask, dtype=torch.long),
