@@ -89,7 +89,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         [
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             transforms.PILToTensor(),
-            transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+            #transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
             #transforms.Normalize((0.5,), (0.5,))
             #transforms.Grayscale(num_output_channels=1),
             #transforms.Normalize([0.5], [0.5])
@@ -100,8 +100,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     print("train_df")
     print(train_df)
     training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = transforms_train, resize=transforms_resize, dir_base = dir_base)
-    valid_set = TextImageDataset(valid_df, tokenizer, 512, transforms = transforms_valid, dir_base = dir_base)
-    test_set = TextImageDataset(test_df, tokenizer, 512, transforms = transforms_valid, dir_base = dir_base)
+    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
+    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
 
     print(training_set)
 
@@ -125,6 +125,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #model_obj = VGG16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
     model_obj = smp.Unet(encoder_name="resnet34", encoder_weights="imagenet", in_channels=1, classes=1)
 
+    #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/unet_res34')
+    #torch.save(model_obj.state_dict(), save_path)
 
     model_obj.to(device)
 
@@ -168,12 +170,12 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
             # print(loss)
-            if _ % 1000 == 0:
+            if _ % 250 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
-                out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                plt.show()
-                tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                plt.show()
+                #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #plt.show()
+                #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #plt.show()
 
             optimizer.zero_grad()
             loss.backward()
@@ -187,7 +189,6 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             for i in range(0, outputs.shape[0]):
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
-                print(dice)
                 training_dice.append(dice)
 
         avg_training_dice = np.average(training_dice)
@@ -242,8 +243,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
-            targets = data['targets'].to(device, dtype=torch.long)
-            images = data['images'].to(device)
+            targets = data['targets'].to(device, dtype=torch.float)
+            images = data['images'].to(device, dtype=torch.float)
 
             # outputs = model_obj(ids, mask, token_type_ids, images)
             outputs = model_obj(images)

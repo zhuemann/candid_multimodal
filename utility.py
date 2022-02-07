@@ -79,7 +79,9 @@ def rle_decode_modified(mask_rle, shape):
     img = np.zeros(shape[0]*shape[1], dtype=np.uint8)
     for lo, hi in zip(starts, ends):
         img[lo:hi] = 1
-    return img.reshape(shape)
+    img = img.reshape(shape)
+    return np.transpose(img)
+    #return img.reshape(shape)
 
 
 def dice_coeff(pred, target):

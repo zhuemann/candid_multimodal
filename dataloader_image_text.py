@@ -2,7 +2,7 @@ from torch.utils.data import Dataset, DataLoader
 import torch
 import numpy as np
 from PIL import Image
-import cv2
+#import cv2
 import os
 import io
 import pydicom as pdcm
@@ -88,20 +88,23 @@ class TextImageDataset(Dataset):
             image = img
 
         #decodes the rle
-        segmentation_mask = rle_decode_modified(self.targets[index], (1024, 1024))
+        segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
 
-        segmentation_mask = Image.fromarray(segmentation_mask)      #makes the image into a PIL image
+        segmentation_mask = Image.fromarray(segmentation_mask_org)      #makes the image into a PIL image
         segmentation_mask = self.resize(segmentation_mask)          #resizes the image to be the same as the model size
-        #thresh = .3                                                 #if the value is less than .3 set to 1
-        #fn = lambda x: 1 if x > thresh else 0
-        #segmentation_mask = segmentation_mask.point(fn)
-        #plt.imshow(segmentation_mask, cmap=plt.cm.bone)
-        #test = plt.imshow(segmentation_mask.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+
         #plt.show()
         #tensor_transform = transforms.PILToTensor()
         #segmentation_mask = tensor_transform(segmentation_mask)
-        #plt.imshow(segmentation_mask.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-        #plt.show()
+        #plt.figure()
+        DCM_Img = pdcm.read_file(img_path)
+        img_raw = DCM_Img.pixel_array
+        f, ax = plt.subplots(1, 3)
+        ax[0].imshow(img_raw, cmap=plt.cm.bone,)
+        ax[1].imshow(segmentation_mask_org, cmap=plt.cm.bone)
+        ax[2].imshow(segmentation_mask_org, cmap="jet", alpha = 1)
+        ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha = .5)
+        plt.show()
         return {
             'ids': torch.tensor(ids, dtype=torch.long),
             'mask': torch.tensor(mask, dtype=torch.long),
