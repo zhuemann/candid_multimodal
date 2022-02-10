@@ -90,6 +90,7 @@ class TextImageDataset(Dataset):
                 else:
                     image = Image.fromarray(img)  # makes the image into a PIL image
                     image = self.transforms(image)
+                    segmentation_mask = segmentation_mask_org
             except:
                 print("can't transform")
                 print(img_path)
