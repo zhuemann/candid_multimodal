@@ -35,7 +35,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 384
+    IMG_SIZE = 1024 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -115,7 +115,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #transforms.Normalize([0.5], [0.5])
         ]
     )
-    transforms_resize = transforms.Compose([transforms.Resize((384, 384)), transforms.PILToTensor()])
+    transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
     output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
 
 
@@ -147,13 +147,13 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #model_obj = VGG16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
 
     # model is orginally from here which was saved and reloaded to get around SSL
-    #model_obj = smp.Unet(encoder_name="resnet34", encoder_weights="imagenet", in_channels=1, classes=1)
+    #model_obj = smp.Unet(encoder_name="timm-efficientnet-b8", encoder_weights="imagenet", in_channels=1, classes=1)
 
-    model_obj = smp.Unet(encoder_name="resnet34", encoder_weights=None, in_channels=1, classes=1)
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/unet_res34')
+    model_obj = smp.Unet(encoder_name="timm-efficientnet-b8", encoder_weights=None, in_channels=1, classes=1)
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/efficientnet')
     model_obj.load_state_dict(torch.load(save_path))
 
-    #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/unet_res34')
+    #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/efficientnet')
     #torch.save(model_obj.state_dict(), save_path)
 
     model_obj.to(device)

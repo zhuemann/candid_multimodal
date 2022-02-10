@@ -47,13 +47,13 @@ if __name__ == '__main__':
     #test = plt.imshow(test_mask, cmap=plt.cm.bone)
     #plt.show()
 
-    local = False
+    local = True
     if local == True:
         directory_base = "Z:/"
     else:
         directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
 
-    DGX = True
+    DGX = False
     if DGX == True:
         directory_base = "/UserData/"
 
