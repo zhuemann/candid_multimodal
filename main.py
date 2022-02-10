@@ -47,13 +47,13 @@ if __name__ == '__main__':
     #test = plt.imshow(test_mask, cmap=plt.cm.bone)
     #plt.show()
 
-    local = True
+    local = False
     if local == True:
         directory_base = "Z:/"
     else:
         directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
 
-    DGX = False
+    DGX = True
     if DGX == True:
         directory_base = "/UserData/"
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        acc = training_loop(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 50, n_classes = 2)
+        acc = training_loop(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 15, n_classes = 2)
         accuracy_list.append(acc)
 
         matrix = acc
