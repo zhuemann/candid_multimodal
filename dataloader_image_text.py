@@ -2,7 +2,7 @@ from torch.utils.data import Dataset, DataLoader
 import torch
 import numpy as np
 from PIL import Image
-#import cv2
+import cv2
 import os
 import io
 import pydicom as pdcm
@@ -67,35 +67,32 @@ class TextImageDataset(Dataset):
         try:
             DCM_Img = pdcm.read_file(img_path)
             img_raw = DCM_Img.pixel_array
-            #img_raw = io.imread(img_path)
-            img_norm = img_raw * (255 / 65535)
-            #img = Image.fromarray(np.uint8(img_norm)).convert("RGB")
-            img = Image.fromarray(np.uint8(img_norm))
+            img_norm = img_raw * (255 / np.amax(img_raw)) # puts the highest value at 255
+            img = np.uint8(img_norm)
 
         except:
             print("can't open")
             print(img_path)
 
+        # decodes the rle
+        segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
+        segmentation_mask_org = np.uint8(segmentation_mask_org)
+
         if self.transforms is not None:
             #image = self.transforms(img)
             try:
-                image = self.transforms(img)
-                # image = self.transforms(img)
+                transformed = self.transforms(image=img, mask=segmentation_mask_org)
+                image = transformed['image']
+                segmentation_mask = transformed['mask']
             except:
                 print("can't transform")
                 print(img_path)
         else:
             image = img
 
-        #decodes the rle
-        segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
+        image = Image.fromarray(np.uint8(image))            #makes the image into a PIL image
+        image = self.resize(image)                          #resizes the image to be the same as the model size
 
-        segmentation_mask = Image.fromarray(segmentation_mask_org)      #makes the image into a PIL image
-        segmentation_mask = self.resize(segmentation_mask)          #resizes the image to be the same as the model size
-
-        #plt.show()
-        #tensor_transform = transforms.PILToTensor()
-        #segmentation_mask = tensor_transform(segmentation_mask)
 
         # for showing the images with maps and such
         #plt.figure()
@@ -103,9 +100,9 @@ class TextImageDataset(Dataset):
         #img_raw = DCM_Img.pixel_array
         #f, ax = plt.subplots(1, 3)
         #ax[0].imshow(img_raw, cmap=plt.cm.bone,)
-        #ax[1].imshow(segmentation_mask_org, cmap=plt.cm.bone)
-        #ax[2].imshow(segmentation_mask_org, cmap="jet", alpha = 1)
-        #ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha = .5)
+        #ax[1].imshow(image.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+        #ax[2].imshow(segmentation_mask, cmap="jet", alpha = 1)
+        #ax[2].imshow(image.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone, alpha = .5)
         #plt.show()
         return {
             'ids': torch.tensor(ids, dtype=torch.long),

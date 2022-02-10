@@ -1,9 +1,7 @@
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
-import base64
-import zlib
-from pycocotools import mask as mutils
-from pycocotools import _mask as coco_mask
+
+
 
 def compute_metrics(pred):
     labels = pred.label_ids
@@ -92,3 +90,5 @@ def dice_coeff(pred, target):
     intersection = (m1 * m2).sum()
 
     return (2. * intersection + smooth) / (m1.sum() + m2.sum() + smooth)
+
+

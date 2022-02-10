@@ -12,6 +12,8 @@ from tqdm import tqdm
 import numpy as np
 import gc
 import segmentation_models_pytorch as smp
+import albumentations as albu
+from albumentations.pytorch.transforms import ToTensorV2
 
 
 from PIL import Image
@@ -40,7 +42,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/saved_dataframe_segmentation.xlsx')
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
     #df.to_excel(dataframe_location, index=False)
@@ -70,6 +72,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
+
     # create image augmentations
     transforms_train = transforms.Compose(
         [
@@ -85,6 +88,23 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         ]
     )
 
+    albu_augs = albu.Compose([
+        #ToTensorV2(),
+        albu.HorizontalFlip(),
+        albu.OneOf([
+            albu.RandomContrast(),
+            albu.RandomGamma(),
+            albu.RandomBrightness(),
+        ], p=.3),  #p=0.3),
+        albu.OneOf([
+            #albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+            albu.GridDistortion(),
+            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+        ], p=.3),#p=0.3),
+        albu.ShiftScaleRotate(),
+        #albu.Resize(img_size, img_size, always_apply=True),
+    ])
+
     transforms_valid = transforms.Compose(
         [
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
@@ -96,10 +116,12 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         ]
     )
     transforms_resize = transforms.Compose([transforms.Resize((384, 384)), transforms.PILToTensor()])
+    output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
+
 
     print("train_df")
     print(train_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = transforms_train, resize=transforms_resize, dir_base = dir_base)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base)
     valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
     test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
 
@@ -124,6 +146,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #model_obj = ViTBase16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
     #model_obj = VGG16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
 
+    # model is orginally from here which was saved and reloaded to get around SSL
     #model_obj = smp.Unet(encoder_name="resnet34", encoder_weights="imagenet", in_channels=1, classes=1)
 
     model_obj = smp.Unet(encoder_name="resnet34", encoder_weights=None, in_channels=1, classes=1)
@@ -148,11 +171,11 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         gc.collect()
         training_dice = []
 
-        if epoch > 25:
-            for param in model_obj.parameters():
-                param.requires_grad = True
-            for learning_rate in optimizer.param_groups:
-                learning_rate['lr'] = 5e-6  # 1e-6 for roberta
+        #if epoch > 25:
+        #    for param in model_obj.parameters():
+        #        param.requires_grad = True
+        #    for learning_rate in optimizer.param_groups:
+        #        learning_rate['lr'] = 5e-6  # 1e-6 for roberta
 
         for _, data in tqdm(enumerate(training_loader, 0)):
             ids = data['ids'].to(device, dtype=torch.long)
@@ -162,14 +185,11 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #print(targets)
             images = data['images'].to(device, dtype=torch.float)
 
+            print(images.shape)
             #outputs = model_obj(ids, mask, token_type_ids, images)
             outputs = model_obj(images)
-            #print(outputs)
-
-            # fin_targets.extend(targets.cpu().detach().numpy().tolist())
-            # fin_outputs.extend(torch.sigmoid(outputs).cpu().detach().numpy().tolist())
-            # fin_outputs.extend(outputs.cpu().detach().numpy().tolist())
-            # targets = torch.nn.functional.one_hot(input = targets.long(), num_classes = n_classes)
+            #print(type(outputs))
+            outputs = output_resize(torch.squeeze(outputs, dim=1))
 
             optimizer.zero_grad()
             # loss = loss_fn(outputs[:, 0], targets)
@@ -189,6 +209,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
+
 
             # calculates the dice coefficent for each image and adds it to the list
             for i in range(0, outputs.shape[0]):
@@ -214,6 +235,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
                 #outputs = model_obj(ids, mask, token_type_ids, images)
                 outputs = model_obj(images)
+                outputs = output_resize(torch.squeeze(outputs, dim=1))
 
                 # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
                 sigmoid = torch.sigmoid(outputs)
@@ -253,6 +275,10 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
             # outputs = model_obj(ids, mask, token_type_ids, images)
             outputs = model_obj(images)
+            outputs = output_resize(torch.squeeze(outputs, dim=1))
+
+            sigmoid = torch.sigmoid(outputs)
+            outputs = torch.round(sigmoid)
 
             row_ids.extend(data['row_ids'])
 
@@ -261,8 +287,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 dice = dice.item()
                 test_dice.append(dice)
 
-            avg_test_dice = np.average(test_dice)
-            print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+        avg_test_dice = np.average(test_dice)
+        print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
 
         return avg_test_dice

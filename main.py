@@ -6,6 +6,8 @@ import os
 from utility import rle_decode, mask2rle, rle_decode_modified
 import matplotlib.pyplot as plt
 import numpy as np
+from test_model import load_best_model
+
 
 
 # Press the green button in the gutter to run the script.
@@ -55,12 +57,14 @@ if __name__ == '__main__':
     if DGX == True:
         directory_base = "/UserData/"
 
+    #load_best_model(dir_base= directory_base)
+
     seeds = [117, 295, 98, 456, 915, 1367, 712]
     accuracy_list = []
 
     for seed in seeds:
 
-        acc = training_loop(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 5, n_classes = 2)
+        acc = training_loop(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 50, n_classes = 2)
         accuracy_list.append(acc)
 
         matrix = acc
