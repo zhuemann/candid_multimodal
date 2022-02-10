@@ -12,7 +12,7 @@ from utility import rle_decode_modified
 import torchvision.transforms as transforms
 
 class TextImageDataset(Dataset):
-    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode="train", transforms = None, resize = None): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
+    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms = None, resize = None): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text
@@ -81,17 +81,22 @@ class TextImageDataset(Dataset):
         if self.transforms is not None:
             #image = self.transforms(img)
             try:
-                transformed = self.transforms(image=img, mask=segmentation_mask_org)
-                image = transformed['image']
-                segmentation_mask = transformed['mask']
+                if self.mode == "train":
+                    transformed = self.transforms(image=img, mask=segmentation_mask_org)
+                    image = transformed['image']
+                    segmentation_mask = transformed['mask']
+                    image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
+                    image = self.resize(image)  # resizes the image to be the same as the model size
+                else:
+                    image = Image.fromarray(img)  # makes the image into a PIL image
+                    image = self.transforms(image)
             except:
                 print("can't transform")
                 print(img_path)
         else:
             image = img
 
-        image = Image.fromarray(np.uint8(image))            #makes the image into a PIL image
-        image = self.resize(image)                          #resizes the image to be the same as the model size
+
 
 
         # for showing the images with maps and such
