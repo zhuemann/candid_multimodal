@@ -27,8 +27,21 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
     num_pneumothorax = 0
     total = 0
     for image in xray_files:
+
+        if pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
+            #continue
+            text = get_text(pneumothorax_df, image)
+            mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
+            mask_str = mask.iloc[0]['EncodedPixels']
+            if mask_str == "-1":
+                continue
+            else:
+                data_with_labels.loc[i] = [image, image, text, mask_str]
+                num_pneumothorax += 1
+                i = i + 1
         # checks to see if an xray image is in the fracture list
-        if fracture_df['anon_SOPUID'].str.contains(image).any():
+        elif fracture_df['anon_SOPUID'].str.contains(image).any():
+            continue
             mask = fracture_df.loc[fracture_df['anon_SOPUID'] == image]
             mask_str = mask.iloc[0]['mask_rle']
             if mask_str == "-1":
@@ -38,6 +51,7 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
                 num_fractures += 1
                 i = i + 1
         elif chest_tube_df['anon_SOPUID'].str.contains(image).any():
+            continue
             mask = chest_tube_df.loc[chest_tube_df['anon_SOPUID'] == image]
             mask_str = mask.iloc[0]['mask_rle']
             if mask_str == "-1":
@@ -45,15 +59,6 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
             else:
                 data_with_labels.loc[i] = [image, image, "", mask_str]
                 num_tubes += 1
-                i = i + 1
-        elif pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
-            mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
-            mask_str = mask.iloc[0]['EncodedPixels']
-            if mask_str == "-1":
-                continue
-            else:
-                data_with_labels.loc[i] = [image, image, "", mask_str]
-                num_pneumothorax += 1
                 i = i + 1
         else:
             total += 1
@@ -71,3 +76,11 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
 
     data_with_labels.set_index("id", inplace=True)
     return data_with_labels
+
+
+# gets the text from the reports which matches the file_check argument
+def get_text(reports, file_check):
+    row = reports.loc[reports['SOPInstanceUID'] == file_check]
+    text = row['Report']
+    text = text.iloc[0]
+    return text

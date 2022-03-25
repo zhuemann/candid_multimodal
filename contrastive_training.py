@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
 import pandas as pd
+from bert_base import BERTClass
 
 from tqdm import tqdm
 
@@ -14,6 +15,9 @@ import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
 from albumentations.pytorch.transforms import ToTensorV2
+from pytorch_metric_learning import losses
+import torch.nn.functional as F
+from torch.optim import lr_scheduler
 
 
 from PIL import Image
@@ -28,7 +32,12 @@ from vit_base import ViTBase16
 from utility import compute_metrics
 from utility import hamming_score, dice_coeff
 from vgg16 import VGG16
+from ResNet import resnet_34, resnet_50
 import matplotlib.pyplot as plt
+from loss_functions import ContrastiveLoss, global_loss
+
+import ssl
+ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
 def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
@@ -42,22 +51,27 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
+    #print(df)
     #df.to_excel(dataframe_location, index=False)
 
     # reads in the dataframe as it doesn't really change to save time
     df = pd.read_excel(dataframe_location, engine='openpyxl')
-    print(df)
+    #print(df)
     df.set_index("image_id", inplace=True)
     print(df)
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    roberta_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    # roberta_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
 
-    tokenizer = AutoTokenizer.from_pretrained(roberta_path)
+    latient_layer = 768
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    language_model = BertModel.from_pretrained(language_path)
+    language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
@@ -162,22 +176,30 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
+    #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
+    vision_model, feature_dim, nums  = resnet_50(pretrained=True)
 
-    model_obj.to(device)
-    print(model_obj.parameters())
-    for param in model_obj.parameters():
-        print(param)
+    vision_model.to(device)
+    language_model.to(device)
+    #print(model_obj.parameters())
+    #for param in model_obj.parameters():
+    #    print(param)
 
-    #criterion = nn.CrossEntropyLoss()
+    # criterion = nn.CrossEntropyLoss()
     # criterion = nn.MSELoss()
-    criterion = nn.BCEWithLogitsLoss()
+    # criterion = nn.BCEWithLogitsLoss()
+    # criterion = ContrastiveLoss(temperature=CFG.temperature).to
+    # criterion = ContrastiveLoss(temperature=.1).to(device)
+    # criterion = global_loss()
 
     # defines which optimizer is being used
-    optimizer = torch.optim.Adam(params=model_obj.parameters(), lr=LR)
+    #optimizer = torch.optim.Adam(params=vision_model.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
+    scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     best_acc = -1
     for epoch in range(1, N_EPOCHS + 1):
-        model_obj.train()
+        vision_model.train()
         gc.collect()
         training_dice = []
 
@@ -196,39 +218,46 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             images = data['images'].to(device, dtype=torch.float)
 
             #print(images.shape)
-            #outputs = model_obj(ids, mask, token_type_ids, images)
-            outputs = model_obj(images)
-            #print(type(outputs))
-            outputs = output_resize(torch.squeeze(outputs, dim=1))
 
+            lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
+            vision_outputs = vision_model(images)
+            #print(type(outputs))
+            #outputs = output_resize(torch.squeeze(outputs, dim=1))
+            #print("pooler shape: ")
+            #print(pooler_outputs.shape)
+            #print("vision shape: ")
+            #print(vision_outputs.shape)
             optimizer.zero_grad()
             # loss = loss_fn(outputs[:, 0], targets)
-            loss = criterion(outputs, targets)
+            # loss = criterion(outputs, targets)
+            #loss = criterion(pooler_outputs, vision_outputs)
+            loss_lang, loss_vision = global_loss(pooler_outputs, vision_outputs)
             # print(loss)
             if _ % 250 == 0:
-                print(f'Epoch: {epoch}, Loss:  {loss.item()}')
+                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
 
             optimizer.zero_grad()
-            loss.backward()
+            loss_lang.backward()
             optimizer.step()
+            print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
 
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
-            sigmoid = torch.sigmoid(outputs)
-            outputs = torch.round(sigmoid)
+            #sigmoid = torch.sigmoid(outputs)
+            #outputs = torch.round(sigmoid)
 
 
             # calculates the dice coefficent for each image and adds it to the list
-            for i in range(0, outputs.shape[0]):
-                dice = dice_coeff(outputs[i], targets[i])
-                dice = dice.item()
-                training_dice.append(dice)
+            #for i in range(0, outputs.shape[0]):
+            #    dice = dice_coeff(outputs[i], targets[i])
+            #    dice = dice.item()
+            #    training_dice.append(dice)
 
-        avg_training_dice = np.average(training_dice)
-        print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
+        #avg_training_dice = np.average(training_dice)
+        #print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
 
 
         # each epoch, look at validation data
@@ -243,8 +272,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 targets = data['targets'].to(device, dtype=torch.float)
                 images = data['images'].to(device, dtype=torch.float)
 
-                #outputs = model_obj(ids, mask, token_type_ids, images)
-                outputs = model_obj(images)
+                #outputs = language_model(ids, mask, token_type_ids)
+                outputs = vision_model(images)
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
 
                 # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
@@ -283,8 +312,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             targets = data['targets'].to(device, dtype=torch.float)
             images = data['images'].to(device, dtype=torch.float)
 
-            # outputs = model_obj(ids, mask, token_type_ids, images)
-            outputs = model_obj(images)
+            # outputs = language_model(ids, mask, token_type_ids)
+            outputs = vision_model(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
 
             sigmoid = torch.sigmoid(outputs)
@@ -302,5 +331,6 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
 
         return avg_test_dice
+
 
 

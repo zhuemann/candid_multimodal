@@ -79,7 +79,7 @@ def rle_decode_modified(mask_rle, shape):
         img[lo:hi] = 1
     img = img.reshape(shape)
     return np.transpose(img)
-    #return img.reshape(shape)
+    #return img
 
 
 def dice_coeff(pred, target):

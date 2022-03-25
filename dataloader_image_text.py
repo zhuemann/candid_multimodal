@@ -70,6 +70,7 @@ class TextImageDataset(Dataset):
             img_norm = img_raw * (255 / np.amax(img_raw)) # puts the highest value at 255
             img = np.uint8(img_norm)
 
+
         except:
             print("can't open")
             print(img_path)
@@ -82,11 +83,20 @@ class TextImageDataset(Dataset):
             #image = self.transforms(img)
             try:
                 if self.mode == "train":
+                    #print(type(img))
+                    #print(img.shape)
+                    img = Image.fromarray(img).convert("RGB")
+                    #print(type(img))
+                    img = np.array(img)
+                    #print(type(img))
+                    #print(img.shape)
                     transformed = self.transforms(image=img, mask=segmentation_mask_org)
                     image = transformed['image']
                     segmentation_mask = transformed['mask']
                     image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
                     image = self.resize(image)  # resizes the image to be the same as the model size
+                    #image = Image.fromarray(image).convert("RGB")
+
                 else:
                     image = Image.fromarray(img)  # makes the image into a PIL image
                     image = self.transforms(image)
