@@ -14,7 +14,7 @@ def resnet_34(pretrained=True):
     return model, feature_dims, 1024
 
 def resnet_50(pretrained=True):
-    model = models_2d.resnet50(pretrained=pretrained)
+    model = models_2d.resnet50(pretrained=False)
     feature_dims = model.fc.in_features
     model.fc = Identity()
     return model, feature_dims, 1024
