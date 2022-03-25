@@ -259,7 +259,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         #avg_training_dice = np.average(training_dice)
         #print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
 
-
+        continue
         # each epoch, look at validation data
 
         with torch.no_grad():
