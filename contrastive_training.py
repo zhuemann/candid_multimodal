@@ -203,6 +203,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         gc.collect()
         training_dice = []
 
+        loss_list = []
+
         #if epoch > 25:
         #    for param in model_obj.parameters():
         #        param.requires_grad = True
@@ -232,6 +234,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # loss = criterion(outputs, targets)
             #loss = criterion(pooler_outputs, vision_outputs)
             loss_lang, loss_vision = global_loss(pooler_outputs, vision_outputs)
+            loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
             if _ % 250 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
@@ -243,7 +246,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             optimizer.zero_grad()
             loss_lang.backward()
             optimizer.step()
-            print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
+            #print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
 
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
             #sigmoid = torch.sigmoid(outputs)
@@ -258,6 +261,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
         #avg_training_dice = np.average(training_dice)
         #print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
+
+        epoch_avg_loss = np.mean(np.asarray(loss_list))
+        print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
         continue
         # each epoch, look at validation data
