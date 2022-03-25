@@ -14,26 +14,26 @@ import numpy as np
 import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
-from albumentations.pytorch.transforms import ToTensorV2
-from pytorch_metric_learning import losses
-import torch.nn.functional as F
+#from albumentations.pytorch.transforms import ToTensorV2
+#from pytorch_metric_learning import losses
+#import torch.nn.functional as F
 from torch.optim import lr_scheduler
 
 
-from PIL import Image
+#from PIL import Image
 
 
 #from sklearn import metrics
-from sklearn.metrics import accuracy_score, hamming_loss
+#from sklearn.metrics import accuracy_score, hamming_loss
 
-from candid_dataloader import get_candid_labels
+#from candid_dataloader import get_candid_labels
 from dataloader_image_text import TextImageDataset
-from vit_base import ViTBase16
-from utility import compute_metrics
+#from vit_base import ViTBase16
+#from utility import compute_metrics
 from utility import hamming_score, dice_coeff
-from vgg16 import VGG16
+#from vgg16 import VGG16
 from ResNet import resnet_34, resnet_50
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from loss_functions import ContrastiveLoss, global_loss
 
 import ssl
