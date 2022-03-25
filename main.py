@@ -6,7 +6,7 @@ import os
 from utility import rle_decode, mask2rle, rle_decode_modified
 import matplotlib.pyplot as plt
 import numpy as np
-from test_model import load_best_model
+#from test_model import load_best_model
 from contrastive_training import training_loop
 
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
 
 
-    local = True
+    local = False
     if local == True:
         directory_base = "Z:/"
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
