@@ -177,7 +177,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-    vision_model, feature_dim, nums  = resnet_50(pretrained=True)
+    vision_model, feature_dim, nums  = resnet_34(pretrained=True)
 
     vision_model.to(device)
     language_model.to(device)
