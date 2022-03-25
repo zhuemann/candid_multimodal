@@ -1,23 +1,20 @@
 numpy
-#matplotlibopencv-python
-pandas
-sklearn
-
-torchvision
+matplotlib
 torch
-Pillow
-
-transformers
-
+torchvision
 timm
 tqdm
+sklearn
+pandas
+Pillow
+transformers
 openpyxl
 pydicom
 
-#can delete these later
-opencv-python
-matplotlib
 
 segmentation-models-pytorch
 albumentations
-pytorch_metric_learning
+
+#can delete these later
+#opencv-python
+#pytorch_metric_learning
