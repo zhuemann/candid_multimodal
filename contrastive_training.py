@@ -238,7 +238,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
             if _ % 250 == 0:
-                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
+                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()}')n# vision Loss: {loss_vision.item()}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
