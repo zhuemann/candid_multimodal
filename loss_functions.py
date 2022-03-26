@@ -50,7 +50,7 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     return loss0, loss1
 
 
-def get_global_similarities(self, img_emb_g, text_emb_g):
+def get_global_similarities(img_emb_g, text_emb_g):
     img_emb_g = img_emb_g.detach().cpu().numpy()
     text_emb_g = text_emb_g.detach().cpu().numpy()
     global_similarities = metrics.pairwise.cosine_similarity(img_emb_g, text_emb_g)
