@@ -233,7 +233,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # loss = loss_fn(outputs[:, 0], targets)
             # loss = criterion(outputs, targets)
             #loss = criterion(pooler_outputs, vision_outputs)
-            loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
+            #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
+            loss_lang = get_global_similarities(vision_outputs, pooler_outputs)
             loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
             if _ % 250 == 0:
