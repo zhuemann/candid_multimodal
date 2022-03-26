@@ -34,7 +34,7 @@ from utility import hamming_score, dice_coeff
 #from vgg16 import VGG16
 from ResNet import resnet_34, resnet_50
 #import matplotlib.pyplot as plt
-from loss_functions import ContrastiveLoss, global_loss
+from loss_functions import ContrastiveLoss, global_loss, get_global_similarities
 
 import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
@@ -233,7 +233,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # loss = loss_fn(outputs[:, 0], targets)
             # loss = criterion(outputs, targets)
             #loss = criterion(pooler_outputs, vision_outputs)
-            loss_lang, loss_vision = global_loss(pooler_outputs, vision_outputs)
+            loss_lang, loss_vision = get_global_loss(pooler_outputs, vision_outputs)
             loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
             if _ % 250 == 0:
@@ -301,42 +301,43 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
                 torch.save(model_obj.state_dict(), save_path)
 
-    model_obj.eval()
+    #model_obj.eval()
 
     row_ids = []
-    saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+    saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     model_obj.load_state_dict(torch.load(saved_path))
 
-    with torch.no_grad():
-        test_dice = []
-        gc.collect()
-        for _, data in tqdm(enumerate(test_loader, 0)):
-            ids = data['ids'].to(device, dtype=torch.long)
-            mask = data['mask'].to(device, dtype=torch.long)
-            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
-            targets = data['targets'].to(device, dtype=torch.float)
-            images = data['images'].to(device, dtype=torch.float)
+    #with torch.no_grad():
+    #    test_dice = []
+    #    gc.collect()
+    #    for _, data in tqdm(enumerate(test_loader, 0)):
+    #        ids = data['ids'].to(device, dtype=torch.long)
+    #        mask = data['mask'].to(device, dtype=torch.long)
+    #        token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
+    #        targets = data['targets'].to(device, dtype=torch.float)
+    #        images = data['images'].to(device, dtype=torch.float)
 
             # outputs = language_model(ids, mask, token_type_ids)
-            outputs = vision_model(images)
-            outputs = output_resize(torch.squeeze(outputs, dim=1))
+    #        outputs = vision_model(images)
+    #        outputs = output_resize(torch.squeeze(outputs, dim=1))
 
-            sigmoid = torch.sigmoid(outputs)
-            outputs = torch.round(sigmoid)
+    #        sigmoid = torch.sigmoid(outputs)
+    #        outputs = torch.round(sigmoid)
 
-            row_ids.extend(data['row_ids'])
+    #        row_ids.extend(data['row_ids'])
 
-            for i in range(0, outputs.shape[0]):
-                dice = dice_coeff(outputs[i], targets[i])
-                dice = dice.item()
-                test_dice.append(dice)
-
-        avg_test_dice = np.average(test_dice)
-        print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+    #        for i in range(0, outputs.shape[0]):
+    #            dice = dice_coeff(outputs[i], targets[i])
+    #            dice = dice.item()
+    #            test_dice.append(dice)
 
 
-        return avg_test_dice
+    #    avg_test_dice = np.average(test_dice)
+    #    print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+
+
+    return vision_model
 
 
 

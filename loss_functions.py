@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torch
 from torch.autograd import Variable
+from sklearn import metrics
 
 class ContrastiveLoss(nn.Module):
     def __init__(self, temperature=0.1):
@@ -47,3 +48,11 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     loss0 = nn.CrossEntropyLoss()(scores0, labels)
     loss1 = nn.CrossEntropyLoss()(scores1, labels)
     return loss0, loss1
+
+
+def get_global_similarities(self, img_emb_g, text_emb_g):
+    img_emb_g = img_emb_g.detach().cpu().numpy()
+    text_emb_g = text_emb_g.detach().cpu().numpy()
+    global_similarities = metrics.pairwise.cosine_similarity(img_emb_g, text_emb_g)
+    global_similarities = torch.Tensor(global_similarities)
+    return global_similarities
