@@ -46,7 +46,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     # model specific global variables
     IMG_SIZE = 1024 #512 #384
     BATCH_SIZE = batch_size
-    LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
     N_CLASS = n_classes
     seed = seed
@@ -234,11 +234,10 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             # loss = criterion(outputs, targets)
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
-            loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 7)
+            loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
             #print(loss_lang)
             #print(loss_lang.shape)
             #print(type(loss_lang))
-            loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
             if _ % 10 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
@@ -248,8 +247,10 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 #plt.show()
 
             optimizer.zero_grad()
-            loss_lang.backward()
+            loss = loss_lang + loss_vision
+            loss.backward()
             optimizer.step()
+            loss_list.append(loss.cpu().detach().numpy().tolist())
             #print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
 
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
