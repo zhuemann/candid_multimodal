@@ -235,13 +235,13 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
             loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 7)
-            print(loss_lang)
-            print(loss_lang.shape)
-            print(type(loss_lang))
+            #print(loss_lang)
+            #print(loss_lang.shape)
+            #print(type(loss_lang))
             loss_list.append(loss_lang.cpu().detach().numpy().tolist())
             # print(loss)
-            if _ % 250 == 0:
-                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()}') # vision Loss: {loss_vision.item()}')
+            if _ % 10 == 0:
+                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
