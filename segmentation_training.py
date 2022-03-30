@@ -169,7 +169,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     model_obj.to(device)
     #print(model_obj.parameters())
-    for param in model_obj.parameters():
+    #for param in model_obj.parameters():
     #    print(param)
 
     #criterion = nn.CrossEntropyLoss()
