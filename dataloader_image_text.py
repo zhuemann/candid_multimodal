@@ -104,6 +104,9 @@ class TextImageDataset(Dataset):
                     segmentation_mask = self.resize(segmentation_mask)
                     #image = Image.fromarray(image).convert("RGB")
 
+                    print(img.shape)
+                    print(img.segmentation_mask)
+
                 else:
                     img = Image.fromarray(img).convert("RGB")
                     #img = np.array(img)
