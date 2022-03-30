@@ -239,7 +239,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #language step
             optimizer_lang.zero_grad()
             loss = loss_lang + loss_vision
-            loss.backward(retrain_graph=True)
+            loss.backward(retain_graph=True)
             #optimizer_vis.step()
             optimizer_lang.step()
             #vision step
