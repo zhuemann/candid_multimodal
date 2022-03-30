@@ -197,9 +197,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     # defines which optimizer is being used
     #optimizer = torch.optim.Adam(params=vision_model.parameters(), lr=LR)
-    optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
-    optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
-    #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
+    #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
+    #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
+    optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     for epoch in range(1, N_EPOCHS + 1):
@@ -236,17 +236,24 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
 
-            #language step
-            optimizer_lang.zero_grad()
-            loss = loss_lang + loss_vision
-            loss.backward(retain_graph=True)
-            #optimizer_vis.step()
-            optimizer_lang.step()
-            #vision step
-            optimizer_vis.zero_grad()
+            optimizer.zero_grad()
             loss = loss_lang + loss_vision
             loss.backward()
-            optimizer_vis.step()
+            print(vision_model.weight.grad)
+            print(language_model.weight.grad)
+            optimizer.step()
+
+            #language step
+            #optimizer_lang.zero_grad()
+            #loss = loss_lang + loss_vision
+            #loss.backward(retain_graph=True)
+            #optimizer_lang.step()
+
+            #vision step
+            #optimizer_vis.zero_grad()
+            #loss = loss_lang + loss_vision
+            #loss.backward()
+            #optimizer_vis.step()
 
             loss_list.append(loss.cpu().detach().numpy().tolist())
 
