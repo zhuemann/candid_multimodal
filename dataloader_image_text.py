@@ -105,7 +105,10 @@ class TextImageDataset(Dataset):
                     #image = Image.fromarray(image).convert("RGB")
 
                     print(img.shape)
-                    print(img.segmentation_mask)
+                    print(segmentation_mask.shape)
+                    segmentation_mask = Image.fromarray(np.uint8(segmentation_mask)).convert("RGB")
+                    print(img.shape)
+                    print(segmentation_mask.shape)
 
                 else:
                     img = Image.fromarray(img).convert("RGB")
