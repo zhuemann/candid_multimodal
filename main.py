@@ -75,7 +75,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
 
-    #training_loop(seed = 7, batch_size = 32, dir_base= directory_base, epoch = 50, n_classes = 2)
+    training_loop(seed = 7, batch_size = 32, dir_base= directory_base, epoch = 5, n_classes = 2)
 
     #load_best_model(dir_base= directory_base)
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     for seed in seeds:
 
         acc = segmentation_training(seed = seed, batch_size = 2, dir_base= directory_base, epoch = 15, n_classes = 2)
-        acc = 1
+        #acc = 1
         accuracy_list.append(acc)
 
         matrix = acc

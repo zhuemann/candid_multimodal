@@ -260,9 +260,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #model_obj.eval()
 
     row_ids = []
-    saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
-    model_obj.load_state_dict(torch.load(saved_path))
+    torch.save(vision_model.state_dict(), save_path)
 
 
     return vision_model
