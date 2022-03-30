@@ -27,7 +27,10 @@ class ContrastiveLoss(nn.Module):
 def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
 
     batch_size = cnn_code.shape[0]
+    print(f"batch_size: {batch_size}")
     labels = Variable(torch.LongTensor(range(batch_size))).to(cnn_code.device)
+    print("labels")
+    print(labels)
 
     if cnn_code.dim() == 2:
         cnn_code = cnn_code.unsqueeze(0)
@@ -39,6 +42,8 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     scores0 = torch.bmm(cnn_code, rnn_code.transpose(1, 2))
     norm0 = torch.bmm(cnn_code_norm, rnn_code_norm.transpose(1, 2))
     scores0 = scores0 / norm0.clamp(min=eps) * temp3
+
+    print(scores0)
 
     # --> batch_size x batch_size
     scores0 = scores0.squeeze()
