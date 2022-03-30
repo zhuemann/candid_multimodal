@@ -204,6 +204,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     print("about to start training loop")
     for epoch in range(1, N_EPOCHS + 1):
         vision_model.train()
+        language_model.train()
         gc.collect()
 
         loss_list = []
