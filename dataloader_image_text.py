@@ -75,8 +75,9 @@ class TextImageDataset(Dataset):
             print("can't open")
             print(img_path)
 
+        img_size = 512
         # decodes the rle
-        segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
+        segmentation_mask_org = rle_decode_modified(self.targets[index], (img_size, img_size))
         segmentation_mask_org = np.uint8(segmentation_mask_org)
 
         if self.transforms is not None:

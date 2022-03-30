@@ -44,7 +44,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 1024 #512 #384
+    IMG_SIZE = 512 #1024 #512 #384
     BATCH_SIZE = batch_size
     LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -133,7 +133,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
         ]
     )
     transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
-    output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
+    #output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
 
 
     print("train_df")
@@ -219,7 +219,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #print(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            #print(images.shape)
+            print(images.shape)
 
             lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
             vision_outputs = vision_model(images)
