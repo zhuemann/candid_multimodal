@@ -120,7 +120,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         ]
     )
     transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
-    output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
+    output_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE))])
 
 
     print("train_df")
