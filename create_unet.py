@@ -20,7 +20,7 @@ def load_img_segmentation_model(
     dir_base = "/UserData/"
     #dir_base = "Z:/"
     ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
-    base_model = "resnet34"
+    base_model = "resnet50"
     # warnings
     #if name in _SEGMENTATION_MODELS:
     #    ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
@@ -37,7 +37,7 @@ def load_img_segmentation_model(
     seg_model = smp.Unet(base_model, encoder_weights=None, activation=None)
 
     # update weight
-    ckpt = torch.load(ckpt_path, map_location=torch.device('cpu'))
+    ckpt = torch.load(ckpt_path)
 
     #print(ckpt["OrderedDict"].items())
     seg_model.encoder.load_state_dict(ckpt)

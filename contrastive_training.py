@@ -46,7 +46,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     # model specific global variables
     IMG_SIZE = 512 #1024 #512 #384
     BATCH_SIZE = batch_size
-    LR = 5e-4 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 5e-3 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
     N_CLASS = n_classes
     seed = seed
@@ -177,7 +177,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-    vision_model, feature_dim, nums  = resnet_34(pretrained=True)
+    vision_model, feature_dim, nums = resnet_50(pretrained=True)
 
     vision_model.to(device)
     language_model.to(device)
