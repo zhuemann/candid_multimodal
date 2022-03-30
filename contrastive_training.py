@@ -194,7 +194,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     # defines which optimizer is being used
     #optimizer = torch.optim.Adam(params=vision_model.parameters(), lr=LR)
-    optimizer = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
+    #optimizer = torch.optim.Adam(params = vision_model.parameters() , lr=LR, weight_decay=1e-6)
+    optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     for epoch in range(1, N_EPOCHS + 1):
