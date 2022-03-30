@@ -18,6 +18,7 @@ def load_img_segmentation_model(
         The GLoRIA pretrained image classification model
     """
     dir_base = "/UserData/"
+    #dir_base = "Z:/"
     ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
     base_model = "resnet34"
     # warnings
@@ -36,20 +37,19 @@ def load_img_segmentation_model(
     seg_model = smp.Unet(base_model, encoder_weights=None, activation=None)
 
     # update weight
-    ckpt = torch.load(ckpt_path)
+    ckpt = torch.load(ckpt_path, map_location=torch.device('cpu'))
 
-    print(ckpt)
-    print(ckpt["state_dict"].items())
+    #print(ckpt["OrderedDict"].items())
+    seg_model.encoder.load_state_dict(ckpt)
 
 
-
-    ckpt_dict = {}
-    for k, v in ckpt["state_dict"].items():
-        if k.startswith("gloria.img_encoder.model"):
-            k = ".".join(k.split(".")[3:])
-            ckpt_dict[k] = v
-        ckpt_dict["fc.bias"] = None
-        ckpt_dict["fc.weight"] = None
-    seg_model.encoder.load_state_dict(ckpt_dict)
+    #ckpt_dict = {}
+    #for k, v in ckpt["state_dict"].items():
+    #    if k.startswith("gloria.img_encoder.model"):
+    #        k = ".".join(k.split(".")[3:])
+    #        ckpt_dict[k] = v
+    #    ckpt_dict["fc.bias"] = None
+    #    ckpt_dict["fc.weight"] = None
+    #seg_model.encoder.load_state_dict(ckpt_dict)
 
     return seg_model

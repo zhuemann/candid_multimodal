@@ -36,7 +36,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 1024 #512 #384
+    IMG_SIZE = 512 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -168,9 +168,9 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     #torch.save(model_obj.state_dict(), save_path)
 
     model_obj.to(device)
-    print(model_obj.parameters())
+    #print(model_obj.parameters())
     for param in model_obj.parameters():
-        print(param)
+    #    print(param)
 
     #criterion = nn.CrossEntropyLoss()
     # criterion = nn.MSELoss()

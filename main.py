@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from test_model import load_best_model
 from contrastive_training import training_loop
+from create_unet import load_img_segmentation_model
 
 
 
@@ -76,7 +77,7 @@ if __name__ == '__main__':
 
 
     #training_loop(seed = 7, batch_size = 32, dir_base= directory_base, epoch = 5, n_classes = 2)
-
+    #model_obj = load_img_segmentation_model()
     #load_best_model(dir_base= directory_base)
 
     seeds = [117, 295, 98, 456, 915, 1367, 712]
