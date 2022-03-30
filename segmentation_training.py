@@ -36,7 +36,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 512 #512 #384
+    IMG_SIZE = 256 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -125,9 +125,9 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("train_df")
     print(train_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base)
-    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
-    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
     print(training_set)
 
