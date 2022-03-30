@@ -184,7 +184,10 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     #print(model_obj.parameters())
     #for param in model_obj.parameters():
     #    print(param)
-
+    for param in vision_model.parameters():
+        param.requires_grad = True
+    for param in language_model.parameters():
+        param.requires_grad = True
     # criterion = nn.CrossEntropyLoss()
     # criterion = nn.MSELoss()
     # criterion = nn.BCEWithLogitsLoss()
