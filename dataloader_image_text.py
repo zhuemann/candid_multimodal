@@ -118,8 +118,8 @@ class TextImageDataset(Dataset):
             image = img
 
 
-        print(img.shape)
-        print(segmentation_mask.shape)
+        #print(img.shape)
+        #print(segmentation_mask.shape)
 
 
         # for showing the images with maps and such

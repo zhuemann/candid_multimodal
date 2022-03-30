@@ -196,7 +196,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
-            #print(targets)
+            print(targets.shape)
             images = data['images'].to(device, dtype=torch.float)
 
             #print(images.shape)
