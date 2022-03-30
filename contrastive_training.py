@@ -236,12 +236,18 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
 
-            optimizer_vis.zero_grad()
+            #language step
             optimizer_lang.zero_grad()
             loss = loss_lang + loss_vision
             loss.backward()
             #optimizer_vis.step()
             optimizer_lang.step()
+            #vision step
+            optimizer_vis.zero_grad()
+            loss = loss_lang + loss_vision
+            loss.backward()
+            optimizer_vis.step()
+
             loss_list.append(loss.cpu().detach().numpy().tolist())
 
         epoch_avg_loss = np.mean(np.asarray(loss_list))
