@@ -241,8 +241,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
             loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
 
+            loss_diff = abs(loss_lang.item() - loss_vision.item())
             if _ % 10 == 0:
-                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
+                print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()} differences: {loss_diff }')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
@@ -265,8 +266,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #loss.backward()
             #optimizer_vis.step()
 
-            loss_list.append(loss.cpu().detach().numpy().tolist())
-
+            #loss_list.append(loss.cpu().detach().numpy().tolist())
+            loss_list.append(loss_diff.cpu().detach().numpy().tolist())
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
