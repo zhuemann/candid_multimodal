@@ -133,12 +133,12 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 4
+                'num_workers': 8
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
                     'shuffle': True,
-                    'num_workers': 4
+                    'num_workers': 8
                     }
 
     training_loader = DataLoader(training_set, **train_params)
@@ -196,7 +196,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
-            print(targets.shape)
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
@@ -208,7 +207,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
             optimizer.zero_grad()
             # loss = loss_fn(outputs[:, 0], targets)
-            print(outputs.shape)
             loss = criterion(outputs, targets)
             # print(loss)
             if _ % 250 == 0:
