@@ -12,13 +12,14 @@ from utility import rle_decode_modified
 import torchvision.transforms as transforms
 
 class TextImageDataset(Dataset):
-    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms = None, resize = None): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
+    def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms = None, resize = None, img_size = 256): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text
         self.targets = self.data.label
         self.row_ids = self.data.index
         self.max_len = max_len
+        self.img_size = img_size
 
         self.df_data = dataframe.values
         self.transforms = transforms
@@ -75,9 +76,8 @@ class TextImageDataset(Dataset):
             print("can't open")
             print(img_path)
 
-        img_size = 512
         # decodes the rle
-        segmentation_mask_org = rle_decode_modified(self.targets[index], (img_size, img_size))
+        segmentation_mask_org = rle_decode_modified(self.targets[index], (self.img_size, self.img_size))
         segmentation_mask_org = np.uint8(segmentation_mask_org)
 
         if self.transforms is not None:

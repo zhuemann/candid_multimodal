@@ -17,5 +17,6 @@ class BERTClass(torch.nn.Module):
         pooler = hidden_state[:, 0]
         pooler_out = self.projection_layer(pooler)
 
-        output = self.classifier(pooler)
-        return output, pooler_out
+        #output = self.classifier(pooler)
+        #return output, pooler_out
+        return pooler_out

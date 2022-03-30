@@ -44,7 +44,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 512 #1024 #512 #384
+    IMG_SIZE = 256 #1024 #512 #384
     BATCH_SIZE = batch_size
     LR = 5e-3 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -138,9 +138,9 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     print("train_df")
     print(train_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base)
-    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
-    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
     print(training_set)
 
@@ -218,7 +218,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             images = data['images'].to(device, dtype=torch.float)
             print(images.shape)
 
-            lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
+            #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
+            pooler_outputs = language_model(ids, mask, token_type_ids)
             vision_outputs = vision_model(images)
             #print(type(outputs))
             #outputs = output_resize(torch.squeeze(outputs, dim=1))
@@ -229,7 +230,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
-            loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 1)
+            loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
 
             if _ % 10 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
