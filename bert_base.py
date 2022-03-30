@@ -7,7 +7,7 @@ class BERTClass(torch.nn.Module):
         self.dropout = torch.nn.Dropout(0.1)
         self.classifier = torch.nn.Linear(n_nodes, n_class)
 
-        self.projection_layer = torch.nn.Linear(n_nodes, 512)
+        self.projection_layer = torch.nn.Linear(n_nodes, 2048)
 
 
     def forward(self, input_ids, attention_mask, token_type_ids):
