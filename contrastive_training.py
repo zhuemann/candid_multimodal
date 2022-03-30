@@ -239,8 +239,6 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             optimizer.zero_grad()
             loss = loss_lang + loss_vision
             loss.backward()
-            print(vision_model.weight.grad)
-            print(language_model.weight.grad)
             optimizer.step()
 
             #language step
