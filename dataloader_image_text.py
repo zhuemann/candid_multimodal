@@ -80,7 +80,6 @@ class TextImageDataset(Dataset):
         segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
         segmentation_mask_org = np.uint8(segmentation_mask_org)
         segmentation_mask = Image.fromarray(segmentation_mask_org)  # makes the segmentation mask into a PIL image
-        segmentation_mask = self.resize(segmentation_mask)  # resizes the segmentation to be the same as the model size
 
 
         if self.transforms is not None:
@@ -106,7 +105,7 @@ class TextImageDataset(Dataset):
                     #img = np.array(img)
                     #image = Image.fromarray(img)  # makes the image into a PIL image
                     image = self.transforms(img)
-                    #segmentation_mask = segmentation_mask_org
+                    segmentation_mask = self.transforms(segmentation_mask)
             except:
                 print("can't transform")
                 print(img_path)
