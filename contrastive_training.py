@@ -197,19 +197,11 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     optimizer = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
-    best_acc = -1
     for epoch in range(1, N_EPOCHS + 1):
         vision_model.train()
         gc.collect()
-        training_dice = []
 
         loss_list = []
-
-        #if epoch > 25:
-        #    for param in model_obj.parameters():
-        #        param.requires_grad = True
-        #    for learning_rate in optimizer.param_groups:
-        #        learning_rate['lr'] = 5e-6  # 1e-6 for roberta
 
         for _, data in tqdm(enumerate(training_loader, 0)):
             ids = data['ids'].to(device, dtype=torch.long)
@@ -228,15 +220,11 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #print("vision shape: ")
             #print(vision_outputs.shape)
             optimizer.zero_grad()
-            # loss = loss_fn(outputs[:, 0], targets)
-            # loss = criterion(outputs, targets)
+
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
             loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
-            #print(loss_lang)
-            #print(loss_lang.shape)
-            #print(type(loss_lang))
-            # print(loss)
+
             if _ % 10 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
@@ -250,18 +238,10 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             optimizer.step()
             loss_list.append(loss.cpu().detach().numpy().tolist())
 
-
-        #avg_training_dice = np.average(training_dice)
-        #print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
-
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
-    #model_obj.eval()
-
-    row_ids = []
     save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
-    # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     torch.save(vision_model.state_dict(), save_path)
 
 

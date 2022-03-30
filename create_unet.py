@@ -37,6 +37,12 @@ def load_img_segmentation_model(
 
     # update weight
     ckpt = torch.load(ckpt_path)
+
+    print(ckpt)
+    print(ckpt["state_dict"].items())
+
+
+
     ckpt_dict = {}
     for k, v in ckpt["state_dict"].items():
         if k.startswith("gloria.img_encoder.model"):
