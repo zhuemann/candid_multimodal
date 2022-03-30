@@ -267,7 +267,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             #optimizer_vis.step()
 
             #loss_list.append(loss.cpu().detach().numpy().tolist())
-            loss_list.append(loss_diff.cpu().detach().numpy().tolist())
+            loss_list.append(loss_diff.tolist())
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
