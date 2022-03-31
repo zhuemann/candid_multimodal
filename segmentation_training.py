@@ -36,7 +36,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 256 #512 #384
+    IMG_SIZE = 1024 #256 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
