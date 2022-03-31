@@ -42,7 +42,9 @@ class TextImageDataset(Dataset):
             None,
             add_special_tokens=True,
             max_length=self.max_len,
-            pad_to_max_length=True,
+            #pad_to_max_length=True,
+            padding='longest',
+            #truncation='True'
             return_token_type_ids=True
         )
         ids = inputs['input_ids']
