@@ -108,7 +108,7 @@ class TextImageDataset(Dataset):
                     img = Image.fromarray(img).convert("RGB")
                     #img = np.array(img)
                     #image = Image.fromarray(img)  # makes the image into a PIL image
-                    image = self.transforms(image=img)
+                    image = self.transforms(img)
             except:
                 print("can't transform")
                 print(img_path)
