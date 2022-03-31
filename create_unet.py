@@ -2,7 +2,7 @@ import torch
 import segmentation_models_pytorch as smp
 import os
 
-def load_img_segmentation_model(
+def load_img_segmentation_model(dir_base = "/UserData/",
     name: str = "gloria_resnet50",
 ):
     """Load a GLoRIA pretrained classification model
@@ -17,7 +17,7 @@ def load_img_segmentation_model(
     img_model : torch.nn.Module
         The GLoRIA pretrained image classification model
     """
-    dir_base = "/UserData/"
+    #dir_base = "/UserData/"
     #dir_base = "Z:/"
     ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
     base_model = "resnet50"

@@ -153,17 +153,17 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     load_model = False
     if load_model:
         # model is orginally from here which was saved and reloaded to get around SSL
-        model_obj = smp.Unet(encoder_name="vgg19", encoder_weights="imagenet", in_channels=1, classes=1)
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/vgg19')
+        model_obj = smp.Unet(encoder_name="resnet50", encoder_weights="imagenet", in_channels=3, classes=1)
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
         torch.save(model_obj.state_dict(), save_path)
     else:
-        model_obj = smp.Unet(encoder_name="resnet34", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet34')
+        model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1) #timm-efficientnet-b8 resnet34
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
-        model_obj = load_img_segmentation_model()
+        model_obj = load_img_segmentation_model(dir_base = dir_base)
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
 
@@ -185,12 +185,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         gc.collect()
         training_dice = []
 
-        #if epoch > 25:
-        #    for param in model_obj.parameters():
-        #        param.requires_grad = True
-        #    for learning_rate in optimizer.param_groups:
-        #        learning_rate['lr'] = 5e-6  # 1e-6 for roberta
-
         for _, data in tqdm(enumerate(training_loader, 0)):
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
@@ -209,8 +203,15 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
             # print(loss)
-            if _ % 250 == 0:
+            if _ % 10 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
+
+                #f, ax = plt.subplots(1, 3)
+                #ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
+                #ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
+
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
