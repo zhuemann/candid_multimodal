@@ -133,12 +133,12 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 2
+                'num_workers': 16
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
                     'shuffle': True,
-                    'num_workers': 2
+                    'num_workers': 16
                     }
 
     training_loader = DataLoader(training_set, **train_params)
