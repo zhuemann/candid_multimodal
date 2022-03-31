@@ -100,8 +100,8 @@ class TextImageDataset(Dataset):
                     segmentation_mask = transformed['mask']
                     image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
                     image = self.resize(image)  # resizes the image to be the same as the model size
-                    segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
-                    segmentation_mask = self.resize(segmentation_mask)
+                    #segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
+                    #segmentation_mask = self.resize(segmentation_mask)
 
 
                 else:
@@ -120,8 +120,8 @@ class TextImageDataset(Dataset):
         #print(img.shape)
         #print(segmentation_mask.shape)
 
-        #segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
-        #segmentation_mask = self.resize(segmentation_mask)
+        segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
+        segmentation_mask = self.resize(segmentation_mask)
 
         # for showing the images with maps and such
         #plt.figure()
