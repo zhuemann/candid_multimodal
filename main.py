@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        acc = segmentation_training(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 35, n_classes = 2)
+        acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2)
         #acc = 1
         accuracy_list.append(acc)
 
