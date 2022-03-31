@@ -158,7 +158,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         torch.save(model_obj.state_dict(), save_path)
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1) #timm-efficientnet-b8 resnet34
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
     use_pretrained_encoder = False
