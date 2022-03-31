@@ -76,7 +76,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
 
-    #training_loop(seed = 7, batch_size = 8, dir_base= directory_base, epoch = 20, n_classes = 2)
+    training_loop(seed = 7, batch_size = 8, dir_base= directory_base, epoch = 20, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 
@@ -87,8 +87,8 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2)
-        #acc = 1
+        #acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2)
+        acc = 1
         accuracy_list.append(acc)
 
         matrix = acc
