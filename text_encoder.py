@@ -107,6 +107,8 @@ class BertEncoder(nn.Module):
         # aggregate intermetidate layers
         if self.last_n_layers > 1:
             all_embeddings = outputs[2]
+            print(all_embeddings.shape)
+            print(self.last_n_layers)
             embeddings = torch.stack(
                 all_embeddings[-self.last_n_layers :]
             )  # layers, batch, sent_len, embedding size
