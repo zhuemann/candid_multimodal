@@ -15,7 +15,7 @@ class BertEncoder(nn.Module):
         #self.freeze_bert = cfg.model.text.freeze_bert
         #self.agg_tokens = cfg.model.text.agg_tokens
         self.bert_type = "emilyalsentzer/Bio_ClinicalBERT"
-        self.last_n_layers = 4
+        self.last_n_layers = 1
         self.aggregate_method = "sum"
         self.norm = False
         self.embedding_dim = 768
