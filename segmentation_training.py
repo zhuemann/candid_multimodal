@@ -36,7 +36,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 1024 #256 #512 #384
+    IMG_SIZE = 256 #256 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -161,7 +161,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
-    use_pretrained_encoder = False
+    use_pretrained_encoder = True
     if use_pretrained_encoder:
         model_obj = load_img_segmentation_model(dir_base = dir_base)
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
