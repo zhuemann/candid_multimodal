@@ -24,10 +24,10 @@ class BertEncoder(nn.Module):
 
 
 
-        #self.model = AutoModel.from_pretrained(
-        #    self.bert_type, output_hidden_states=True
-        #)
-        self.model = language_model
+        self.model = AutoModel.from_pretrained(
+            self.bert_type, output_hidden_states=True
+        )
+        #self.model = language_model
 
         #self.tokenizer = AutoTokenizer.from_pretrained(self.bert_type)
         self.tokenizer = tokenizer
