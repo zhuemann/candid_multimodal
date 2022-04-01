@@ -244,8 +244,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             x["token_type_ids"] = token_type_ids
 
             img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
-            print("test")
-            print(img_emb_g)
+            #print("test")
+            #print(img_emb_g)
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
             #pooler_outputs = language_model(ids, mask, token_type_ids)
