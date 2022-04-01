@@ -24,7 +24,7 @@ class GLoRIA(nn.Module):
         #self.text_encoder = builder.build_text_model(cfg)
         #self.img_encoder = builder.build_img_model(cfg)
 
-        self.text_encoder = BertEncoder(tokenizer=tokenizer)
+        self.text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
         self.img_encoder = ImageEncoder()
 
         #self.local_loss = loss.gloria_loss.local_loss

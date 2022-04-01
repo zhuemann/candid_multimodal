@@ -187,7 +187,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
     vision_model, feature_dim, nums = resnet_50(pretrained=True)
-    gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer)
+    gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
     #print(model)
 

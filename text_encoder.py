@@ -4,7 +4,7 @@ from transformers import AutoModel, AutoTokenizer
 
 
 class BertEncoder(nn.Module):
-    def __init__(self, cfg= None, tokenizer = None, language_model):
+    def __init__(self, cfg= None, tokenizer = None, language_model= None):
         super(BertEncoder, self).__init__()
 
         #self.bert_type = cfg.model.text.bert_type
