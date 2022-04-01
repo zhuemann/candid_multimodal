@@ -103,9 +103,9 @@ class BertEncoder(nn.Module):
     def forward(self, ids, attn_mask, token_type):
 
         outputs = self.model(ids, attn_mask, token_type)
-        print("outputs shape: ")
-        print(outputs.shape)
-        print("test")
+        #print("outputs shape: ")
+        #print(outputs.shape)
+        #print("test")
         # aggregate intermetidate layers
         if self.last_n_layers > 1:
             all_embeddings = outputs[2]
@@ -138,7 +138,7 @@ class BertEncoder(nn.Module):
         else:
             word_embeddings, sent_embeddings = outputs[0], outputs[1]
 
-        print(word_embeddings.shape)
+        #print(word_embeddings.shape)
 
         batch_dim, num_words, feat_dim = word_embeddings.shape
         word_embeddings = word_embeddings.view(batch_dim * num_words, feat_dim)
