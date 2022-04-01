@@ -39,14 +39,14 @@ if __name__ == '__main__':
         accuracy_list.append(acc)
 
         matrix = acc
-        df = pd.DataFrame(matrix)
+        #df = pd.DataFrame(matrix)
         file_name = 'first_vision_run'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/tests/' + str(file_name) +'/confusion_matrix_seed' + str(
                                     seed) + '.xlsx')
 
-        df.to_excel(filepath, index=False)
+        #df.to_excel(filepath, index=False)
 
     print(accuracy_list)
 
