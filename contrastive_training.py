@@ -248,8 +248,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             print(img_emb_g)
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
-            pooler_outputs = language_model(ids, mask, token_type_ids)
-            vision_outputs = vision_model(images)
+            #pooler_outputs = language_model(ids, mask, token_type_ids)
+            #vision_outputs = vision_model(images)
             #print(type(outputs))
             #outputs = output_resize(torch.squeeze(outputs, dim=1))
             #print("pooler shape: ")
@@ -259,12 +259,12 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
-            loss = ContrastiveLoss(pooler_outputs, vision_outputs)
-            print(pooler_outputs.shape)
-            print(vision_outputs.shape)
-            print(loss)
-            loss = loss(pooler_outputs, vision_outputs)
-            loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
+            #loss = ContrastiveLoss(pooler_outputs, vision_outputs)
+            #print(pooler_outputs.shape)
+            #print(vision_outputs.shape)
+            #print(loss)
+            #loss = loss(pooler_outputs, vision_outputs)
+            loss_lang, loss_vision = global_loss(img_emb_g,text_emb_g , temp3 = 10)
 
             loss_diff = abs(loss_lang.item() - loss_vision.item())
             if _ % 10 == 0:
