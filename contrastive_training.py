@@ -243,7 +243,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
             loss = ContrastiveLoss(pooler_outputs, vision_outputs)
             print(pooler_outputs.shape)
-            print(vision_outputs)
+            print(vision_outputs.shape)
             print(loss)
             loss = loss(pooler_outputs, vision_outputs)
             loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
