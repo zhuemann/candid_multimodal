@@ -103,8 +103,8 @@ class BertEncoder(nn.Module):
     def forward(self, ids, attn_mask, token_type):
 
         outputs = self.model(ids, attn_mask, token_type)
-        #print("outputs shape: ")
-        #print(outputs.shape)
+        print("outputs length: ")
+        print(len(outputs))
         #print("test")
         # aggregate intermetidate layers
         if self.last_n_layers > 1:
