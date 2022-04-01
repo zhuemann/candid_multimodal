@@ -211,15 +211,16 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     # criterion = global_loss()
 
     # defines which optimizer is being used
-    #optimizer = torch.optim.Adam(params=language_model.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(params=gloria_model.parameters(), lr=LR)
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
-    optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
+    #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     for epoch in range(1, N_EPOCHS + 1):
-        vision_model.train()
-        language_model.train()
+        #vision_model.train()
+        #language_model.train()
+        gloria_model.train()
         gc.collect()
 
         loss_list = []
