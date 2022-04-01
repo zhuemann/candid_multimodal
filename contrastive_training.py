@@ -71,7 +71,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     language_model = BertModel.from_pretrained(language_path)
-    language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
+    #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
