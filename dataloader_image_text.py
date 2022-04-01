@@ -99,7 +99,7 @@ class TextImageDataset(Dataset):
                     #print(type(img))
                     transformed = self.transforms(image=img, mask=segmentation_mask_org)
                     image = transformed['image']
-                    segmentation_mask_org = transformed['mask']
+                    segmentation_mask = transformed['mask']
                     image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
                     image = self.resize(image)  # resizes the image to be the same as the model size
                     #segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
