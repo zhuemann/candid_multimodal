@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        #acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2)
+        acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2)
         acc = 1
         accuracy_list.append(acc)
 
