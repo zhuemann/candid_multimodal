@@ -124,7 +124,7 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
     albu_augs = albu.Compose([
         #ToTensorV2(),
         albu.HorizontalFlip(),
-        #albu.RandomCrop(height=224, width=224),
+        albu.RandomCrop(height=224, width=224),
         albu.ColorJitter(),
         #albu.RandomAfine
 
