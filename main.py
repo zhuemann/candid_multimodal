@@ -15,7 +15,7 @@ from create_unet import load_img_segmentation_model
 if __name__ == '__main__':
 
     #Sets which directory to use
-    local = True
+    local = False
     if local == True:
         directory_base = "Z:/"
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
