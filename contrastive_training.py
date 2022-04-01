@@ -222,8 +222,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
-            targets = data['targets'].to(device, dtype=torch.float)
-            #print(targets)
+            #targets = data['targets'].to(device, dtype=torch.float)
+            print("test")
             images = data['images'].to(device, dtype=torch.float)
 
             print(images.shape)
