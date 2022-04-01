@@ -18,6 +18,7 @@ import albumentations as albu
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
 from torch.optim import lr_scheduler
+from Gloria import GLoRIA
 
 
 #from PIL import Image
@@ -186,6 +187,9 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
     vision_model, feature_dim, nums = resnet_50(pretrained=True)
+    model = GLoRIA(tokenizer=tokenizer)
+
+    print(model)
 
     vision_model.to(device)
     language_model.to(device)

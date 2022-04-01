@@ -10,6 +10,7 @@ Pillow
 transformers
 openpyxl
 pydicom
+nltk
 
 
 segmentation-models-pytorch

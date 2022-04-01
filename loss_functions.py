@@ -104,3 +104,51 @@ class ContrastiveLoss(nn.Module):
             cost_im = cost_im.max(0)[0]
 
         return cost_s.sum() + cost_im.sum()
+
+def attention_fn(query, context, temp1):
+    """
+    query: batch x ndf x queryL
+    context: batch x ndf x ih x iw (sourceL=ihxiw)
+    mask: batch_size x sourceL
+    """
+    batch_size, queryL = query.size(0), query.size(2)
+    ih, iw = context.size(2), context.size(3)
+    sourceL = ih * iw
+
+    # --> batch x sourceL x ndf
+    context = context.view(batch_size, -1, sourceL)
+    contextT = torch.transpose(context, 1, 2).contiguous()
+
+    # Get attention
+    # (batch x sourceL x ndf)(batch x ndf x queryL)
+    # -->batch x sourceL x queryL
+    attn = torch.bmm(contextT, query)
+    # --> batch*sourceL x queryL
+    attn = attn.view(batch_size * sourceL, queryL)
+    attn = nn.Softmax(dim=-1)(attn)
+
+    # --> batch x sourceL x queryL
+    attn = attn.view(batch_size, sourceL, queryL)
+    # --> batch*queryL x sourceL
+    attn = torch.transpose(attn, 1, 2).contiguous()
+    attn = attn.view(batch_size * queryL, sourceL)
+
+    attn = attn * temp1
+    attn = nn.Softmax(dim=-1)(attn)
+    attn = attn.view(batch_size, queryL, sourceL)
+    # --> batch x sourceL x queryL
+    attnT = torch.transpose(attn, 1, 2).contiguous()
+
+    # (batch x ndf x sourceL)(batch x sourceL x queryL)
+    # --> batch x ndf x queryL
+    weightedContext = torch.bmm(context, attnT)
+
+    return weightedContext, attn.view(batch_size, -1, ih, iw)
+
+
+def cosine_similarity(x1, x2, dim=1, eps=1e-8):
+    """Returns cosine similarity between x1 and x2, computed along dim."""
+    w12 = torch.sum(x1 * x2, dim)
+    w1 = torch.norm(x1, 2, dim)
+    w2 = torch.norm(x2, 2, dim)
+    return (w12 / (w1 * w2).clamp(min=eps)).squeeze()
