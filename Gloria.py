@@ -17,7 +17,7 @@ from vision_encoder import ImageEncoder
 
 
 class GLoRIA(nn.Module):
-    def __init__(self, cfg, tokenizer):
+    def __init__(self, cfg, tokenizer, language_model):
         super(GLoRIA, self).__init__()
 
         #self.cfg = cfg
