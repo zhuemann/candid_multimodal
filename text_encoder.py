@@ -106,14 +106,14 @@ class BertEncoder(nn.Module):
     def forward(self, ids, attn_mask, token_type):
 
         outputs = self.model(ids, attn_mask, token_type)
-        print("outputs length: ")
-        print(len(outputs))
+        #print("outputs length: ")
+        #print(len(outputs))
         #print("test")
         # aggregate intermetidate layers
         if self.last_n_layers > 1:
             all_embeddings = outputs[2]
-            print(len(outputs))
-            print(self.last_n_layers)
+            #print(len(outputs))
+            #print(self.last_n_layers)
             embeddings = torch.stack(
                 all_embeddings[-self.last_n_layers :]
             )  # layers, batch, sent_len, embedding size
