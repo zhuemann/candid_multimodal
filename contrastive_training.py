@@ -189,6 +189,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     vision_model, feature_dim, nums = resnet_50(pretrained=True)
     gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
+    gloria_model.to(device)
+
     #print(model)
 
     #vision_model.to(device)
