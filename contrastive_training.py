@@ -247,7 +247,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             loss_diff = abs(loss_lang.item() - loss_vision.item())
             if _ % 10 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()} differences: {loss_diff }')
-                print(f'Epoch: {epoch}, Contrastive Loss:  {loss.item()}')
+                print(f'Epoch: {epoch}, Contrastive Loss:  {loss}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
