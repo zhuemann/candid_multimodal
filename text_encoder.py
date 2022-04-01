@@ -2,6 +2,9 @@ import torch
 import torch.nn as nn
 from transformers import AutoModel, AutoTokenizer
 
+import ssl
+ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
+
 
 class BertEncoder(nn.Module):
     def __init__(self, cfg= None, tokenizer = None, language_model= None):
@@ -24,10 +27,10 @@ class BertEncoder(nn.Module):
 
 
 
-        self.model = AutoModel.from_pretrained(
-            self.bert_type, output_hidden_states=True
-        )
-        #self.model = language_model
+        #self.model = AutoModel.from_pretrained(
+        #    self.bert_type, output_hidden_states=True
+        #)
+        self.model = language_model
 
         #self.tokenizer = AutoTokenizer.from_pretrained(self.bert_type)
         self.tokenizer = tokenizer

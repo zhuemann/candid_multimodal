@@ -70,7 +70,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = BertModel.from_pretrained(language_path)
+    language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
@@ -186,7 +186,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-    vision_model, feature_dim, nums = resnet_50(pretrained=True)
+
+    #vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
     gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
     gloria_model.to(device)
