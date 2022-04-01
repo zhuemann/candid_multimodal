@@ -43,7 +43,7 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     norm0 = torch.bmm(cnn_code_norm, rnn_code_norm.transpose(1, 2))
     scores0 = scores0 / norm0.clamp(min=eps) * temp3
 
-    print(scores0)
+    print(scores0.shape)
 
     # --> batch_size x batch_size
     scores0 = scores0.squeeze()
