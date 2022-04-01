@@ -136,6 +136,8 @@ class BertEncoder(nn.Module):
         else:
             word_embeddings, sent_embeddings = outputs[0], outputs[1]
 
+        print(word_embeddings.shape)
+
         batch_dim, num_words, feat_dim = word_embeddings.shape
         word_embeddings = word_embeddings.view(batch_dim * num_words, feat_dim)
         if self.emb_local is not None:
