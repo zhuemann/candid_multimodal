@@ -225,6 +225,8 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             targets = data['targets'].to(device, dtype=torch.float)
             #print(targets)
             images = data['images'].to(device, dtype=torch.float)
+
+            print(images.shape)
             print("in loop")
 
 
