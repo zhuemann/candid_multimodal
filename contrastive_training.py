@@ -155,12 +155,12 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 4
+                'num_workers': 1
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
                     'shuffle': True,
-                    'num_workers': 4
+                    'num_workers': 1
                     }
 
     training_loader = DataLoader(training_set, **train_params)
