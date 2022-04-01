@@ -40,9 +40,8 @@ import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
-def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
+def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
 
-    print("will have training and stuff here")
     # model specific global variables
     IMG_SIZE = 256 #256 #1024 #512 #384
     BATCH_SIZE = batch_size
@@ -242,11 +241,13 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
 
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
+            loss = ContrastiveLoss(pooler_outputs, vision_outputs)
             loss_lang, loss_vision = global_loss(vision_outputs, pooler_outputs, temp3 = 10)
 
             loss_diff = abs(loss_lang.item() - loss_vision.item())
             if _ % 10 == 0:
                 print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()} differences: {loss_diff }')
+                print(f'Epoch: {epoch}, Contrastive Loss:  {loss.item()}')
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
