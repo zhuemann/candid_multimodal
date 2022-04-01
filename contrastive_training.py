@@ -187,19 +187,19 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #torch.save(model_obj.state_dict(), save_path)
     #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
     vision_model, feature_dim, nums = resnet_50(pretrained=True)
-    model = GLoRIA(tokenizer=tokenizer)
+    gloria_model = GLoRIA(tokenizer=tokenizer)
 
-    print(model)
+    #print(model)
 
-    vision_model.to(device)
-    language_model.to(device)
+    #vision_model.to(device)
+    #language_model.to(device)
     #print(model_obj.parameters())
     #for param in model_obj.parameters():
     #    print(param)
-    for param in vision_model.parameters():
-        param.requires_grad = True
-    for param in language_model.parameters():
-        param.requires_grad = True
+    #for param in vision_model.parameters():
+    #    param.requires_grad = True
+    #for param in language_model.parameters():
+    #    param.requires_grad = True
     # criterion = nn.CrossEntropyLoss()
     # criterion = nn.MSELoss()
     # criterion = nn.BCEWithLogitsLoss()
@@ -222,6 +222,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         loss_list = []
 
         for _, data in tqdm(enumerate(training_loader, 0)):
+
+            x = {}
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
@@ -232,6 +234,14 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #print(images.shape)
             #print("in loop")
 
+            x["imgs"] = images
+            x["caption_ids"] = ids
+            x["attention_mask"] = mask
+            x["token_type_ids"] = token_type_ids
+
+            img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
+            print("test")
+            print(img_emb_g)
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
             pooler_outputs = language_model(ids, mask, token_type_ids)
