@@ -223,11 +223,11 @@ def training_loop(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-is
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
             #targets = data['targets'].to(device, dtype=torch.float)
-            print("test")
+            #print("test")
             images = data['images'].to(device, dtype=torch.float)
 
-            print(images.shape)
-            print("in loop")
+            #print(images.shape)
+            #print("in loop")
 
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
