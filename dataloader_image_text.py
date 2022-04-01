@@ -120,8 +120,8 @@ class TextImageDataset(Dataset):
         #print(img.shape)
         #print(segmentation_mask.shape)
 
-        segmentation_mask = Image.fromarray(np.uint8(segmentation_mask_org))
-        segmentation_mask = self.resize(segmentation_mask)
+        #segmentation_mask = Image.fromarray(np.uint8(segmentation_mask_org))
+        #segmentation_mask = self.resize(segmentation_mask)
 
         # for showing the images with maps and such
         #plt.figure()
