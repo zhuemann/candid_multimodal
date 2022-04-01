@@ -19,4 +19,6 @@ class BERTClass(torch.nn.Module):
 
         #output = self.classifier(pooler)
         #return output, pooler_out
-        return pooler_out
+        #return pooler_out
+
+        return output_1
