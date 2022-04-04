@@ -247,7 +247,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #print("test")
             #print(img_emb_g)
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
-            print(loss)
+            #print(loss)
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
             #pooler_outputs = language_model(ids, mask, token_type_ids)
@@ -297,7 +297,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #optimizer_vis.step()
 
             #loss_list.append(loss.cpu().detach().numpy().tolist())
-            loss_list.append(loss)
+            loss_list.append(loss.item)
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
