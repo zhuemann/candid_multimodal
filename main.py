@@ -23,7 +23,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
     #pretrained_model = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 1, n_classes = 2)
-
+    pretrained_model = None
     #model_obj = load_img_segmentation_model()
 
     #load_best_model(dir_base= directory_base)
