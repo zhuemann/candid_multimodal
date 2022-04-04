@@ -246,6 +246,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
             #print("test")
             #print(img_emb_g)
+            loss = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
+            print(loss)
 
             #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
             #pooler_outputs = language_model(ids, mask, token_type_ids)
@@ -276,7 +278,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
                 #plt.show()
 
             optimizer.zero_grad()
-            loss = loss_lang + loss_vision
+            #loss = loss_lang + loss_vision
             loss.backward()
             optimizer.step()
 
