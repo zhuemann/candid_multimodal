@@ -39,7 +39,7 @@ class ImageEncoder(nn.Module):
 
         #if cfg.model.ckpt_path is not None:
 
-        init_weights = True
+        init_weights = False
         if init_weights:
             self.init_trainable_weights()
 

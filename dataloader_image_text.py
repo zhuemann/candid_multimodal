@@ -36,7 +36,7 @@ class TextImageDataset(Dataset):
         # text extraction
         text = str(self.text[index])
         text = " ".join(text.split())
-
+        print(text)
         inputs = self.tokenizer.encode_plus(
             text,
             None,
