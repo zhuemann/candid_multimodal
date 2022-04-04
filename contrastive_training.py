@@ -297,7 +297,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #optimizer_vis.step()
 
             #loss_list.append(loss.cpu().detach().numpy().tolist())
-            loss_list.append(loss_diff)
+            loss_list.append(loss)
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
