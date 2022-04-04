@@ -1,6 +1,7 @@
 import torch
 import segmentation_models_pytorch as smp
 import os
+from collections import OrderedDict
 
 def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None,
     name: str = "gloria_resnet50",
@@ -37,11 +38,22 @@ def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None
     seg_model = smp.Unet(base_model, encoder_weights=None, activation=None)
 
     # update weight
-    ckpt = torch.load(ckpt_path)
+    #ckpt = torch.load(ckpt_path)
 
+    state_dict = torch.load(ckpt_path)
 
     if pretrained_model == True:
-        seg_model.encoder.load_state_dict(ckpt)
+        #seg_model.encoder.load_state_dict(ckpt)
+
+        # create new OrderedDict that does not contain `module.`
+        new_state_dict = OrderedDict()
+        for k, v in state_dict.items():
+            name = k[6:]  # remove `model.`
+            new_state_dict[name] = v
+        # load params
+        seg_model.encoder.load_state_dict(new_state_dict)
+
+
     #print(ckpt["OrderedDict"].items())
     else:
         seg_model.encoder.load_state_dict(ckpt)
