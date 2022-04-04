@@ -2,7 +2,7 @@ import torch
 import segmentation_models_pytorch as smp
 import os
 
-def load_img_segmentation_model(dir_base = "/UserData/",
+def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None,
     name: str = "gloria_resnet50",
 ):
     """Load a GLoRIA pretrained classification model
@@ -19,7 +19,7 @@ def load_img_segmentation_model(dir_base = "/UserData/",
     """
     #dir_base = "/UserData/"
     #dir_base = "Z:/"
-    ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
+    ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/candid_best_contrastive')
     base_model = "resnet50"
     # warnings
     #if name in _SEGMENTATION_MODELS:
@@ -39,8 +39,12 @@ def load_img_segmentation_model(dir_base = "/UserData/",
     # update weight
     ckpt = torch.load(ckpt_path)
 
+
+    if pretrained_model == True:
+        seg_model.encoder.load_state_dict(ckpt)
     #print(ckpt["OrderedDict"].items())
-    seg_model.encoder.load_state_dict(ckpt)
+    else:
+        seg_model.encoder.load_state_dict(ckpt)
 
 
     #ckpt_dict = {}

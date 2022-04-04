@@ -302,11 +302,11 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/candid_best_contrastive')
-    torch.save(vision_model.state_dict(), save_path)
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/candid_best_contrastive')
+    torch.save(gloria_model.img_encoder.state_dict(), save_path)
 
 
-    return vision_model
+    return gloria_model
 
 
 
