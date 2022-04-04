@@ -111,10 +111,6 @@ def local_loss(
 
 
 
-
-
-
-
 def get_global_similarities(img_emb_g, text_emb_g):
     img_emb_g = img_emb_g.detach().cpu().numpy()
     text_emb_g = text_emb_g.detach().cpu().numpy()
