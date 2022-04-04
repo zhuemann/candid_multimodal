@@ -22,8 +22,8 @@ if __name__ == '__main__':
     else:
         directory_base = "/UserData/"
 
-    #pretrained_model = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 1, n_classes = 2)
-    pretrained_model = None
+    pretrained_model = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 30, n_classes = 2)
+    #pretrained_model = None
     #model_obj = load_img_segmentation_model()
 
     #load_best_model(dir_base= directory_base)
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        acc = segmentation_training(seed = seed, batch_size = 4, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = pretrained_model)
+        acc = segmentation_training(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = pretrained_model)
         acc = 1
         accuracy_list.append(acc)
 

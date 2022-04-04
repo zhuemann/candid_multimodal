@@ -205,7 +205,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
             # print(loss)
-            if _ % 10 == 0:
+            if _ % 20 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
                 #f, ax = plt.subplots(1, 3)
