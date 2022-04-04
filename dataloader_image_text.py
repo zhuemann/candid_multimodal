@@ -42,6 +42,7 @@ class TextImageDataset(Dataset):
         text = text.replace("[date]", "")
         text = text.replace("[ADDRESS]", "")
         text = text.replace("[PERSONALNAME]", "")
+        text = text.replace("\n", "")
 
 
         inputs = self.tokenizer.encode_plus(
