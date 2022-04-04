@@ -51,9 +51,11 @@ def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None
             name = k[6:]  # remove `model.`
             new_state_dict[name] = v
         # load params
-        new_state_dict["_embedder.weight"] = None
-        new_state_dict["_embedder.bias"] = None
-        new_state_dict["embedder.weight"] = None
+        new_state_dict = new_state_dict.pop(["_embedder.weight"], None)
+        new_state_dict = new_state_dict.pop(["_embedder.bias"], None)
+        new_state_dict = new_state_dict.pop(["embedder.weight"], None)
+        #new_state_dict["_embedder.bias"] = None
+        #new_state_dict["embedder.weight"] = None
 
         seg_model.encoder.load_state_dict(new_state_dict)
 
