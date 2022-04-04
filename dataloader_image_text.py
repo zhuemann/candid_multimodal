@@ -36,7 +36,14 @@ class TextImageDataset(Dataset):
         # text extraction
         text = str(self.text[index])
         text = " ".join(text.split())
-        print(text)
+        #print(text)
+
+        text = text.replace("[ALPHANUMERICID]", "")
+        text = text.replace("[date]", "")
+        text = text.replace("[ADDRESS]", "")
+        text = text.replace("[PERSONALNAME]", "")
+
+
         inputs = self.tokenizer.encode_plus(
             text,
             None,
