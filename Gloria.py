@@ -7,7 +7,7 @@ from sklearn import metrics
 
 from PIL import Image
 #from .. import builder
-from loss_functions import global_loss, attention_fn, cosine_similarity
+from loss_functions import global_loss, local_loss, attention_fn, cosine_similarity
 #from .. import utils
 from transformers import AutoTokenizer
 from nltk.tokenize import RegexpTokenizer
@@ -29,6 +29,7 @@ class GLoRIA(nn.Module):
 
         #self.local_loss = loss.gloria_loss.local_loss
         #self.global_loss = loss.gloria_loss.global_loss
+        self.local_loss = local_loss
         self.global_loss = global_loss
         #self.local_loss_weight = self.cfg.model.gloria.local_loss_weight
         #self.global_loss_weight = self.cfg.model.gloria.global_loss_weight
