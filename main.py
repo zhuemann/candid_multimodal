@@ -15,14 +15,14 @@ from create_unet import load_img_segmentation_model
 if __name__ == '__main__':
 
     #Sets which directory to use
-    local = False
+    local = True
     if local == True:
         directory_base = "Z:/"
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
     else:
         directory_base = "/UserData/"
 
-    #pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 100, n_classes = 2)
+    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 100, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 

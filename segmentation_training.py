@@ -22,7 +22,7 @@ from PIL import Image
 #from sklearn import metrics
 from sklearn.metrics import accuracy_score, hamming_loss
 
-from candid_dataloader import get_candid_labels
+from candid_datasetup import get_candid_labels
 from dataloader_image_text import TextImageDataset
 from vit_base import ViTBase16
 from utility import compute_metrics

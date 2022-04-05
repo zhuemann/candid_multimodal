@@ -27,7 +27,7 @@ from Gloria import GLoRIA
 #from sklearn import metrics
 #from sklearn.metrics import accuracy_score, hamming_loss
 
-#from candid_dataloader import get_candid_labels
+from candid_datasetup import get_candid_labels, get_all_text_image_pairs
 from dataloader_image_text import TextImageDataset
 #from vit_base import ViTBase16
 #from utility import compute_metrics
@@ -51,17 +51,18 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/images_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
-    #print(df)
-    #df.to_excel(dataframe_location, index=False)
+    df = get_all_text_image_pairs(dir_base=dir_base)
+    print(df)
+    df.to_excel(dataframe_location, index=False)
 
     # reads in the dataframe as it doesn't really change to save time
-    df = pd.read_excel(dataframe_location, engine='openpyxl')
+    #df = pd.read_excel(dataframe_location, engine='openpyxl')
     #print(df)
     df.set_index("image_id", inplace=True)
-    print(df)
+    #print(df)
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
@@ -236,29 +237,14 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             #print("test")
             images = data['images'].to(device, dtype=torch.float)
 
-            #print(images.shape)
-            #print("in loop")
-
             x["imgs"] = images
             x["caption_ids"] = ids
             x["attention_mask"] = mask
             x["token_type_ids"] = token_type_ids
 
             img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
-            #print("test")
-            #print(img_emb_g)
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
-            #print(loss)
 
-            #lang_outputs, pooler_outputs = language_model(ids, mask, token_type_ids)
-            #pooler_outputs = language_model(ids, mask, token_type_ids)
-            #vision_outputs = vision_model(images)
-            #print(type(outputs))
-            #outputs = output_resize(torch.squeeze(outputs, dim=1))
-            #print("pooler shape: ")
-            #print(pooler_outputs.shape)
-            #print("vision shape: ")
-            #print(vision_outputs.shape)
 
             #loss = criterion(pooler_outputs, vision_outputs)
             #loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
@@ -271,7 +257,6 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
             #loss_diff = abs(loss_lang.item() - loss_vision.item())
             if _ % 10 == 0:
-                #print(f'Epoch: {epoch}, language Loss:  {loss_lang.item()} vision Loss: {loss_vision.item()} differences: {loss_diff }')
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
                 #print(f'Epoch: {epoch}, Contrastive Loss:  {loss}')
@@ -281,25 +266,11 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
                 #plt.show()
 
             optimizer.zero_grad()
-            #loss = loss_lang + loss_vision
             loss.backward()
             optimizer.step()
 
-            #language step
-            #optimizer_lang.zero_grad()
-            #loss = loss_lang + loss_vision
-            #loss.backward(retain_graph=True)
-            #optimizer_lang.step()
-
-            #vision step
-            #optimizer_vis.zero_grad()
-            #loss = loss_lang + loss_vision
-            #loss.backward()
-            #optimizer_vis.step()
-
-            #loss_list.append(loss.cpu().detach().numpy().tolist())
             loss_list.append(loss.item())
-            #print(loss_list)
+
         epoch_avg_loss = np.mean(np.asarray(loss_list))
         if epoch_avg_loss < lowest_loss:
             lowest_loss = epoch_avg_loss
@@ -307,6 +278,9 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
     save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/full_gloria')
+    torch.save(gloria_model.state_dict(), save_path)
+
 
 
     return gloria_model, lowest_loss
