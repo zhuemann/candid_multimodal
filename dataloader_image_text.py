@@ -88,6 +88,7 @@ class TextImageDataset(Dataset):
 
         # decodes the rle
         if self.targets[index] != -1:
+            print(self.targets[index])
             segmentation_mask_org = rle_decode_modified(self.targets[index], (1024, 1024))
             segmentation_mask_org = np.uint8(segmentation_mask_org)
         else:
