@@ -36,18 +36,19 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        acc = segmentation_training(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = None)
+        acc, valid_log = segmentation_training(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = None)
         accuracy_list.append(acc)
-
+        print(valid_log)
         matrix = acc
-        #df = pd.DataFrame(matrix)
-        file_name = 'first_vision_run'
+        df = pd.DataFrame(valid_log)
+        df["test_accuracy"] = acc
+        file_name = 'pretraining_vision_run'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/tests/' + str(file_name) +'/confusion_matrix_seed' + str(
                                     seed) + '.xlsx')
 
-        #df.to_excel(filepath, index=False)
+        df.to_excel(filepath, index=False)
 
     print(accuracy_list)
     print(lowest_loss)

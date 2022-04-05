@@ -182,6 +182,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     optimizer = torch.optim.Adam(params=model_obj.parameters(), lr=LR)
     print("about to start training loop")
     best_acc = -1
+    valid_log = []
     for epoch in range(1, N_EPOCHS + 1):
         model_obj.train()
         gc.collect()
@@ -237,7 +238,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         avg_training_dice = np.average(training_dice)
         print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
 
-
         # each epoch, look at validation data
 
         with torch.no_grad():
@@ -266,6 +266,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
             avg_valid_dice = np.average(valid_dice)
             print(f"Epoch {str(epoch)}, Average Valid Dice Score = {avg_valid_dice}")
+            valid_log.append(avg_valid_dice)
 
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
@@ -308,6 +309,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
 
-        return avg_test_dice
+        return avg_test_dice, valid_log
 
 
