@@ -54,9 +54,9 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/images_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
-    #df = get_all_text_image_pairs(dir_base=dir_base)
+    df = get_all_text_image_pairs(dir_base=dir_base)
     #print(df)
-    #df.to_excel(dataframe_location, index=False)
+    df.to_excel(dataframe_location, index=False)
 
     # reads in the dataframe as it doesn't really change to save time
     train_df = pd.read_excel(dataframe_location, engine='openpyxl')
