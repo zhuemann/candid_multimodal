@@ -22,20 +22,20 @@ if __name__ == '__main__':
     else:
         directory_base = "/UserData/"
 
-    #pretrained_model = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 30, n_classes = 2)
-    pretrained_model = None
+    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 100, n_classes = 2)
+
     #model_obj = load_img_segmentation_model()
 
     #load_best_model(dir_base= directory_base)
 
-    seeds = [117, 295, 98, 456, 915, 1367, 712]
+    #seeds = [117, 295, 98, 456, 915, 1367, 712]
+    seeds = [117]
     accuracy_list = []
 
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
         acc = segmentation_training(seed = seed, batch_size = 16, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = pretrained_model)
-        acc = 1
         accuracy_list.append(acc)
 
         matrix = acc
@@ -49,4 +49,5 @@ if __name__ == '__main__':
         #df.to_excel(filepath, index=False)
 
     print(accuracy_list)
+    print(lowest_loss)
 

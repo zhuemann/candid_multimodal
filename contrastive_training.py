@@ -217,6 +217,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
+    lowest_loss = 100
     for epoch in range(1, N_EPOCHS + 1):
         #vision_model.train()
         #language_model.train()
@@ -300,13 +301,15 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             loss_list.append(loss.item())
             #print(loss_list)
         epoch_avg_loss = np.mean(np.asarray(loss_list))
+        if epoch_avg_loss < lowest_loss:
+            lowest_loss = epoch_avg_loss
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
     save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
 
 
-    return gloria_model
+    return gloria_model, lowest_loss
 
 
 
