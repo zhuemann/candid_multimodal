@@ -161,11 +161,11 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
-    #test = pretrained_model
-    #print(test.img_encoder)
-    use_pretrained_encoder = True
+
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
+
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
 
