@@ -29,6 +29,7 @@ if __name__ == '__main__':
     #load_best_model(dir_base= directory_base)
 
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
+
     seeds = [117]
     accuracy_list = []
 
