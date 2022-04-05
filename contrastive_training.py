@@ -80,15 +80,15 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
     # Splits the data into 80% train and 20% valid and test sets
     train_df, test_valid_df = model_selection.train_test_split(
-        df, test_size=0.2, random_state=seed, shuffle=True #stratify=df.label.values
+        df, test_size=0.0, random_state=seed, shuffle=True #stratify=df.label.values
     )
     # Splits the test and valid sets in half so they are both 10% of total data
-    test_df, valid_df = model_selection.train_test_split(
-        test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
-    )
+    #test_df, valid_df = model_selection.train_test_split(
+    #    test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
+    #)
 
-    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
-    test_df.to_excel(test_dataframe_location, index=True)
+    #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
+    #test_df.to_excel(test_dataframe_location, index=True)
 
 
     # create image augmentations
@@ -149,8 +149,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     print("train_df")
     print(train_df)
     training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
-    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
-    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    #valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    #test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
     print(training_set)
 
@@ -165,8 +165,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
                     }
 
     training_loader = DataLoader(training_set, **train_params)
-    valid_loader = DataLoader(valid_set, **test_params)
-    test_loader = DataLoader(test_set, **test_params)
+    #valid_loader = DataLoader(valid_set, **test_params)
+    #test_loader = DataLoader(test_set, **test_params)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
