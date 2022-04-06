@@ -162,7 +162,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
 

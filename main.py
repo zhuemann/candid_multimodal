@@ -42,10 +42,11 @@ if __name__ == '__main__':
         matrix = acc
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        file_name = 'pretraining_vision_run'
+        #file_name = 'pretraining_vision_run'
+        file_name = 'image_net_weights'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
-                                '/UserData/Zach_Analysis/result_logs/candid_result/tests/' + str(file_name) +'/confusion_matrix_seed' + str(
+                                '/UserData/Zach_Analysis/result_logs/candid_result/tests/' + str(file_name) +'/valid_run_seed' + str(
                                     seed) + '.xlsx')
 
         df.to_excel(filepath, index=False)
