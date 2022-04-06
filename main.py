@@ -30,13 +30,13 @@ if __name__ == '__main__':
 
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
 
-    seeds = [117]
+    seeds = [295]
     accuracy_list = []
 
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 35, n_classes = 2, pretrained_model = None)
+        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 50, n_classes = 2, pretrained_model = None)
         accuracy_list.append(acc)
         print(valid_log)
         matrix = acc
