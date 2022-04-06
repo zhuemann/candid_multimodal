@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
 
-    seeds = [295]
+    seeds = [456]
     accuracy_list = []
 
     # loops through the segmentation training multiple times with different seeds
