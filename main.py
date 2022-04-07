@@ -25,15 +25,15 @@ if __name__ == '__main__':
 
     #siim_datasetup(dir_base = directory_base)
 
-    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
+    #pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 
     #load_best_model(dir_base= directory_base)
 
-    #seeds = [117, 295, 98, 456, 915, 1367, 712]
+    seeds = [117, 295, 98, 456, 915, 1367, 712]
 
-    seeds = [915]
+    #seeds = [915]
     accuracy_list = []
 
     # loops through the segmentation training multiple times with different seeds
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         file_name = 'image_net_weights'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
-                                '/UserData/Zach_Analysis/result_logs/candid_result/tests/' + str(file_name) +'/valid_run_seed' + str(
+                                '/UserData/Zach_Analysis/result_logs/candid_result/reimplementation/' + str(file_name) +'/valid_run_seed' + str(
                                     seed) + '.xlsx')
 
         df.to_excel(filepath, index=False)

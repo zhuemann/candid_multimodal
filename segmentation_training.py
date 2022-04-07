@@ -30,6 +30,7 @@ from utility import hamming_score, dice_coeff
 from create_unet import load_img_segmentation_model
 from vgg16 import VGG16
 import matplotlib.pyplot as plt
+from siim_dataloader import ImageDatasetSiim
 
 
 def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2, pretrained_model = None):
@@ -51,6 +52,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     # reads in the dataframe as it doesn't really change to save time
     df = pd.read_excel(dataframe_location, engine='openpyxl')
     print(df)
+
     df.set_index("image_id", inplace=True)
     print(df)
 
@@ -128,6 +130,35 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
     valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
     test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+
+
+
+    use_siim_dataset = True
+    if use_siim_dataset:
+        siim_location = os.path.join(dir_base, 'Zach_Analysis/siim_data/pneumothorax_train_df.xlsx')
+
+        # reads in the dataframe as it doesn't really change to save time
+        df = pd.read_excel(siim_location, engine='openpyxl')
+        print(df)
+        df.set_index("image_id", inplace=True)
+
+        # Splits the data into 80% train and 20% valid and test sets
+        train_df, test_valid_df = model_selection.train_test_split(
+            df, test_size=0.9, random_state=seed, shuffle=True  # stratify=df.label.values
+        )
+        # Splits the test and valid sets in half so they are both 10% of total data
+        test_df, valid_df = model_selection.train_test_split(
+            test_valid_df, test_size=0.5, random_state=seed, shuffle=True  # stratify=test_valid_df.label.values
+        )
+        print(train_df)
+        training_set = ImageDatasetSiim(train_df, tokenizer, 512, mode="train", transforms=albu_augs,
+                                        resize=transforms_resize, dir_base=dir_base, img_size=IMG_SIZE)
+
+        valid_set = ImageDatasetSiim(valid_df, tokenizer, 512, transforms=transforms_valid, resize=transforms_resize,
+                                     dir_base=dir_base, img_size=IMG_SIZE)
+
+        test_set = ImageDatasetSiim(test_df, tokenizer, 512, transforms=transforms_valid, resize=transforms_resize,
+                                    dir_base=dir_base, img_size=IMG_SIZE)
 
     print(training_set)
 
@@ -270,7 +301,8 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
-                save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
                 torch.save(model_obj.state_dict(), save_path)
 
@@ -278,6 +310,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     row_ids = []
     saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+    saved_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     model_obj.load_state_dict(torch.load(saved_path))
 

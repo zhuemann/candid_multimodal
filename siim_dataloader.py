@@ -14,11 +14,12 @@ import pandas as pd
 import re
 from glob import glob
 
-class TextImageDataset(Dataset):
+class ImageDatasetSiim(Dataset):
     def __init__(self, dataframe, tokenizer, max_len, truncation=True, dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms = None, resize = None, img_size = 256): # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
-        #self.tokenizer = tokenizer
+        self.tokenizer = tokenizer
         self.data = dataframe
         #self.text = dataframe.text
+        self.text = ""
         self.targets = self.data.label
         self.row_ids = self.data.index
         self.max_len = max_len
@@ -28,16 +29,19 @@ class TextImageDataset(Dataset):
         self.transforms = transforms
         self.mode = mode
         self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
+        self.image_path = dataframe.image_path
 
         self.resize = resize
 
     def __len__(self):
-        return len(self.text)
+        #return len(self.text)
+        return len(self.targets)
 
     def __getitem__(self, index):
-        """
+        print("inside get item")
         # text extraction
-        text = str(self.text[index])
+        #text = str(self.text[index])
+        text = self.text
         text = " ".join(text.split())
         #print(text)
 
@@ -61,7 +65,7 @@ class TextImageDataset(Dataset):
         ids = inputs['input_ids']
         mask = inputs['attention_mask']
         token_type_ids = inputs["token_type_ids"]
-        """
+
 
         # images data extraction
         img_name = self.row_ids[index]
@@ -71,7 +75,8 @@ class TextImageDataset(Dataset):
         #if exists(os.path.join(self.data_path, 'Group_4_5_curated', img_name)):
         #    data_dir = "Group_4_5_curated"
         data_dir = "public_datasets/candid_ptx/dataset1/dataset/"
-        img_path = os.path.join(self.data_path, img_name)
+        #img_path = os.path.join(self.data_path, img_name)
+        img_path = self.image_path[index]
 
         #print(img_path)
         #DCM_Img = pdcm.read_file(img_path)
@@ -145,15 +150,15 @@ class TextImageDataset(Dataset):
         #img_raw = DCM_Img.pixel_array
         #f, ax = plt.subplots(1, 3)
         #ax[0].imshow(img_raw, cmap=plt.cm.bone,)
-        #ax[1].imshow(image.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-        #ax[2].imshow(segmentation_mask, cmap="jet", alpha = 1)
-        #ax[2].imshow(image.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone, alpha = .5)
+        #ax[1].imshow(np.uint8(torch.permute(image, (1,2,0))).squeeze(), cmap=plt.cm.bone)
+        #ax[2].imshow(segmentation_mask.squeeze(), cmap="jet", alpha = 1)
+        #ax[2].imshow(np.uint8(torch.permute(image, (1,2,0))).squeeze(), cmap=plt.cm.bone, alpha = .5)
         #plt.show()
-        #print("returing from dataloader")
+
         return {
-            #'ids': torch.tensor(ids, dtype=torch.long),
-            #'mask': torch.tensor(mask, dtype=torch.long),
-            #'token_type_ids': torch.tensor(token_type_ids, dtype=torch.long),
+            'ids': torch.tensor(ids, dtype=torch.long),
+            'mask': torch.tensor(mask, dtype=torch.long),
+            'token_type_ids': torch.tensor(token_type_ids, dtype=torch.long),
             #'targets': torch.tensor(self.targets[index], dtype=torch.float),
             'targets': segmentation_mask,
             'row_ids': self.row_ids[index],
@@ -165,38 +170,10 @@ def siim_datasetup(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"):
 
     print("before glob")
     xray_dir = os.path.join(dir_base, "public_datasets/siim_pneumothorax/siim/dicom-images-train/*/*/*.dcm")
-    #xray_dir = os.path.join(dir_base, "public_datasets/siim_pneumothorax/siim/dicom-images-train/1.2.276.0.7230010.3.1.2.8323329.302.1517875162.286329/*/*.dcm")
-    # xray_dir2 = os.path.join(dir_base, "public_datasets/siim_pneumothorax/siim/dicom-images-train/1.2.276.0.7230010.3.1.3.8323329.4729.1517875184.343853/*/*.dcm")
-    xray_dir2 = os.path.join(dir_base, "public_datasets/siim_pneumothorax/siim/dicom-images-train/1.2.276.0.7230010.3.1.2.8323329.2385.1517875172.478312/*/*.dcm")
 
-
-
-    #test_fns = sorted(glob('../input/siim-train-test-2/dicom-images-test/*/*/*.dcm'))
     file_paths = glob(xray_dir)
-    #file_paths.append(glob(xray_dir2)[0])
     print("after glob")
 
-    #img_path = file_paths[0]
-    #DCM_Img = pdcm.read_file(img_path)
-    #img_raw = DCM_Img.pixel_array
-
-    #print(type(xray_dir))
-    #print(xray_dir)
-
-    #for filename in glob.iglob(xray_dir,
-    #                           recursive=True):
-    #    print(filename)
-    #print(len(train_fns))
-    #print(len(test_fns))
-    #print(train_fns)
-    #print("test")
-    #image_ids = []
-    #for path in file_paths:
-    #    #result = re.search('\\(.*).dcm', path)
-    #    test = path.split("\\")
-    #    image_ids.append(test[-1][:-4])
-
-    #print(image_ids)
 
     data_with_labels = pd.DataFrame(columns=['image_id', 'image_path', 'label'])
 
