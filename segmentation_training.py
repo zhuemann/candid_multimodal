@@ -121,7 +121,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     transforms_valid = transforms.Compose(
         [
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
-            transforms.Normalize((.5, .5, .5), (.5, .5, .5)),
+            #transforms.Normalize((.5, .5, .5), (.5, .5, .5)),
             transforms.PILToTensor()
             #transforms.Normalize((0.5,), (0.5,))
             #transforms.Grayscale(num_output_channels=1),
