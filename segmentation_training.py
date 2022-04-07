@@ -144,7 +144,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
         # Splits the data into 80% train and 20% valid and test sets
         train_df, test_valid_df = model_selection.train_test_split(
-            df, test_size=0.9, random_state=seed, shuffle=True  # stratify=df.label.values
+            df, test_size=0.95, random_state=seed, shuffle=True  # stratify=df.label.values
         )
         # Splits the test and valid sets in half so they are both 10% of total data
         test_df, valid_df = model_selection.train_test_split(

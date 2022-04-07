@@ -39,7 +39,6 @@ class ImageDatasetSiim(Dataset):
         return len(self.targets)
 
     def __getitem__(self, index):
-        print("inside get item")
         # text extraction
         #text = str(self.text[index])
         text = self.text
@@ -89,12 +88,6 @@ class ImageDatasetSiim(Dataset):
         #DCM_Img = pdcm.read_file(img_path)
         #test = plt.imshow(DCM_Img.pixel_array, cmap=plt.cm.bone)
         #plt.show()
-
-
-        DCM_Img = pdcm.read_file(img_path)
-        img_raw = DCM_Img.pixel_array
-        img_norm = img_raw * (255 / np.amax(img_raw))  # puts the highest value at 255
-        img = np.uint8(img_norm)
 
         try:
             DCM_Img = pdcm.read_file(img_path)
