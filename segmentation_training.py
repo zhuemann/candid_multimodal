@@ -148,9 +148,14 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         )
         # Splits the test and valid sets in half so they are both 10% of total data
         test_df, valid_df = model_selection.train_test_split(
-            test_valid_df, test_size=0.5, random_state=seed, shuffle=True  # stratify=test_valid_df.label.values
+            test_valid_df, test_size=0.1, random_state=seed, shuffle=True  # stratify=test_valid_df.label.values
         )
+        print("train_df")
         print(train_df)
+        print("valid_df")
+        print(valid_df)
+        print("test_df")
+        print(test_df)
         training_set = ImageDatasetSiim(train_df, tokenizer, 512, mode="train", transforms=albu_augs,
                                         resize=transforms_resize, dir_base=dir_base, img_size=IMG_SIZE)
 
