@@ -14,6 +14,7 @@ import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
 from albumentations.pytorch.transforms import ToTensorV2
+import cv2
 
 
 from PIL import Image
@@ -68,11 +69,11 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     # Splits the data into 80% train and 20% valid and test sets
     train_df, test_valid_df = model_selection.train_test_split(
-        df, test_size=0.2, random_state=seed, shuffle=True #stratify=df.label.values
+        df, train_size=120, random_state=seed, shuffle=True #stratify=df.label.values
     )
     # Splits the test and valid sets in half so they are both 10% of total data
     test_df, valid_df = model_selection.train_test_split(
-        test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
+        test_valid_df, test_size=25, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
     test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
@@ -93,7 +94,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             #transforms.Normalize([0.5], [0.5])
         ]
     )
-
+    '''
     albu_augs = albu.Compose([
         #ToTensorV2(),
         albu.HorizontalFlip(),
@@ -110,6 +111,12 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         albu.ShiftScaleRotate(),
         #albu.Resize(img_size, img_size, always_apply=True),
     ])
+    '''
+
+    albu_augs = albu.Compose([
+        albu.ShiftScaleRotate(shift_limit=0, scale_limit=.1, rotate_limit=10, p=.5, border_mode = cv2.BORDER_CONSTANT),
+        albu.Normalize(mean=(.5,.5,.5), std=(.5,.5,.5))
+        ])
 
     transforms_valid = transforms.Compose(
         [
@@ -133,7 +140,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
 
 
-    use_siim_dataset = True
+    use_siim_dataset = False
     if use_siim_dataset:
         siim_location = os.path.join(dir_base, 'Zach_Analysis/siim_data/pneumothorax_train_df.xlsx')
 
@@ -198,7 +205,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
 
@@ -242,19 +249,19 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
             # print(loss)
-            if _ % 20 == 0:
+            if _ % 2 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
-                #f, ax = plt.subplots(1, 3)
-                #ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
-                #ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
+                f, ax = plt.subplots(1, 3)
+                ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
+                ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
 
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()
                 #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #plt.show()
+                plt.show()
 
             optimizer.zero_grad()
             loss.backward()

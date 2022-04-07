@@ -111,6 +111,17 @@ class ImageDatasetSiim(Dataset):
         #segmentation_mask = self.resize(segmentation_mask_org)
         #print(segmentation_mask.size())
 
+        #plt.figure()
+        #DCM_Img = pdcm.read_file(img_path)
+        #img_raw = DCM_Img.pixel_array
+        #f, ax = plt.subplots(1, 3)
+        #ax[0].imshow(img_raw, cmap=plt.cm.bone,)
+        #ax[1].imshow(segmentation_mask_org.squeeze(), cmap=plt.cm.bone)
+        #ax[2].imshow(segmentation_mask_org.squeeze(), cmap="jet", alpha = 1)
+        #ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha = .5)
+        #plt.show()
+
+
 
         if self.transforms is not None:
             #image = self.transforms(img)

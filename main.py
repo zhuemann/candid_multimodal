@@ -16,7 +16,7 @@ from siim_dataloader import siim_datasetup
 if __name__ == '__main__':
 
     #Sets which directory to use
-    local = False
+    local = True
     if local == True:
         directory_base = "Z:/"
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
     #load_best_model(dir_base= directory_base)
 
+    #seeds = [117, 295, 98, 456, 915, 1367, 712]
     seeds = [117, 295, 98, 456, 915, 1367, 712]
 
     #seeds = [915]
@@ -45,8 +46,8 @@ if __name__ == '__main__':
         matrix = acc
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        file_name = 'pretraining_vision_run'
-        #file_name = 'image_net_weights'
+        #file_name = 'pretraining_vision_run'
+        file_name = 'image_net_weights_v2'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/reimplementation/' + str(file_name) +'/valid_run_seed' + str(
