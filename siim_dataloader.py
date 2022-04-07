@@ -79,7 +79,7 @@ class ImageDatasetSiim(Dataset):
         #img_path = os.path.join(self.data_path, img_name)
         img_path = self.image_path[index]
         if self.dir_base == "/UserData/":
-            dgx_path = img_path[1:]
+            dgx_path = img_path[3:]
             dir_base = self.dir_base
             dgx_path = dir_base + dgx_path
             img_path = dgx_path
