@@ -9,6 +9,7 @@ import numpy as np
 #from test_model import load_best_model
 from contrastive_training import contrastive_pretraining
 from create_unet import load_img_segmentation_model
+from siim_dataloader import siim_datasetup
 
 
 
@@ -22,7 +23,9 @@ if __name__ == '__main__':
     else:
         directory_base = "/UserData/"
 
-    #pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
+    #siim_datasetup(dir_base = directory_base)
+
+    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 
@@ -30,7 +33,7 @@ if __name__ == '__main__':
 
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
 
-    seeds = [456]
+    seeds = [915]
     accuracy_list = []
 
     # loops through the segmentation training multiple times with different seeds
