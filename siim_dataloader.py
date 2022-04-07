@@ -30,6 +30,7 @@ class ImageDatasetSiim(Dataset):
         self.mode = mode
         self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
         self.image_path = dataframe.image_path
+        self.dir_base = dir_base
 
         self.resize = resize
 
@@ -77,9 +78,10 @@ class ImageDatasetSiim(Dataset):
         data_dir = "public_datasets/candid_ptx/dataset1/dataset/"
         #img_path = os.path.join(self.data_path, img_name)
         img_path = self.image_path[index]
-        if data_dir == "/UserData/":
+        if self.dir_base == "/UserData/":
             dgx_path = img_path[1:]
-            dgx_path = data_dir.append(dgx_path)
+            dir_base = self.dir_base
+            dgx_path = dir_base + dgx_path
             img_path = dgx_path
 
         #print(img_path)
