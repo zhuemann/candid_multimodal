@@ -94,7 +94,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             #transforms.Normalize([0.5], [0.5])
         ]
     )
-    '''
+
     albu_augs = albu.Compose([
         #ToTensorV2(),
         albu.HorizontalFlip(),
@@ -111,18 +111,19 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         albu.ShiftScaleRotate(),
         #albu.Resize(img_size, img_size, always_apply=True),
     ])
-    '''
 
+    '''
     albu_augs = albu.Compose([
         albu.ShiftScaleRotate(shift_limit=0, scale_limit=.1, rotate_limit=10, p=.5, border_mode = cv2.BORDER_CONSTANT),
         albu.Normalize(mean=(.5,.5,.5), std=(.5,.5,.5))
         ])
+    '''
 
     transforms_valid = transforms.Compose(
         [
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             transforms.PILToTensor(),
-            transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
+            #transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
             #transforms.Normalize((0.5,), (0.5,))
             #transforms.Grayscale(num_output_channels=1),
             #transforms.Normalize([0.5], [0.5])
