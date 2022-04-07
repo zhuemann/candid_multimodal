@@ -46,7 +46,7 @@ if __name__ == '__main__':
         matrix = acc
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        file_name = 'pretraining_vision_run_v2'
+        file_name = 'pretraining_vision_run_v3'
         #file_name = 'image_net_weights_v2'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
