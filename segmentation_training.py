@@ -249,14 +249,14 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
             # print(loss)
-            if _ % 2 == 0:
+            if _ % 20 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
-                f, ax = plt.subplots(1, 3)
-                ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
-                ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
+                #f, ax = plt.subplots(1, 3)
+                #ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
+                #ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
+                #ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
 
                 #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
                 #plt.show()

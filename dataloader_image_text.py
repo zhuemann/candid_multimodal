@@ -68,7 +68,7 @@ class TextImageDataset(Dataset):
         #    data_dir = "Group_4_5_curated"
         data_dir = "public_datasets/candid_ptx/dataset1/dataset/"
         img_path = os.path.join(self.data_path, img_name)
-        print(img_path)
+        #print(img_path)
 
         #print(img_path)
         #DCM_Img = pdcm.read_file(img_path)
