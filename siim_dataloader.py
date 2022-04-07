@@ -83,6 +83,7 @@ class ImageDatasetSiim(Dataset):
             dir_base = self.dir_base
             dgx_path = dir_base + dgx_path
             img_path = dgx_path
+            img_path.replace("\\", "/")
 
         #print(img_path)
         #DCM_Img = pdcm.read_file(img_path)

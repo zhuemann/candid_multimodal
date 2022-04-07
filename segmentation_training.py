@@ -133,7 +133,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
 
 
-    use_siim_dataset = False
+    use_siim_dataset = True
     if use_siim_dataset:
         siim_location = os.path.join(dir_base, 'Zach_Analysis/siim_data/pneumothorax_train_df.xlsx')
 
