@@ -16,7 +16,7 @@ from siim_dataloader import siim_datasetup
 if __name__ == '__main__':
 
     #Sets which directory to use
-    local = False
+    local = True
     if local == True:
         directory_base = "Z:/"
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 50, n_classes = 2, pretrained_model = None)
+        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 150, n_classes = 2, pretrained_model = None)
         accuracy_list.append(acc)
         print(valid_log)
         matrix = acc
@@ -48,6 +48,7 @@ if __name__ == '__main__':
         df["test_accuracy"] = acc
         file_name = 'pretraining_vision_run_v3'
         #file_name = 'image_net_weights_v2'
+        file_name = 'gloria_vision_run_v3'
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/reimplementation/' + str(file_name) +'/valid_run_seed' + str(

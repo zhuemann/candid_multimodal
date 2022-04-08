@@ -65,7 +65,18 @@ def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None
 
     #print(ckpt["OrderedDict"].items())
     else:
-        seg_model.encoder.load_state_dict(ckpt)
+        #seg_model.encoder.load_state_dict(ckpt)
+        ckpt_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/chexpert_resnet50.ckpt')
+        ckpt = torch.load(ckpt_path)
+        ckpt_dict = {}
+        for k, v in ckpt["state_dict"].items():
+            if k.startswith("gloria.img_encoder.model"):
+                k = ".".join(k.split(".")[3:])
+                ckpt_dict[k] = v
+            ckpt_dict["fc.bias"] = None
+            ckpt_dict["fc.weight"] = None
+        seg_model.encoder.load_state_dict(ckpt_dict)
+
 
 
     #ckpt_dict = {}
