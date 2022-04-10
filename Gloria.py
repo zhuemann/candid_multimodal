@@ -17,6 +17,9 @@ from vision_encoder import ImageEncoder
 
 
 class GLoRIA(nn.Module):
+    """
+        Model adopted form GLORIA REPO
+        """
     def __init__(self, cfg, tokenizer, language_model):
         super(GLoRIA, self).__init__()
 

@@ -27,6 +27,9 @@ class ContrastiveLoss(nn.Module):
 
 
 def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
+    """
+    Loss function adopted form GLORIA REPO
+    """
 
     batch_size = cnn_code.shape[0]
     #print(f"batch_size: {batch_size}")
@@ -58,6 +61,9 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
 def local_loss(
     img_features, words_emb, cap_lens, temp1=4.0, temp2=5.0, temp3=10.0, agg="sum"
 ):
+    """
+        Loss function adopted form GLORIA REPO
+        """
 
     batch_size = img_features.shape[0]
 

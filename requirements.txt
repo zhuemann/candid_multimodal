@@ -16,6 +16,9 @@ nltk
 segmentation-models-pytorch
 albumentations
 
+pytorch-lightning
+omegaconf
+
 #can delete these later
 #opencv-python
 #pytorch_metric_learning
