@@ -45,7 +45,8 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
     #df.to_excel(dataframe_location, index=False)
@@ -69,7 +70,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     # Splits the data into 80% train and 20% valid and test sets
     train_df, test_valid_df = model_selection.train_test_split(
-        df, train_size=120, random_state=seed, shuffle=True #stratify=df.label.values
+        df, train_size=100, random_state=seed, shuffle=True #stratify=df.label.values
     )
     # Splits the test and valid sets in half so they are both 10% of total data
     test_df, valid_df = model_selection.train_test_split(
