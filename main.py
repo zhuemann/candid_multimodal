@@ -6,7 +6,7 @@ import os
 from utility import rle_decode, mask2rle, rle_decode_modified
 import matplotlib.pyplot as plt
 import numpy as np
-from test_model import load_best_model
+#from test_model import load_best_model
 import pydicom as pdcm
 from contrastive_training import contrastive_pretraining
 #from create_unet import load_img_segmentation_model
