@@ -206,7 +206,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 
@@ -253,16 +253,6 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             if _ % 20 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
-                #f, ax = plt.subplots(1, 3)
-                #ax[0].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()))
-                #ax[1].imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #ax[2].imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #ax[2].imshow(np.uint8(torch.permute(images[0], (1,2,0)).squeeze().cpu().detach().numpy()), cmap=plt.cm.bone, alpha=.5)
-
-                #out_img = plt.imshow(outputs[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #plt.show()
-                #tar_img = plt.imshow(targets[0].squeeze().cpu().detach().numpy(), cmap=plt.cm.bone)
-                #plt.show()
 
             optimizer.zero_grad()
             loss.backward()
@@ -315,7 +305,10 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+                save_path = os.path.join(dir_base,
+                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/segmentation_candid' + str(
+                                    seed) )
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
                 torch.save(model_obj.state_dict(), save_path)
 
@@ -324,6 +317,9 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     row_ids = []
     saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
     saved_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+    saved_path = os.path.join(dir_base,
+                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/segmentation_candid' + str(
+                                    seed) )
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     model_obj.load_state_dict(torch.load(saved_path))
 
