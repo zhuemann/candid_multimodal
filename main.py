@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     #siim_datasetup(dir_base = directory_base)
 
-    #pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
+    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 
@@ -42,7 +42,8 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 200, n_classes = 2, pretrained_model = None)
+        #acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 200, n_classes = 2, pretrained_model = None)
+
         accuracy_list.append(acc)
         print(valid_log)
         matrix = acc
