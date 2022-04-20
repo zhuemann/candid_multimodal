@@ -27,14 +27,14 @@ if __name__ == '__main__':
 
     #siim_datasetup(dir_base = directory_base)
 
-    pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 10, n_classes = 2)
+    # pretrained_model, lowest_loss  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 10, n_classes = 2)
 
     #model_obj = load_img_segmentation_model()
 
     #load_best_model(dir_base= directory_base)
 
-    #seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [98, 117, 295, 456, 915]
+    seeds = [117, 295, 98, 456, 915, 1367, 712]
+    #seeds = [98, 117, 295, 456, 915]
 
     #seeds = [915]
     accuracy_list = []
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        #acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 200, n_classes = 2, pretrained_model = None)
+        acc, valid_log = segmentation_training(seed = seed, batch_size = 8, dir_base= directory_base, epoch = 150, n_classes = 2, pretrained_model = None)
 
         accuracy_list.append(acc)
         print(valid_log)
@@ -52,7 +52,8 @@ if __name__ == '__main__':
         #file_name = 'pretraining_vision_run_v3'
         #file_name = 'image_net_weights_v2'
         #file_name = 'gloria_vision_run_v3'
-        folder_name = "imagenet_models"
+        #folder_name = "imagenet_models"
+        folder_name = "pretrained_50ep"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/weak_supervision/' + str(folder_name) +'/valid_run_seed' + str(
