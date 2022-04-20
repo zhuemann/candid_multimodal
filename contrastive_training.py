@@ -68,7 +68,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
     # roberta_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
-    language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
+    # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
@@ -192,7 +193,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
     gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
-    run_from_checkpoint = True
+    run_from_checkpoint = False
     if run_from_checkpoint:
         checkpoint_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/full_gloria_checkpoint_40ep')
         gloria_model.load_state_dict(torch.load(checkpoint_path))
@@ -226,6 +227,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     lowest_loss = 100
+
+    avg_loss_list = []
     for epoch in range(1, N_EPOCHS + 1):
         #vision_model.train()
         #language_model.train()
@@ -279,25 +282,26 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             loss_list.append(loss.item())
 
         epoch_avg_loss = np.mean(np.asarray(loss_list))
+        avg_loss_list.append(epoch_avg_loss)
         if epoch_avg_loss < lowest_loss:
             lowest_loss = epoch_avg_loss
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
         if epoch % 10 == 0:
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/candid_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_mlm/candid_checkpoint')
             torch.save(gloria_model.img_encoder.state_dict(), save_path)
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/full_gloria_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_mlm/full_gloria_checkpoint')
             torch.save(gloria_model.state_dict(), save_path)
 
 
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/candid_best_contrastive')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_mlm/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/full_gloria')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_mlm/full_gloria')
     torch.save(gloria_model.state_dict(), save_path)
 
 
 
-    return gloria_model, lowest_loss
+    return gloria_model, lowest_loss, avg_loss_list
 
 
 
