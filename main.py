@@ -56,7 +56,7 @@ if __name__ == '__main__':
         folder_name = "pretrained_50ep"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
-                                '/UserData/Zach_Analysis/result_logs/candid_result/weak_supervision/' + str(folder_name) +'/valid_run_seed' + str(
+                                '/UserData/Zach_Analysis/result_logs/candid_result/bert/' + str(folder_name) +'/valid_run_seed' + str(
                                     seed) + '.xlsx')
 
         df.to_excel(filepath, index=False)
