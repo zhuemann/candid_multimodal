@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     #siim_datasetup(dir_base = directory_base)
 
-    pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 10, n_classes = 2)
+    pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 1, n_classes = 2)
 
     folder_name = "bio_clincial_bert_mlm"
     filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/bert/' + str(folder_name) + '/contrastive_ep_loss' + '.xlsx')
