@@ -192,9 +192,9 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
     gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
-    run_from_checkpoint = False
+    run_from_checkpoint = True
     if run_from_checkpoint:
-        checkpoint_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/full_gloria_checkpoint')
+        checkpoint_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/full_gloria_checkpoint_40ep')
         gloria_model.load_state_dict(torch.load(checkpoint_path))
 
 
