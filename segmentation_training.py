@@ -209,7 +209,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     use_pretrained_encoder = True
     if use_pretrained_encoder:
-        #set pretrained to true to use pretrained model false uses downloaded gloria weights
+        # set pretrained to true to use pretrained model false uses downloaded gloria weights
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
 
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
