@@ -63,10 +63,10 @@ if __name__ == '__main__':
         #file_name = 'image_net_weights_v2'
         #file_name = 'gloria_vision_run_v3'
         #folder_name = "imagenet_models"
-        folder_name = "pretrained_50ep"
+        folder_name = "bio_clincial_bert_v2"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
-                                '/UserData/Zach_Analysis/result_logs/candid_result/bert/' + str(folder_name) +'/valid_run_seed' + str(
+                                '/UserData/Zach_Analysis/result_logs/candid_result/bio_clincial_bert_seg/' + str(folder_name) +'/valid_run_seed' + str(
                                     seed) + '.xlsx')
 
         df.to_excel(filepath, index=False)
