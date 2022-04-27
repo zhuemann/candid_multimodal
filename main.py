@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     pretraining = False
     if pretraining:
-        pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 1, dir_base= directory_base, epoch = 50, n_classes = 2)
+        pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 2, dir_base= directory_base, epoch = 50, n_classes = 2)
 
         folder_name = "bio_clincial_bert"
         filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/' + str(folder_name) + '/base_bio_clincial_bert/contrastive_ep_loss' + '.xlsx')
