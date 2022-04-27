@@ -31,7 +31,7 @@ def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None
         segmentation_model.encoder.load_state_dict(new_state_dict)
 
     else:
-        pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/chexpert_resnet50.ckpt')
+        pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/chexpert_resnet50.ckpt')
         state_dict = torch.load(pretrained_path, map_location=torch.device('cpu'))#map_location='cuda:0')
         new_state_dict = {}
         for k, v in state_dict["state_dict"].items():
