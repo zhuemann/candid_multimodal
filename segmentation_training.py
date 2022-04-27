@@ -38,7 +38,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     print("will have training and stuff here")
     # model specific global variables
-    IMG_SIZE = 256 #256 #512 #384
+    IMG_SIZE = 1024 #256 #512 #384
     BATCH_SIZE = batch_size
     LR = 1e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
@@ -70,11 +70,11 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     # Splits the data into 80% train and 20% valid and test sets
     train_df, test_valid_df = model_selection.train_test_split(
-        df, train_size=31, random_state=seed, shuffle=True #stratify=df.label.values
+        df, train_size=.8, random_state=seed, shuffle=True #stratify=df.label.values
     )
     # Splits the test and valid sets in half so they are both 10% of total data
     test_df, valid_df = model_selection.train_test_split(
-        test_valid_df, test_size=31, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
+        test_valid_df, test_size=.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
     test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
@@ -210,7 +210,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     use_pretrained_encoder = True
     if use_pretrained_encoder:
         # set pretrained to true to use pretrained model false uses downloaded gloria weights
-        model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
+        model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
