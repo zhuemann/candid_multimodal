@@ -36,7 +36,6 @@ from siim_dataloader import ImageDatasetSiim
 
 def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2, pretrained_model = None):
 
-    print("will have training and stuff here")
     # model specific global variables
     IMG_SIZE = 512 #256 #512 #384
     BATCH_SIZE = batch_size
@@ -204,10 +203,10 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1) #timm-efficientnet-b8 resnet34
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-        model_obj.load_state_dict(torch.load(save_path))
+        #model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         # set pretrained to true to use pretrained model false uses downloaded gloria weights
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)

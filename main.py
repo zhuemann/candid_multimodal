@@ -11,6 +11,7 @@ import pydicom as pdcm
 from contrastive_training import contrastive_pretraining
 #from create_unet import load_img_segmentation_model
 from siim_dataloader import siim_datasetup
+from report_generation import report_generation
 
 
 
@@ -26,6 +27,23 @@ if __name__ == '__main__':
 
 
     #siim_datasetup(dir_base = directory_base)
+
+    config = {}
+    config["seed"] = 1
+    config["batch_size"] = 1  # 8
+    config["dir_base"] = directory_base
+    config["epochs"] = 150
+    config["n_classes"] = 2
+    config["LR"] = 1e-5
+    config["IMG_SIZE"] = 256
+    config["train_samples"] = 120
+    config["test_samples"] = 120
+    # should point to you external hard drive with data or wherever you move it
+    config["data_path"] = "D:/candid_ptx/"
+
+
+    #report_generation(config)
+
 
 
     pretraining = False
@@ -64,7 +82,7 @@ if __name__ == '__main__':
         #file_name = 'gloria_vision_run_v3'
         #folder_name = "imagenet_models"
         #folder_name = "bio_clincial_bert_v1_ep100"
-        folder_name = "gloria_full_data_150ep"
+        folder_name = "imagenet_full_data_150ep"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/bio_clincial_bert_seg/' + str(folder_name) +'/valid_run_seed' + str(
