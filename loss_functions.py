@@ -183,6 +183,8 @@ def attention_fn(query, context, temp1):
     # Get attention
     # (batch x sourceL x ndf)(batch x ndf x queryL)
     # -->batch x sourceL x queryL
+    print(contextT.size())
+    print(query.size())
     attn = torch.bmm(contextT, query)
     # --> batch*sourceL x queryL
     attn = attn.view(batch_size * sourceL, queryL)

@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     pretraining = True
     if pretraining:
-        pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 8, dir_base= directory_base, epoch = 100, n_classes = 2)
+        pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 8, dir_base= directory_base, epoch = 50, n_classes = 2)
 
         folder_name = "roberta"
         filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/' + str(folder_name) + '/base_roberta/contrastive_ep_loss' + '.xlsx')
