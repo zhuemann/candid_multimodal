@@ -66,14 +66,15 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    # roberta_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
+    #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
@@ -184,7 +185,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-        #model_obj.load_state_dict(torch.load(save_path))
+        model_obj.load_state_dict(torch.load(save_path))
 
     #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
     #torch.save(model_obj.state_dict(), save_path)
@@ -288,15 +289,15 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
         if epoch % 10 == 0:
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_v2/candid_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/candid_checkpoint')
             torch.save(gloria_model.img_encoder.state_dict(), save_path)
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_v2/full_gloria_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria_checkpoint')
             torch.save(gloria_model.state_dict(), save_path)
 
 
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_v2/candid_best_contrastive')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert_v2/full_gloria')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria')
     torch.save(gloria_model.state_dict(), save_path)
 
 
