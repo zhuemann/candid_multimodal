@@ -66,7 +66,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')

@@ -13,7 +13,7 @@ class ImageEncoder(nn.Module):
         #self.output_dim = cfg.model.text.embedding_dim
         #self.norm = cfg.model.norm
 
-        self.output_dim = 1024
+        self.output_dim = 768
         self.norm = False
 
         #model_function = getattr(cnn_backbones, cfg.model.vision.model_name)

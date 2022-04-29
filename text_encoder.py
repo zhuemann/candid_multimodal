@@ -21,7 +21,7 @@ class BertEncoder(nn.Module):
         self.last_n_layers = 4
         self.aggregate_method = "sum"
         self.norm = False
-        self.embedding_dim = 1024
+        self.embedding_dim = 768
         self.freeze_bert = False
         self.agg_tokens = True
 
