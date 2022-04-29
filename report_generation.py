@@ -10,6 +10,7 @@ from sklearn import model_selection
 import torchvision.transforms as transforms
 from torchvision import models as models_2d
 from torch.utils.data import DataLoader
+from collections import OrderedDict
 
 
 from dataloader_image_text import TextImageDataset
@@ -88,6 +89,20 @@ def report_generation(config):
 
     # Should be the path to the candid checkpoint you got from the UW box
     pretrained_imgencoder_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_checkpoint_50ep')
+
+    state_dict = torch.load(pretrained_imgencoder_path)
+    # seg_model.encoder.load_state_dict(ckpt)
+
+    # create new OrderedDict that does not contain `module.`
+    new_state_dict = OrderedDict()
+    for k, v in state_dict.items():
+        name = k[6:]  # remove `model.`
+        new_state_dict[name] = v
+
+    # delete extra layers
+    del new_state_dict["_embedder.weight"]
+    del new_state_dict["_embedder.bias"]
+    del new_state_dict["embedder.weight"]
 
     #sets up the image encoder and loads in the pretrained weights
     vis_model = models_2d.resnet50(pretrained=False)
