@@ -19,7 +19,7 @@ from vision_encoder import ImageEncoder
 
 def report_generation(config):
 
-
+    # just settings up some paramters from the config dictionary defined in main
     IMG_SIZE = config["IMG_SIZE"]
     BATCH_SIZE = config["batch_size"]
     LR = 1e-5  # 8e-5
@@ -28,26 +28,21 @@ def report_generation(config):
     dir_base = config["dir_base"]
     seed = config["seed"]
 
+    # this should point to the dataframe which I uploaded to the uw box
     dataframe_location = os.path.join(dir_base,
-                                      'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')  # pneumothorax_df chest_tube_df rib_fracture
-    # dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
-    # gets the candid labels and saves it off to the location
-    # df = get_candid_labels(dir_base=dir_base)
-    # df.to_excel(dataframe_location, index=False)
+                                      'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx')
 
     # reads in the dataframe as it doesn't really change to save time
     df = pd.read_excel(dataframe_location, engine='openpyxl')
-    print(df)
-
     df.set_index("image_id", inplace=True)
     print(df)
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
     roberta_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-
     tokenizer = AutoTokenizer.from_pretrained(roberta_path)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
+    # splits up the data in train, test and valid sets
     train_df, test_valid_df = model_selection.train_test_split(
         df, train_size=.7, random_state=seed, shuffle=True  # stratify=df.label.values
     )
@@ -56,11 +51,11 @@ def report_generation(config):
         test_valid_df, test_size=.5, random_state=seed, shuffle=True  # stratify=test_valid_df.label.values
     )
 
+    # sets up some augmentations for shaping the images and changing the types
     transforms_valid = transforms.Compose(
         [transforms.Resize((IMG_SIZE, IMG_SIZE)),transforms.PILToTensor()]
     )
     transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
-    output_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE))])
 
     print("train_df")
     print(train_df)
@@ -81,23 +76,26 @@ def report_generation(config):
                     'num_workers': 4
                     }
 
+    # sets up the dataloaders which take in the different splits of data and the params setting batch size and such
     training_loader = DataLoader(training_set, **train_params)
     valid_loader = DataLoader(valid_set, **test_params)
     test_loader = DataLoader(test_set, **test_params)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Should be the path to the candid checkpoint you got from the UW box
     pretrained_imgencoder_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_checkpoint_50ep')
 
+    # loads in the image encoder we trained before, just make sure to change that path to the model path
     state_dict = torch.load(pretrained_imgencoder_path)
-
     img_encoder = ImageEncoder()
-    print(type(img_encoder))
     img_encoder.load_state_dict(state_dict)
 
-
+    '''
+    This may be needed to convert some layer names such that they can be loaded but it might be resolved above and
+    not needed, don't worry about this, it will likely be deleted later
+    
     # seg_model.encoder.load_state_dict(ckpt)
 
     # create new OrderedDict that does not contain `module.`
@@ -117,13 +115,15 @@ def report_generation(config):
     #vis_model = models_2d.resnet50(pretrained=False)
     #vis_model.load_state_dict(new_state_dict)
     #vis_model.load_state_dict(state_dict)
+    '''
+
     img_encoder.to(device)
 
     """
     Need to create decoder model
     """
     #decoder_model = None
-
+    # once you create the decoder make sure you send it to device
     #decoder_model.to(device)
 
 
@@ -132,13 +132,14 @@ def report_generation(config):
     criterion = nn.BCEWithLogitsLoss()
 
     # just used the same optimizer, you want to decoder to be in the params argument here to tell it those are
-    # the things to update with the loss
+    # the things to update with the loss right now I gave it the img_encoder just to initialize some optimizer
     optimizer = torch.optim.Adam(params=img_encoder.parameters(), lr=LR)
 
     for epoch in range(1, N_EPOCHS + 1):
         #decoder_model.train()
         gc.collect()
 
+        # loops through the training loader geting a batch for images and the text
         for _, data in tqdm(enumerate(training_loader, 0)):
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
@@ -151,13 +152,17 @@ def report_generation(config):
             vis_embedding = img_encoder(images)
             print(type(vis_embedding))
             print(vis_embedding.shape)
-            outputs = output_resize(torch.squeeze(outputs, dim=1))
+
+            """
+            Need to put the decoder here such that it takes in the vis_embeddings and the ids, mask, token_type_ids
+            and outputs those ids again as a target
+            """
+
 
             optimizer.zero_grad()
+
             loss = criterion(outputs, targets)
-            # print(loss)
-            if _ % 20 == 0:
-                print(f'Epoch: {epoch}, Loss:  {loss.item()}')
+
 
             optimizer.zero_grad()
             loss.backward()
@@ -167,13 +172,6 @@ def report_generation(config):
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
 
-            # calculates the dice coefficent for each image and adds it to the list
-            for i in range(0, outputs.shape[0]):
-                dice = dice_coeff(outputs[i], targets[i])
-                dice = dice.item()
-                training_dice.append(dice)
 
-        avg_training_dice = np.average(training_dice)
-        print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
 
 

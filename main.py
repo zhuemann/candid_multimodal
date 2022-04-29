@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     config = {}
     config["seed"] = 1
-    config["batch_size"] = 1  # 8
+    config["batch_size"] = 8  # 8
     config["dir_base"] = directory_base
     config["epochs"] = 150
     config["n_classes"] = 2
