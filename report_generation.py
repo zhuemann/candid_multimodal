@@ -14,6 +14,7 @@ from collections import OrderedDict
 
 
 from dataloader_image_text import TextImageDataset
+from vision_encoder import ImageEncoder
 
 
 def report_generation(config):
@@ -91,6 +92,11 @@ def report_generation(config):
     pretrained_imgencoder_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_checkpoint_50ep')
 
     state_dict = torch.load(pretrained_imgencoder_path)
+
+    img_encoder = ImageEncoder()
+    print(type(img_encoder))
+
+
     # seg_model.encoder.load_state_dict(ckpt)
 
     # create new OrderedDict that does not contain `module.`
@@ -100,9 +106,11 @@ def report_generation(config):
         new_state_dict[name] = v
 
     # delete extra layers
-    new_state_dict["fc.weight"]= new_state_dict["_embedder.weight"]
+    #new_state_dict["fc.weight"]= new_state_dict["_embedder.weight"]
     new_state_dict["fc.bias"] = new_state_dict["_embedder.bias"]
     del new_state_dict["embedder.weight"]
+    del new_state_dict["_embedder.weight"]
+    del new_state_dict["_embedder.bias"]
 
     #sets up the image encoder and loads in the pretrained weights
     vis_model = models_2d.resnet50(pretrained=False)
