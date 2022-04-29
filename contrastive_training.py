@@ -94,20 +94,6 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #test_df.to_excel(test_dataframe_location, index=True)
 
 
-    # create image augmentations
-    transforms_train = transforms.Compose(
-        [
-            transforms.Resize((IMG_SIZE, IMG_SIZE)),
-            #transforms.RandomHorizontalFlip(p=0.3),
-            #transforms.RandomVerticalFlip(p=0.3),
-            #transforms.RandomAffine(degrees = 10, translate =(.1,.1), scale = None, shear = None),
-            #transforms.RandomResizedCrop(IMG_SIZE),
-            transforms.PILToTensor(),
-            #transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-            #transforms.Grayscale(num_output_channels=1),
-            #transforms.Normalize([0.5], [0.5])
-        ]
-    )
 
 #    albu_augs = albu.Compose([
 #        #ToTensorV2(),
@@ -135,16 +121,6 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         #albu.ShiftScaleRotate(),
     ])
 
-    transforms_valid = transforms.Compose(
-        [
-            transforms.Resize((IMG_SIZE, IMG_SIZE)),
-            transforms.PILToTensor(),
-            #transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-            #transforms.Normalize((0.5,), (0.5,))
-            #transforms.Grayscale(num_output_channels=1),
-            #transforms.Normalize([0.5], [0.5])
-        ]
-    )
     transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
     #output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
 
@@ -162,10 +138,6 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
                 'num_workers': 4
                 }
 
-    test_params = {'batch_size': BATCH_SIZE,
-                    'shuffle': True,
-                    'num_workers': 1
-                    }
 
     training_loader = DataLoader(training_set, **train_params)
     #valid_loader = DataLoader(valid_set, **test_params)
@@ -228,6 +200,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     print("about to start training loop")
     lowest_loss = 100
+
+    del train_df
 
     avg_loss_list = []
     for epoch in range(1, N_EPOCHS + 1):
