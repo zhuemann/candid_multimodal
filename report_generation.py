@@ -117,14 +117,14 @@ def report_generation(config):
     #vis_model = models_2d.resnet50(pretrained=False)
     #vis_model.load_state_dict(new_state_dict)
     #vis_model.load_state_dict(state_dict)
-    vis_model.to(device)
+    img_encoder.to(device)
 
     """
     Need to create decoder model
     """
-    decoder_model = None
+    #decoder_model = None
 
-    decoder_model.to(device)
+    #decoder_model.to(device)
 
 
 
@@ -133,10 +133,10 @@ def report_generation(config):
 
     # just used the same optimizer, you want to decoder to be in the params argument here to tell it those are
     # the things to update with the loss
-    optimizer = torch.optim.Adam(params=decoder_model.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(params=img_encoder.parameters(), lr=LR)
 
     for epoch in range(1, N_EPOCHS + 1):
-        decoder_model.train()
+        #decoder_model.train()
         gc.collect()
 
         for _, data in tqdm(enumerate(training_loader, 0)):
@@ -148,7 +148,7 @@ def report_generation(config):
             images = data['images'].to(device, dtype=torch.float)
 
             # outputs = model_obj(ids, mask, token_type_ids, images)
-            vis_embedding = vis_model(images)
+            vis_embedding = img_encoder(images)
             print(type(vis_embedding))
             print(vis_embedding.shape)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
