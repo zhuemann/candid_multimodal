@@ -141,14 +141,20 @@ def report_generation(config):
 
         # loops through the training loader geting a batch for images and the text
         for _, data in tqdm(enumerate(training_loader, 0)):
+            # these are all standard as input into bert models and correspond to the text
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
+
+            # this target is the segmentation mask, i should be used for anything in this task
             targets = data['targets'].to(device, dtype=torch.float)
             targets = torch.squeeze(targets)
+
+            # this is the image which will get fed into the img_encoder to get our vision embedding
             images = data['images'].to(device, dtype=torch.float)
 
-            # outputs = model_obj(ids, mask, token_type_ids, images)
+            # this is an example for a normal bert style model
+            #outputs = bert_type_model(ids, mask, token_type_ids)
             vis_embedding = img_encoder(images)
             print(type(vis_embedding))
             print(vis_embedding.shape)
@@ -161,6 +167,8 @@ def report_generation(config):
 
             optimizer.zero_grad()
 
+
+            # I think this target will need to be the input text and the outputs here would be whatever the model outputs
             loss = criterion(outputs, targets)
 
 
