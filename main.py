@@ -39,6 +39,7 @@ if __name__ == '__main__':
     # should point to you external hard drive with data or wherever you move it
     config["data_path"] = "D:/candid_ptx/"
 
+    # flip this to True to do report generation
     train_report_generation = True
     if train_report_generation:
         report_generation(config)
