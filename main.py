@@ -45,7 +45,6 @@ if __name__ == '__main__':
     #report_generation(config)
 
 
-
     pretraining = True
     if pretraining:
         pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 8, dir_base= directory_base, epoch = 50, n_classes = 2)
