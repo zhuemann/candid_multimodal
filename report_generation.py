@@ -106,7 +106,7 @@ def report_generation(config):
 
     #sets up the image encoder and loads in the pretrained weights
     vis_model = models_2d.resnet50(pretrained=False)
-    vis_model.load_state_dict(torch.load(pretrained_imgencoder_path))
+    vis_model.load_state_dict(new_state_dict)
     vis_model.to(device)
 
     """
