@@ -100,9 +100,9 @@ def report_generation(config):
         new_state_dict[name] = v
 
     # delete extra layers
-    new_state_dict["fc.weight"]= new_state_dict["_embedder.weight"]
+    new_state_dict["fc.weight"]= new_state_dict["embedder.weight"] #new_state_dict["_embedder.weight"]
     new_state_dict["fc.bias"] = new_state_dict["_embedder.bias"]
-    #del new_state_dict["embedder.weight"]
+    del new_state_dict["embedder.weight"]
 
     #sets up the image encoder and loads in the pretrained weights
     vis_model = models_2d.resnet50(pretrained=False)
