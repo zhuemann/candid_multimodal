@@ -70,6 +70,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid/')
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
@@ -264,15 +265,15 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
         if epoch % 10 == 0:
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/candid_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm/candid_checkpoint')
             torch.save(gloria_model.img_encoder.state_dict(), save_path)
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm/full_gloria_checkpoint')
             torch.save(gloria_model.state_dict(), save_path)
 
 
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm/full_gloria')
     torch.save(gloria_model.state_dict(), save_path)
 
 

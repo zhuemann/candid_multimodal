@@ -176,9 +176,6 @@ def report_generation(config):
             loss.backward()
             optimizer.step()
 
-            # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
-            sigmoid = torch.sigmoid(outputs)
-            outputs = torch.round(sigmoid)
 
 
 
