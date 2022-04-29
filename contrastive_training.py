@@ -209,6 +209,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         #language_model.train()
         gloria_model.train()
         gc.collect()
+        torch.cuda.empty_cache()
 
         loss_list = []
 
