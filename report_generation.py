@@ -100,7 +100,7 @@ def report_generation(config):
         new_state_dict[name] = v
 
     # delete extra layers
-    new_state_dict["fc.weight"]= new_state_dict["embedder.weight"] #new_state_dict["_embedder.weight"]
+    new_state_dict["fc.weight"]= new_state_dict["_embedder.weight"]
     new_state_dict["fc.bias"] = new_state_dict["_embedder.bias"]
     del new_state_dict["embedder.weight"]
 
