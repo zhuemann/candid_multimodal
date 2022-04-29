@@ -1,7 +1,7 @@
 import os
 from sklearn import model_selection
 import torchvision.transforms as transforms
-from transformers import AutoTokenizer, FlaxRobertaModel, BertModel
+from transformers import AutoTokenizer, RobertaModel, BertModel
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
@@ -74,7 +74,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
-    language_model = FlaxRobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
