@@ -183,7 +183,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/vgg19')
         torch.save(model_obj.state_dict(), save_path)
     else:
-        model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34
+        model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1) #timm-efficientnet-b8 resnet34
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
