@@ -64,7 +64,7 @@ def report_generation(config):
 
     print("train_df")
     print(train_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms=transforms_valid,
+    training_set = TextImageDataset(train_df, tokenizer, 512, transforms=transforms_valid,
                                     resize=transforms_resize, dir_base=dir_base, img_size=IMG_SIZE)
     valid_set = TextImageDataset(valid_df, tokenizer, 512, transforms=transforms_valid, resize=transforms_resize,
                                  dir_base=dir_base, img_size=IMG_SIZE)
