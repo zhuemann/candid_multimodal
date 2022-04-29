@@ -95,6 +95,7 @@ def report_generation(config):
 
     img_encoder = ImageEncoder()
     print(type(img_encoder))
+    img_encoder.load_state_dict(state_dict)
 
 
     # seg_model.encoder.load_state_dict(ckpt)
@@ -113,9 +114,9 @@ def report_generation(config):
     del new_state_dict["_embedder.bias"]
 
     #sets up the image encoder and loads in the pretrained weights
-    vis_model = models_2d.resnet50(pretrained=False)
+    #vis_model = models_2d.resnet50(pretrained=False)
     #vis_model.load_state_dict(new_state_dict)
-    vis_model.load_state_dict(state_dict)
+    #vis_model.load_state_dict(state_dict)
     vis_model.to(device)
 
     """
