@@ -17,6 +17,7 @@ from report_generation import report_generation
 
 if __name__ == '__main__':
 
+
     #Sets which directory to use
     local = False
     if local == True:
@@ -24,9 +25,6 @@ if __name__ == '__main__':
         #directory_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"
     else:
         directory_base = "/UserData/"
-
-
-    #siim_datasetup(dir_base = directory_base)
 
     config = {}
     config["seed"] = 1
@@ -40,6 +38,15 @@ if __name__ == '__main__':
     config["test_samples"] = 120
     # should point to you external hard drive with data or wherever you move it
     config["data_path"] = "D:/candid_ptx/"
+
+    train_report_generation = True
+    if train_report_generation:
+        report_generation(config)
+
+
+
+    #siim_datasetup(dir_base = directory_base)
+
 
 
     #report_generation(config)
