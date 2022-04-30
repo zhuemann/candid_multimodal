@@ -270,7 +270,6 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
             save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/full_gloria_checkpoint')
             torch.save(gloria_model.state_dict(), save_path)
 
-
     save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
     save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/full_gloria')
