@@ -66,11 +66,11 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
-    # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
-    language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
@@ -265,14 +265,14 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base = "/home/zmh00
         print(f"Epoch {str(epoch)} average loss: {epoch_avg_loss}")
 
         if epoch % 10 == 0:
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/candid_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert_v2/candid_checkpoint')
             torch.save(gloria_model.img_encoder.state_dict(), save_path)
-            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/full_gloria_checkpoint')
+            save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert_v2/full_gloria_checkpoint')
             torch.save(gloria_model.state_dict(), save_path)
 
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/candid_best_contrastive')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert_v2/candid_best_contrastive')
     torch.save(gloria_model.img_encoder.state_dict(), save_path)
-    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/roberta_mlm_v2/full_gloria')
+    save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert_v2/full_gloria')
     torch.save(gloria_model.state_dict(), save_path)
 
 
