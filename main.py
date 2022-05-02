@@ -12,6 +12,7 @@ from contrastive_training import contrastive_pretraining
 #from create_unet import load_img_segmentation_model
 from siim_dataloader import siim_datasetup
 from report_generation import report_generation
+from candid_mlm import candid_fine_tuning_candid
 
 
 
@@ -52,6 +53,9 @@ if __name__ == '__main__':
 
     #report_generation(config)
 
+    mlm_pretraining = True
+    if mlm_pretraining:
+        candid_fine_tuning_candid(dir_base= directory_base)
 
     pretraining = True
     if pretraining:
