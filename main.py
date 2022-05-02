@@ -53,11 +53,11 @@ if __name__ == '__main__':
 
     #report_generation(config)
 
-    mlm_pretraining = True
+    mlm_pretraining = False
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base= directory_base)
 
-    pretraining = True
+    pretraining = False
     if pretraining:
         pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
 
-        #acc, valid_log = segmentation_training(seed = seed, batch_size = 6, dir_base= directory_base, epoch = 150, n_classes = 2, pretrained_model = None)
+        acc, valid_log = segmentation_training(seed = seed, batch_size = 6, dir_base= directory_base, epoch = 150, n_classes = 2, pretrained_model = None)
 
         accuracy_list.append(acc)
         print(valid_log)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         #file_name = 'gloria_vision_run_v3'
         #folder_name = "imagenet_models"
         #folder_name = "bio_clincial_bert_v1_ep100"
-        folder_name = "imagenet_full_data_150ep"
+        folder_name = "our_pretrained_full_data_100epbio_clincial_bert_150ep"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/bio_clincial_bert_seg/' + str(folder_name) +'/valid_run_seed' + str(
