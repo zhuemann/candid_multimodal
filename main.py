@@ -62,7 +62,7 @@ if __name__ == '__main__':
         pretrained_model, lowest_loss, loss_list  = contrastive_pretraining(seed = 7, batch_size = 16, dir_base= directory_base, epoch = 50, n_classes = 2)
 
         folder_name = "bert_loss"
-        filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/' + str(folder_name) + '/base_bert/contrastive_ep_loss' + '.xlsx')
+        filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/' + str(folder_name) + '/base_bert_mlm/contrastive_ep_loss' + '.xlsx')
         df = pd.DataFrame(loss_list)
         df.to_excel(filepath, index=False)
 
