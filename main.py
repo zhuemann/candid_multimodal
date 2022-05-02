@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     #report_generation(config)
 
-    mlm_pretraining = True
+    mlm_pretraining = False
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base= directory_base)
 
