@@ -93,7 +93,7 @@ if __name__ == '__main__':
         #file_name = 'gloria_vision_run_v3'
         #folder_name = "imagenet_models"
         #folder_name = "bio_clincial_bert_v1_ep100"
-        folder_name = "our_pretrained_full_data_100epbio_clincial_bert_150ep"
+        folder_name = "our_pretrained_full_data_50epbio_clincial_bert_150ep"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/bio_clincial_bert_seg/' + str(folder_name) +'/valid_run_seed' + str(
