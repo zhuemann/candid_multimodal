@@ -79,15 +79,18 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
 
     #save the training set
     train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/train_df.xlsx')
-    train_df.to_excel(train_dataframe_location, index=True)
+    #train_df.to_excel(train_dataframe_location, index=True)
+    train_df = pd.read_excel(train_dataframe_location, engine='openpyxl')
 
     #save the valid set
-    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/valid_df.xlsx')
-    valid_df.to_excel(test_dataframe_location, index=True)
+    valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/valid_df.xlsx')
+    #valid_df.to_excel(valid_dataframe_location, index=True)
+    valid_df = pd.read_excel(valid_dataframe_location, engine='openpyxl')
 
     #save the test set
     test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/test_df.xlsx')
-    test_df.to_excel(test_dataframe_location, index=True)
+    #test_df.to_excel(test_dataframe_location, index=True)
+    test_df = pd.read_excel(test_dataframe_location, engine='openpyxl')
 
 
     # create image augmentations
@@ -217,7 +220,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = True
+    use_pretrained_encoder = False
     if use_pretrained_encoder:
         # set pretrained to true to use pretrained model false uses downloaded gloria weights
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
