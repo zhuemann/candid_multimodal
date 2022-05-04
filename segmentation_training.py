@@ -44,7 +44,8 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/pneumothorax_large_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
@@ -76,8 +77,17 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         test_valid_df, test_size=25, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
-    #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
-    #test_df.to_excel(test_dataframe_location, index=True)
+    #save the training set
+    train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/train_df.xlsx')
+    train_df.to_excel(train_dataframe_location, index=True)
+
+    #save the valid set
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/valid_df.xlsx')
+    test_df.to_excel(test_dataframe_location, index=True)
+
+    #save the test set
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/test_df.xlsx')
+    test_df.to_excel(test_dataframe_location, index=True)
 
 
     # create image augmentations
@@ -207,7 +217,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
         model_obj.load_state_dict(torch.load(save_path))
 
 
-    use_pretrained_encoder = False
+    use_pretrained_encoder = True
     if use_pretrained_encoder:
         # set pretrained to true to use pretrained model false uses downloaded gloria weights
         model_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=True)
@@ -309,7 +319,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
                 save_path = os.path.join(dir_base,
-                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_100_img/segmentation_candid' + str(
+                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/roberta_labeling_functions/segmentation_candid' + str(
                                     seed) )
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
                 torch.save(model_obj.state_dict(), save_path)
@@ -320,7 +330,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     #saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
     #saved_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
     saved_path = os.path.join(dir_base,
-                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_100_img/segmentation_candid' + str(
+                                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/roberta_labeling_functions/segmentation_candid' + str(
                                     seed) )
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     model_obj.load_state_dict(torch.load(saved_path))
