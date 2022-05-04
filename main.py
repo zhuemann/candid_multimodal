@@ -75,7 +75,7 @@ if __name__ == '__main__':
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
     #seeds = [98, 117, 295, 456, 915]
     #seeds = [42, 117, 295]
-    seeds = [295]
+    seeds = [42]
 
     #seeds = [915]
     accuracy_list = []
