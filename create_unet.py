@@ -13,6 +13,7 @@ def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None
     #pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/candid_best_contrastive')
     base_model = "resnet50"
 
+
     # load base model
     segmentation_model = smp.Unet(base_model, encoder_weights=None, activation=None)
 
