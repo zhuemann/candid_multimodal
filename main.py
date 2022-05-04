@@ -74,8 +74,8 @@ if __name__ == '__main__':
 
     #seeds = [117, 295, 98, 456, 915, 1367, 712]
     #seeds = [98, 117, 295, 456, 915]
-    #seeds = [42, 117, 295]
-    seeds = [42]
+    seeds = [42, 117, 295]
+    #seeds = [42]
 
     #seeds = [915]
     accuracy_list = []
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         #folder_name = "bio_clincial_bert_v1_ep100"
         #folder_name = "roberta_100_images"
         #folder_name = "gloria_100_images"
-        folder_name = "roberta_labeling_functions"
+        folder_name = "imagenet_labeling_functions"
         ## save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/weak_supervision/' + str(folder_name) +'/valid_run_seed' + str(
