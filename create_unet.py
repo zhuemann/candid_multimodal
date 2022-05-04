@@ -6,8 +6,8 @@ from collections import OrderedDict
 def load_img_segmentation_model(dir_base = "/UserData/", pretrained_model = None):
 
     #pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_best_contrastive')
-    #pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_checkpoint_50ep')
-    pretrained_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
+    pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert/candid_checkpoint_50ep')
+    #pretrained_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
     #pretrained_path = os.path.join(dir_base,'Zach_Analysis/models/candid_pretrained_models/bert/candid_best_contrastive')
 
     #pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_pretrained_models/bert/candid_best_contrastive')
