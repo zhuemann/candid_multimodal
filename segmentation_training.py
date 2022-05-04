@@ -78,19 +78,19 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     )
 
     #save the training set
-    train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/train_df.xlsx')
+    train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/train_df.xlsx')
     #train_df.to_excel(train_dataframe_location, index=True)
     train_df = pd.read_excel(train_dataframe_location, engine='openpyxl')
     train_df.set_index("image_id", inplace=True)
 
     #save the valid set
-    valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/valid_df.xlsx')
+    valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/valid_df.xlsx')
     #valid_df.to_excel(valid_dataframe_location, index=True)
     valid_df = pd.read_excel(valid_dataframe_location, engine='openpyxl')
     valid_df.set_index("image_id", inplace=True)
 
     #save the test set
-    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/test_df.xlsx')
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/test_df.xlsx')
     #test_df.to_excel(test_dataframe_location, index=True)
     test_df = pd.read_excel(test_dataframe_location, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
