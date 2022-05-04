@@ -45,7 +45,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     seed = seed
 
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/pneumothorax_large_df.xlsx')
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/test_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
@@ -78,15 +78,15 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/
     )
 
     #save the training set
-    train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/train_df.xlsx')
+    train_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/train_df.xlsx')
     train_df.to_excel(train_dataframe_location, index=True)
 
     #save the valid set
-    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/valid_df.xlsx')
-    test_df.to_excel(test_dataframe_location, index=True)
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/valid_df.xlsx')
+    valid_df.to_excel(test_dataframe_location, index=True)
 
     #save the test set
-    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model1/test_df.xlsx')
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/test_df.xlsx')
     test_df.to_excel(test_dataframe_location, index=True)
 
 
