@@ -1,22 +1,21 @@
+import ssl
+
 import torch
 import torch.nn as nn
-from transformers import AutoModel, AutoTokenizer
 
-import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
 class BertEncoder(nn.Module):
-    def __init__(self, cfg= None, tokenizer = None, language_model= None):
+    def __init__(self, cfg=None, tokenizer=None, language_model=None):
         super(BertEncoder, self).__init__()
-
-        #self.bert_type = cfg.model.text.bert_type
-        #self.last_n_layers = cfg.model.text.last_n_layers
-        #self.aggregate_method = cfg.model.text.aggregate_method
-        #self.norm = cfg.model.text.norm
-        #self.embedding_dim = cfg.model.text.embedding_dim
-        #self.freeze_bert = cfg.model.text.freeze_bert
-        #self.agg_tokens = cfg.model.text.agg_tokens
+        # self.bert_type = cfg.model.text.bert_type
+        # self.last_n_layers = cfg.model.text.last_n_layers
+        # self.aggregate_method = cfg.model.text.aggregate_method
+        # self.norm = cfg.model.text.norm
+        # self.embedding_dim = cfg.model.text.embedding_dim
+        # self.freeze_bert = cfg.model.text.freeze_bert
+        # self.agg_tokens = cfg.model.text.agg_tokens
         self.bert_type = "emilyalsentzer/Bio_ClinicalBERT"
         self.last_n_layers = 4
         self.aggregate_method = "sum"
@@ -25,17 +24,13 @@ class BertEncoder(nn.Module):
         self.freeze_bert = False
         self.agg_tokens = True
 
-
-
-        #self.model = AutoModel.from_pretrained(
+        # self.model = AutoModel.from_pretrained(
         #    self.bert_type, output_hidden_states=True
-        #)
+        # )
         self.model = language_model
-
-        #self.tokenizer = AutoTokenizer.from_pretrained(self.bert_type)
+        # self.tokenizer = AutoTokenizer.from_pretrained(self.bert_type)
         self.tokenizer = tokenizer
         self.idxtoword = {v: k for k, v in self.tokenizer.get_vocab().items()}
-
         self.emb_global, self.emb_local = None, None
 
         if self.freeze_bert is True:
@@ -44,7 +39,6 @@ class BertEncoder(nn.Module):
                 param.requires_grad = False
 
     def aggregate_tokens(self, embeddings, caption_ids):
-
         batch_size, num_layers, num_words, dim = embeddings.shape
         embeddings = embeddings.permute(0, 2, 1, 3)
         agg_embs_batch = []
@@ -52,7 +46,6 @@ class BertEncoder(nn.Module):
 
         # loop over batch
         for embs, caption_id in zip(embeddings, caption_ids):
-
             agg_embs = []
             token_bank = []
             words = []
@@ -60,7 +53,6 @@ class BertEncoder(nn.Module):
 
             # loop over sentence
             for word_emb, word_id in zip(embs, caption_id):
-
                 word = self.idxtoword[word_id.item()]
 
                 if word == "[SEP]":
@@ -68,7 +60,6 @@ class BertEncoder(nn.Module):
                     new_emb = new_emb.sum(axis=0)
                     agg_embs.append(new_emb)
                     words.append("".join(word_bank))
-
                     agg_embs.append(word_emb)
                     words.append(word)
                     break
@@ -82,7 +73,6 @@ class BertEncoder(nn.Module):
                         new_emb = new_emb.sum(axis=0)
                         agg_embs.append(new_emb)
                         words.append("".join(word_bank))
-
                         token_bank = [word_emb]
                         word_bank = [word]
                 else:
@@ -104,18 +94,14 @@ class BertEncoder(nn.Module):
         return agg_embs_batch, sentences
 
     def forward(self, ids, attn_mask, token_type):
-
         outputs = self.model(ids, attn_mask, token_type)
-        #print("outputs length: ")
-        #print(len(outputs))
-        #print("test")
-        # aggregate intermetidate layers
+        # aggregate intermediate layers
         if self.last_n_layers > 1:
             all_embeddings = outputs[2]
-            #print(len(outputs))
-            #print(self.last_n_layers)
+            # print(len(outputs))
+            # print(self.last_n_layers)
             embeddings = torch.stack(
-                all_embeddings[-self.last_n_layers :]
+                all_embeddings[-self.last_n_layers:]
             )  # layers, batch, sent_len, embedding size
 
             embeddings = embeddings.permute(1, 0, 2, 3)
@@ -140,8 +126,7 @@ class BertEncoder(nn.Module):
         # use last layer
         else:
             word_embeddings, sent_embeddings = outputs[0], outputs[1]
-
-        #print(word_embeddings.shape)
+        # print(word_embeddings.shape)
 
         batch_dim, num_words, feat_dim = word_embeddings.shape
         word_embeddings = word_embeddings.view(batch_dim * num_words, feat_dim)

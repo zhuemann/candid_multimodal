@@ -1,55 +1,46 @@
+import re
+
+import cv2
+import numpy as np
 import torch
 import torch.nn as nn
-import cv2
-import re
-import numpy as np
+from nltk.tokenize import RegexpTokenizer
 from sklearn import metrics
 
-from PIL import Image
-#from .. import builder
 from loss_functions import global_loss, local_loss, attention_fn, cosine_similarity
-#from .. import utils
-from transformers import AutoTokenizer
-from nltk.tokenize import RegexpTokenizer
-
 from text_encoder import BertEncoder
 from vision_encoder import ImageEncoder
 
 
 class GLoRIA(nn.Module):
     """
-        Model adopted form GLORIA REPO
-        """
+    Model adopted form GLORIA REPO
+    """
+
     def __init__(self, cfg, tokenizer, language_model):
         super(GLoRIA, self).__init__()
-
-        #self.cfg = cfg
-        #self.text_encoder = builder.build_text_model(cfg)
-        #self.img_encoder = builder.build_img_model(cfg)
-
+        # self.cfg = cfg
+        # self.text_encoder = builder.build_text_model(cfg)
+        # self.img_encoder = builder.build_img_model(cfg)
         self.text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
         self.img_encoder = ImageEncoder()
-
-        #self.local_loss = loss.gloria_loss.local_loss
-        #self.global_loss = loss.gloria_loss.global_loss
+        # self.local_loss = loss.gloria_loss.local_loss
+        # self.global_loss = loss.gloria_loss.global_loss
         self.local_loss = local_loss
         self.global_loss = global_loss
-        #self.local_loss_weight = self.cfg.model.gloria.local_loss_weight
-        #self.global_loss_weight = self.cfg.model.gloria.global_loss_weight
+        # self.local_loss_weight = self.cfg.model.gloria.local_loss_weight
+        # self.global_loss_weight = self.cfg.model.gloria.global_loss_weight
         self.local_loss_weight = 1
         self.global_loss_weight = 1
-
-        #self.temp1 = self.cfg.model.gloria.temp1
-        #self.temp2 = self.cfg.model.gloria.temp2
-        #self.temp3 = self.cfg.model.gloria.temp3
-        #self.batch_size = self.cfg.train.batch_size
-
+        # self.temp1 = self.cfg.model.gloria.temp1
+        # self.temp2 = self.cfg.model.gloria.temp2
+        # self.temp3 = self.cfg.model.gloria.temp3
+        # self.batch_size = self.cfg.train.batch_size
         self.temp1 = 4.0
         self.temp2 = 5.0
         self.temp3 = 10.0
         self.batch_size = 16
-
-        #self.tokenizer = AutoTokenizer.from_pretrained(self.cfg.model.text.bert_type)
+        # self.tokenizer = AutoTokenizer.from_pretrained(self.cfg.model.text.bert_type)
         self.tokenizer = tokenizer
         self.ixtoword = {v: k for k, v in self.tokenizer.get_vocab().items()}
 
@@ -68,7 +59,6 @@ class GLoRIA(nn.Module):
         return img_emb_l, img_emb_g
 
     def _calc_local_loss(self, img_emb_l, text_emb_l, sents):
-
         cap_lens = [
             len([w for w in sent if not w.startswith("[")]) + 1 for sent in sents
         ]
@@ -87,7 +77,6 @@ class GLoRIA(nn.Module):
         return g_loss0, g_loss1
 
     def calc_loss(self, img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents):
-
         l_loss0, l_loss1, attn_maps = self._calc_local_loss(
             img_emb_l, text_emb_l, sents
         )
@@ -101,15 +90,11 @@ class GLoRIA(nn.Module):
         return loss, attn_maps
 
     def forward(self, x):
-
-        # img encoder branch
         img_emb_l, img_emb_g = self.image_encoder_forward(x["imgs"])
 
-        # text encorder branch
         text_emb_l, text_emb_g, sents = self.text_encoder_forward(
             x["caption_ids"], x["attention_mask"], x["token_type_ids"]
         )
-
         return img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents
 
     def get_global_similarities(self, img_emb_g, text_emb_g):
@@ -120,50 +105,41 @@ class GLoRIA(nn.Module):
         return global_similarities
 
     def get_local_similarities(self, img_emb_l, text_emb_l, cap_lens):
-
         batch_size = img_emb_l.shape[0]
         similarities = []
 
         for i in range(len(text_emb_l)):
             words_num = cap_lens[i]
             word = (
-                text_emb_l[i, :, 1 : words_num + 1].unsqueeze(0).contiguous()
+                text_emb_l[i, :, 1: words_num + 1].unsqueeze(0).contiguous()
             )  # [1, 768, 25]
 
             word = word.repeat(batch_size, 1, 1)  # [48, 768, 25]
             context = img_emb_l  # [48, 768, 19, 19]
-
             weiContext, attn = attention_fn(
                 word, context, 4.0
             )  # [48, 768, 25], [48, 25, 19, 19]
 
             word = word.transpose(1, 2).contiguous()  # [48, 25, 768]
             weiContext = weiContext.transpose(1, 2).contiguous()  # [48, 25, 768]
-
             word = word.view(batch_size * words_num, -1)  # [1200, 768]
             weiContext = weiContext.view(batch_size * words_num, -1)  # [1200, 768]
-            #
-            #row_sim = loss.gloria_loss.cosine_similarity(word, weiContext)
+            # row_sim = loss.gloria_loss.cosine_similarity(word, weiContext)
             row_sim = cosine_similarity(word, weiContext)
             row_sim = row_sim.view(batch_size, words_num)  # [48, 25]
-
             row_sim.mul_(5.0).exp_()
             row_sim, max_row_idx = torch.max(row_sim, dim=1, keepdim=True)  # [48, 1]
-
             row_sim = torch.log(row_sim)
-
             similarities.append(row_sim)
-
         local_similarities = torch.cat(similarities, 1).detach().cpu()
-
         return local_similarities
 
     def get_attn_maps(self, img_emb_l, text_emb_l, sents):
         _, _, attn_maps = self._calc_local_loss(img_emb_l, text_emb_l, sents)
         return attn_maps
+
     """
     def plot_attn_maps(self, attn_maps, imgs, sents, epoch_idx=0, batch_idx=0):
-
         img_set, _ = utils.build_attention_images(
             imgs,
             attn_maps,
@@ -172,7 +148,6 @@ class GLoRIA(nn.Module):
             rand_vis=self.cfg.train.rand_vis,
             sentences=sents,
         )
-
         if img_set is not None:
             im = Image.fromarray(img_set)
             fullpath = (
@@ -184,38 +159,29 @@ class GLoRIA(nn.Module):
     """
 
     def process_text(self, text, device):
-
         if type(text) == str:
             text = [text]
-
         processed_text_tensors = []
         for t in text:
-            # use space instead of newline
-            t = t.replace("\n", " ")
-
-            # split sentences
-            splitter = re.compile("[0-9]+\.")
+            t = t.replace("\n", " ")  # use space instead of newline
+            splitter = re.compile("[0-9]+\.")  # split sentences
             captions = splitter.split(t)
             captions = [point.split(".") for point in captions]
             captions = [sent for point in captions for sent in point]
 
             all_sents = []
-
             for t in captions:
                 t = t.replace("\ufffd\ufffd", " ")
                 tokenizer = RegexpTokenizer(r"\w+")
                 tokens = tokenizer.tokenize(t.lower())
-
                 if len(tokens) <= 1:
                     continue
-
                 included_tokens = []
                 for t in tokens:
                     t = t.encode("ascii", "ignore").decode("ascii")
                     if len(t) > 0:
                         included_tokens.append(t)
                 all_sents.append(" ".join(included_tokens))
-
             t = " ".join(all_sents)
 
             text_tensors = self.tokenizer(
@@ -259,18 +225,14 @@ class GLoRIA(nn.Module):
         }
 
     def process_class_prompts(self, class_prompts, device):
-
         cls_2_processed_txt = {}
         for k, v in class_prompts.items():
             cls_2_processed_txt[k] = self.process_text(v, device)
-
         return cls_2_processed_txt
 
     """
     def process_img(self, paths, device):
-
         transform = builder.build_transformation(self.cfg, split="test")
-
         if type(paths) == str:
             paths = [paths]
 
@@ -278,7 +240,6 @@ class GLoRIA(nn.Module):
         for p in paths:
 
             x = cv2.imread(str(p), 0)
-
             # tranform images
             x = self._resize_img(x, self.cfg.data.image.imsize)
             img = Image.fromarray(x).convert("RGB")
@@ -286,7 +247,6 @@ class GLoRIA(nn.Module):
             all_imgs.append(torch.tensor(img))
 
         all_imgs = torch.stack(all_imgs).to(device)
-
         return all_imgs
     """
 
@@ -315,7 +275,7 @@ class GLoRIA(nn.Module):
             desireable_size = (wsize, scale)
         resized_img = cv2.resize(
             img, desireable_size[::-1], interpolation=cv2.INTER_AREA
-        )  # this flips the desireable_size vector
+        )  # this flips the desirable_size vector
 
         # Padding
         if max_ind == 0:
@@ -335,6 +295,4 @@ class GLoRIA(nn.Module):
         resized_img = np.pad(
             resized_img, [(top, bottom), (left, right)], "constant", constant_values=0
         )
-
         return resized_img
-        

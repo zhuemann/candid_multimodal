@@ -1,9 +1,8 @@
-#from pytorch_metric_learning import losses
-import torch.nn.functional as F
-import torch.nn as nn
+# from pytorch_metric_learning import losses
 import torch
-from torch.autograd import Variable
+import torch.nn as nn
 from sklearn import metrics
+from torch.autograd import Variable
 
 """
 class ContrastiveLoss(nn.Module):
@@ -32,10 +31,9 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     """
 
     batch_size = cnn_code.shape[0]
-    #print(f"batch_size: {batch_size}")
+    # print(f"batch_size: {batch_size}")
     labels = Variable(torch.LongTensor(range(batch_size))).to(cnn_code.device)
-    #print("labels")
-    #print(labels)
+    # print("labels", labels)
 
     if cnn_code.dim() == 2:
         cnn_code = cnn_code.unsqueeze(0)
@@ -48,18 +46,18 @@ def global_loss(cnn_code, rnn_code, eps=1e-8, temp3=10.0):
     norm0 = torch.bmm(cnn_code_norm, rnn_code_norm.transpose(1, 2))
     scores0 = scores0 / norm0.clamp(min=eps) * temp3
 
-
     # --> batch_size x batch_size
     scores0 = scores0.squeeze()
-    #print(scores0)
+    # print(scores0)
     scores1 = scores0.transpose(0, 1)
 
     loss0 = nn.CrossEntropyLoss()(scores0, labels)
     loss1 = nn.CrossEntropyLoss()(scores1, labels)
     return loss0, loss1
 
+
 def local_loss(
-    img_features, words_emb, cap_lens, temp1=4.0, temp2=5.0, temp3=10.0, agg="sum"
+        img_features, words_emb, cap_lens, temp1=4.0, temp2=5.0, temp3=10.0, agg="sum"
 ):
     """
         Loss function adopted form GLORIA REPO
@@ -116,7 +114,6 @@ def local_loss(
     return loss0, loss1, att_maps
 
 
-
 def get_global_similarities(img_emb_g, text_emb_g):
     img_emb_g = img_emb_g.detach().cpu().numpy()
     text_emb_g = text_emb_g.detach().cpu().numpy()
@@ -165,6 +162,7 @@ class ContrastiveLoss(nn.Module):
             cost_im = cost_im.max(0)[0]
 
         return cost_s.sum() + cost_im.sum()
+
 
 def attention_fn(query, context, temp1):
     """

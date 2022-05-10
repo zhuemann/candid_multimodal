@@ -1,27 +1,26 @@
-from os import listdir
-from os.path import isfile, join
-from os.path import exists
-import pandas as pd
 import os
+from os import listdir
 
-def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"):
+import pandas as pd
 
 
-    xray_dir = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset")
-    fracture_dir = os.path.join(dir_base, "public_datasets/candid_ptx/acute_rib_fracture.csv")
+def get_candid_labels(dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"):
+    xray_dir = os.path.join(dir_base, "dataset/candid_data/dataset1/dataset/")
+    fracture_dir = os.path.join(dir_base, "dataset/candid_data/acute_rib_fracture.csv")  # TODO remove extras
     fracture_df = pd.read_csv(fracture_dir)
-    chest_tube_dir = os.path.join(dir_base, "public_datasets/candid_ptx/chest_tube.csv")
+    print("fracture_df")
+    chest_tube_dir = os.path.join(dir_base, "dataset/candid_data/chest_tube.csv")
     chest_tube_df = pd.read_csv(chest_tube_dir)
-    pneumothorax_dir = os.path.join(dir_base, "public_datasets/candid_ptx/Pneumothorax_reports.csv")
+    pneumothorax_dir = os.path.join(dir_base, "dataset/candid_data/Pneumothorax_reports.csv")  # TODO remove extras
     pneumothorax_df = pd.read_csv(pneumothorax_dir)
 
     # gets all the file names in and puts them in a list
     xray_files = listdir(xray_dir)
+    print("xray_files")
 
     data_with_labels = pd.DataFrame(columns=['id', 'image_id', 'text', 'label'])
     i = 0
     missing_reports = 0
-
     num_fractures = 0
     num_tubes = 0
     num_pneumothorax = 0
@@ -29,7 +28,7 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
     for image in xray_files:
 
         if pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
-            #continue
+            # continue
             text = get_text(pneumothorax_df, image)
             mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
             mask_str = mask.iloc[0]['EncodedPixels']
@@ -63,7 +62,6 @@ def get_candid_labels(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/")
         else:
             total += 1
 
-
     data_with_labels.set_index("id", inplace=True)
     return data_with_labels
 
@@ -76,9 +74,7 @@ def get_text(reports, file_check):
     return text
 
 
-def get_all_text_image_pairs(dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/"):
-
-
+def get_all_text_image_pairs(dir_base="/home/zmh001/r-fcb-isilon/research/Bradshaw/"):
     xray_dir = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset")
     fracture_dir = os.path.join(dir_base, "public_datasets/candid_ptx/acute_rib_fracture.csv")
     fracture_df = pd.read_csv(fracture_dir)
@@ -93,15 +89,13 @@ def get_all_text_image_pairs(dir_base = "/home/zmh001/r-fcb-isilon/research/Brad
     data_with_labels = pd.DataFrame(columns=['id', 'image_id', 'text', 'label'])
     df_index = 0
     missing_reports = 0
-
     num_fractures = 0
     num_tubes = 0
     num_pneumothorax = 0
     total = 0
     for image in xray_files:
-
         if pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
-            #continue
+            # continue
             text = get_text(pneumothorax_df, image)
             mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
             mask_str = mask.iloc[0]['EncodedPixels']
@@ -109,7 +103,7 @@ def get_all_text_image_pairs(dir_base = "/home/zmh001/r-fcb-isilon/research/Brad
             num_pneumothorax += 1
             df_index = df_index + 1
         # checks to see if an xray image is in the fracture list
-        #elif fracture_df['anon_SOPUID'].str.contains(image).any():
+        # elif fracture_df['anon_SOPUID'].str.contains(image).any():
         #    continue
         #    mask = fracture_df.loc[fracture_df['anon_SOPUID'] == image]
         #    mask_str = mask.iloc[0]['mask_rle']
@@ -119,7 +113,7 @@ def get_all_text_image_pairs(dir_base = "/home/zmh001/r-fcb-isilon/research/Brad
         #        data_with_labels.loc[i] = [image, image, "", mask_str]
         #        num_fractures += 1
         #        df_index = df_index + 1
-        #elif chest_tube_df['anon_SOPUID'].str.contains(image).any():
+        # elif chest_tube_df['anon_SOPUID'].str.contains(image).any():
         #    continue
         #    mask = chest_tube_df.loc[chest_tube_df['anon_SOPUID'] == image]
         #    mask_str = mask.iloc[0]['mask_rle']
@@ -129,11 +123,16 @@ def get_all_text_image_pairs(dir_base = "/home/zmh001/r-fcb-isilon/research/Brad
         #        data_with_labels.loc[i] = [image, image, "", mask_str]
         #        num_tubes += 1
         #        df_index = df_index + 1
-        #else:
+        # else:
         #    total += 1
-
 
     data_with_labels.set_index("id", inplace=True)
     return data_with_labels
 
 
+def main():
+    get_candid_labels()
+
+
+if __name__ == "__main__":
+    main()

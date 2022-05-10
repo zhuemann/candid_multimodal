@@ -1,3 +1,4 @@
+pip
 numpy
 matplotlib
 torch
@@ -11,13 +12,19 @@ transformers
 openpyxl
 pydicom
 nltk
-
-
 segmentation-models-pytorch
 albumentations
-
 pytorch-lightning
 omegaconf
+scikit-learn-intelex
+
+# conda install -c menpo opencv
+# conda install -c huggingface tokenizers transformers
+# conda install -c anaconda scikit-learn
+# conda install pytorch torchvision torchaudio -c pytorch
+
+# check if needed?
+# pip install resnet50-pynq
 
 #can delete these later
 #opencv-python

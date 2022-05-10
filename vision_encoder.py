@@ -1,29 +1,21 @@
-from numpy.lib.function_base import extract
 import torch
 import torch.nn as nn
 
-#from . import cnn_backbones
 from ResNet import resnet_50
 
 
 class ImageEncoder(nn.Module):
     def __init__(self, cfg=None):
         super(ImageEncoder, self).__init__()
-
-        #self.output_dim = cfg.model.text.embedding_dim
-        #self.norm = cfg.model.norm
-
+        # self.output_dim = cfg.model.text.embedding_dim
+        # self.norm = cfg.model.norm
         self.output_dim = 768
         self.norm = False
-
-        #model_function = getattr(cnn_backbones, cfg.model.vision.model_name)
-        #self.model, self.feature_dim, self.interm_feature_dim = model_function(
+        # model_function = getattr(cnn_backbones, cfg.model.vision.model_name)
+        # self.model, self.feature_dim, self.interm_feature_dim = model_function(
         #    pretrained=cfg.model.vision.pretrained
-        #)
-        self.model, self.feature_dim, self.interm_feature_dim = resnet_50(
-                pretrained=True
-             )
-
+        # )
+        self.model, self.feature_dim, self.interm_feature_dim = resnet_50(pretrained=True)
 
         self.global_embedder = nn.Linear(self.feature_dim, self.output_dim)
         self.local_embedder = nn.Conv2d(
@@ -37,22 +29,18 @@ class ImageEncoder(nn.Module):
 
         self.pool = nn.AdaptiveAvgPool2d(output_size=(1, 1))
 
-        #if cfg.model.ckpt_path is not None:
-
+        # if cfg.model.ckpt_path is not None:
         init_weights = False
         if init_weights:
             self.init_trainable_weights()
-
-        """
-        if cfg.model.vision.freeze_cnn:
-            print("Freezing CNN model")
-            for param in self.model.parameters():
-                param.requires_grad = False
-        """
+        # if cfg.model.vision.freeze_cnn:
+        #     print("Freezing CNN model")
+        #     for param in self.model.parameters():
+        #         param.requires_grad = False
 
     def forward(self, x, get_local=False):
         # --> fixed-size input: batch x 3 x 299 x 299
-        #if "resnet" or "resnext" in self.cfg.model.vision.model_name:
+        # if "resnet" or "resnext" in self.cfg.model.vision.model_name:
         if "resnet" or "resnext" in "resnet":
             global_ft, local_ft = self.resnet_forward(x, extract_features=True)
         elif "densenet" in "resnet":
