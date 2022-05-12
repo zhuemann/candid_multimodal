@@ -1,3 +1,4 @@
+import argparse
 import os
 
 import pandas as pd
@@ -9,8 +10,19 @@ from segmentation_training import segmentation_training
 # from create_unet import load_img_segmentation_model
 from siim_dataloader import siim_datasetup
 
+def create_parser():
+    parser = argparse.ArgumentParser(description="The main file to run multimodal setup. Consists of pre-training joint representation, masked language modeling and report generation.")
+    parser.add_argument('--local', '-l', type=bool, help="Should the program run locally", default=False)
+    parser.add_argument('--report_gen', '-r', type=bool, help="Should we train report generation?", default=False)
+    parser.add_argument('--mlm_pretraining', '-m', type=bool, help="Should we perform MLM pretraining?", default=False)
+    parser.add_argument('--pretraining', '-p', type=bool, help="Should we perform multimodal pretraining?", default=False)
+    arg = parser.parse_args()
+    return arg
+
+
 if __name__ == '__main__':
-    local = False
+    args = create_parser()
+    local = args.local
     if local:
         zach_directory_base = "Z:/"  # rename to dir_base for Zach
         # directory_base = "/Users/kritigoyal/Documents/CS_769_NLP/"
@@ -21,16 +33,16 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": 120, "test_samples": 120, "data_path": "D:/candid_ptx/"}
 
-    train_report_generation = True  # flip this to True to do report generation
+    train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
         report_generation(config)
 
     siim_datasetup(dir_base=directory_base)
-    mlm_pretraining = False
+    mlm_pretraining = args.mlm_pretraining
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base=directory_base)
 
-    pretraining = False
+    pretraining = args.pretraining
     if pretraining:
         pretrained_model, lowest_loss, loss_list = contrastive_pretraining(seed=7, batch_size=16,
                                                                            dir_base=directory_base, epoch=50,
