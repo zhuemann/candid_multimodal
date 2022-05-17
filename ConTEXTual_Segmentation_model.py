@@ -4,6 +4,7 @@ import torch
 
 class ConTEXTual_seg_model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
+        super(ConTEXTual_seg_model, self).__init__()
         print("hi")
 
         self.lang_encoder = lang_model
