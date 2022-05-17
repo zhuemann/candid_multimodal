@@ -44,7 +44,7 @@ import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
-def train_image_text_segmentation(seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
+def train_image_text_segmentation(config, seed, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
 
     # model specific global variables
     IMG_SIZE = 256 #256 #1024 #512 #384
@@ -53,6 +53,10 @@ def train_image_text_segmentation(seed, batch_size=8, epoch=1, dir_base = "/home
     N_EPOCHS = epoch
     N_CLASS = n_classes
     seed = seed
+
+    dir_base = config["dir_base"]
+    seed = config["seed"]
+    batch_size = config["batch_size"]
 
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/images_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -63,6 +67,7 @@ def train_image_text_segmentation(seed, batch_size=8, epoch=1, dir_base = "/home
     #df.to_excel(dataframe_location, index=False)
 
     # reads in the dataframe as it doesn't really change to save time
+
     train_df = pd.read_excel(dataframe_location, engine='openpyxl')
     #print(df)
     train_df.set_index("image_id", inplace=True)
