@@ -23,7 +23,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         factor = 2 if bilinear else 1
         self.down4 = Down(512, 1024 // factor)
 
-        self.up0 = Up(2048, 1024 // factor, bilinear)
+        self.up0 = Up(1024, 1024 // factor, bilinear)
         self.up1 = Up(1024, 512 // factor, bilinear)
         self.up2 = Up(512, 256 // factor, bilinear)
         self.up3 = Up(256, 128 // factor, bilinear)
