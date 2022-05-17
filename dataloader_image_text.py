@@ -101,7 +101,7 @@ class TextImageDataset(Dataset):
                 if self.mode == "train":
                     # print(type(img))
                     # print(img.shape)
-                    img = Image.fromarray(img).convert("RGB")
+                    #img = Image.fromarray(img).convert("RGB")
                     # print(type(img))
                     img = np.array(img)
                     # segmentation_mask_org = np.uint8(segmentation_mask_org)
