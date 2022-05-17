@@ -69,9 +69,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     # reads in the dataframe as it doesn't really change to save time
 
-    train_df = pd.read_excel(dataframe_location, engine='openpyxl')
+    df = pd.read_excel(dataframe_location, engine='openpyxl')
     #print(df)
-    train_df.set_index("image_id", inplace=True)
+    df.set_index("image_id", inplace=True)
 
 
 
@@ -94,13 +94,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # df = truncate_left_text_dataset(df, tokenizer)
 
     # Splits the data into 80% train and 20% valid and test sets
-    #train_df, test_valid_df = model_selection.train_test_split(
-    #    df, test_size=0.0, random_state=seed, shuffle=True #stratify=df.label.values
-    #)
+    train_df, test_valid_df = model_selection.train_test_split(
+        df, test_size=0.0, random_state=seed, shuffle=True #stratify=df.label.values
+    )
     # Splits the test and valid sets in half so they are both 10% of total data
-    #test_df, valid_df = model_selection.train_test_split(
-    #    test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
-    #)
+    test_df, valid_df = model_selection.train_test_split(
+        test_valid_df, test_size=0.5, random_state=seed, shuffle=True #stratify=test_valid_df.label.values
+    )
 
     #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     #test_df.to_excel(test_dataframe_location, index=True)
@@ -133,6 +133,17 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         #albu.ShiftScaleRotate(),
     ])
 
+    transforms_valid = transforms.Compose(
+        [
+            transforms.Resize((IMG_SIZE, IMG_SIZE)),
+            transforms.PILToTensor(),
+            # transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
+            # transforms.Normalize((0.5,), (0.5,))
+            # transforms.Grayscale(num_output_channels=1),
+            # transforms.Normalize([0.5], [0.5])
+        ]
+    )
+
     transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
     output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
 
@@ -140,8 +151,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print("train_df")
     print(train_df)
     training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
-    #valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
-    #test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
     print(training_set)
 
@@ -149,11 +160,14 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 'shuffle': True,
                 'num_workers': 1
                 }
-
+    test_params = {'batch_size': BATCH_SIZE,
+                   'shuffle': True,
+                   'num_workers': 4
+                   }
 
     training_loader = DataLoader(training_set, **train_params)
-    #valid_loader = DataLoader(valid_set, **test_params)
-    #test_loader = DataLoader(test_set, **test_params)
+    valid_loader = DataLoader(valid_set, **test_params)
+    test_loader = DataLoader(test_set, **test_params)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -223,7 +237,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     lowest_loss = 100
 
     del train_df
-
+    valid_log = []
     avg_loss_list = []
     for epoch in range(1, N_EPOCHS + 1):
         #vision_model.train()
@@ -272,6 +286,84 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
         avg_training_dice = np.average(training_dice)
         print(f"Epoch {str(epoch)}, Average Training Dice Score = {avg_training_dice}")
+
+        # each epoch, look at validation data
+        with torch.no_grad():
+            valid_dice = []
+            gc.collect()
+            for _, data in tqdm(enumerate(valid_loader, 0)):
+                ids = data['ids'].to(device, dtype=torch.long)
+                mask = data['mask'].to(device, dtype=torch.long)
+                token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
+                targets = data['targets'].to(device, dtype=torch.float)
+                images = data['images'].to(device, dtype=torch.float)
+
+                # outputs = model_obj(ids, mask, token_type_ids, images)
+                outputs = test_obj(images, ids, mask, token_type_ids)
+
+                outputs = output_resize(torch.squeeze(outputs, dim=1))
+                targets = output_resize(targets)
+
+                # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
+                sigmoid = torch.sigmoid(outputs)
+                outputs = torch.round(sigmoid)
+
+                # calculates the dice coefficent for each image and adds it to the list
+                for i in range(0, outputs.shape[0]):
+                    dice = dice_coeff(outputs[i], targets[i])
+                    dice = dice.item()
+                    valid_dice.append(dice)
+
+            avg_valid_dice = np.average(valid_dice)
+            print(f"Epoch {str(epoch)}, Average Valid Dice Score = {avg_valid_dice}")
+            valid_log.append(avg_valid_dice)
+
+            if avg_valid_dice >= best_acc:
+                best_acc = avg_valid_dice
+                # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+                #save_path = os.path.join(dir_base,
+                #                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
+                #                             seed))
+                # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
+                torch.save(model_obj.state_dict(), save_path)
+
+    model_obj.eval()
+    row_ids = []
+    # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
+    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+    #saved_path = os.path.join(dir_base,
+    #                          'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
+    #                              seed))
+    # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
+    model_obj.load_state_dict(torch.load(saved_path))
+
+    with torch.no_grad():
+        test_dice = []
+        gc.collect()
+        for _, data in tqdm(enumerate(test_loader, 0)):
+            ids = data['ids'].to(device, dtype=torch.long)
+            mask = data['mask'].to(device, dtype=torch.long)
+            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
+            targets = data['targets'].to(device, dtype=torch.float)
+            images = data['images'].to(device, dtype=torch.float)
+
+            # outputs = model_obj(ids, mask, token_type_ids, images)
+            outputs = model_obj(images)
+            outputs = output_resize(torch.squeeze(outputs, dim=1))
+            sigmoid = torch.sigmoid(outputs)
+            outputs = torch.round(sigmoid)
+            row_ids.extend(data['row_ids'])
+
+            for i in range(0, outputs.shape[0]):
+                dice = dice_coeff(outputs[i], targets[i])
+                dice = dice.item()
+                test_dice.append(dice)
+
+        avg_test_dice = np.average(test_dice)
+        print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+
+        return avg_test_dice, valid_log
 
 
 
