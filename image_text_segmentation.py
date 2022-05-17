@@ -189,6 +189,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #gloria_model.to(device)
 
     language_model.to(device)
+    model_obj.to(device)
 
     #print(model)
 
