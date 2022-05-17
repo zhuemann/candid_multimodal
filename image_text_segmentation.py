@@ -214,7 +214,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # criterion = global_loss()
 
     # defines which optimizer is being used
-    optimizer = torch.optim.Adam(params=model_obj.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR)
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
@@ -261,7 +261,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print(text_emb_g.size()) #[batchsize, 768]
             #print(text_emb_l.size()) #[batchsize, 768, 512]
 
-            lang_output = language_model(ids, mask, token_type_ids)
+            outputs = lang_output = language_model(ids, mask, token_type_ids)
             #print(type(lang_output))
             #print(lang_output[0].size())
             #print(lang_output[1].size())
@@ -272,25 +272,25 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             test1 = model_obj.encoder(images)
             #print(test1)
-            print("encoder")
-            print(type(test1))
+            #print("encoder")
+            #print(type(test1))
 
             #text_emb_l = torch.reshape(text_emb_l, (16, 768, 32, 16))
             test1[5] = lang_rep
 
-            for i in range(0, len(test1)):
-                print(i)
-                print(test1[i].size())
+            #for i in range(0, len(test1)):
+            #    print(i)
+            #    print(test1[i].size())
 
-            print("decoder")
-            test2 = model_obj.decoder(*test1)
-            print(type(test2))
+            #print("decoder")
+            #test2 = model_obj.decoder(*test1)
+            #print(type(test2))
 
-            for i in range(0, len(test2)):
-                print(i)
-                print(test2[i].size())
-            print("mask")
-            outputs = model_obj.segmentation_head(test2)
+            #for i in range(0, len(test2)):
+            #    print(i)
+            #    print(test2[i].size())
+            #print("mask")
+            #outputs = model_obj.segmentation_head(test2)
 
 
 
