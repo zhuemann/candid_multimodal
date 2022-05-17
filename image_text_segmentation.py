@@ -276,7 +276,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print(type(test1))
 
             #text_emb_l = torch.reshape(text_emb_l, (16, 768, 32, 16))
-            test1[5] = lang_rep
 
             #for i in range(0, len(test1)):
             #    print(i)
