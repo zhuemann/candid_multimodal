@@ -245,64 +245,14 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            x["imgs"] = images
-            x["caption_ids"] = ids
-            x["attention_mask"] = mask
-            x["token_type_ids"] = token_type_ids
-
-            #test = img_encoder(images) #[batchsize, 2048]
-            #print("image encoder output")
-            #print(test.size())
 
             outputs = test_obj(images, ids, mask, token_type_ids)
 
-
-            #text_emb_l, text_emb_g, sents = text_encoder(ids, mask, token_type_ids)
-            #print(text_emb_g.size()) #[batchsize, 768]
-            #print(text_emb_l.size()) #[batchsize, 768, 512]
-
-            lang_output = language_model(ids, mask, token_type_ids)
-            #print(type(lang_output))
-            #print(lang_output[0].size())
-            #print(lang_output[1].size())
-            #print(torch.unsqueeze(lang_output[1], 2).size())
-            #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-            #lang_rep = lang_rep.repeat(1,2,8,8)
-            #print(lang_rep.size())
-
-            test1 = model_obj.encoder(images)
-            #print(test1)
-            #print("encoder")
-            #print(type(test1))
-
-            #text_emb_l = torch.reshape(text_emb_l, (16, 768, 32, 16))
-
-            #for i in range(0, len(test1)):
-            #    print(i)
-            #    print(test1[i].size())
-
-            #print("decoder")
-            #test2 = model_obj.decoder(*test1)
-            #print(type(test2))
-
-            #for i in range(0, len(test2)):
-            #    print(i)
-            #    print(test2[i].size())
-            #print("mask")
-            #outputs = model_obj.segmentation_head(test2)
-
-
-
-
-            #outputs = model_obj(images)
-            # print(type(outputs))
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
 
             optimizer.zero_grad()
-            # loss = loss_fn(outputs[:, 0], targets)
             loss = criterion(outputs, targets)
-            # print(loss)
             if _ % 20 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
