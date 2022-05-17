@@ -192,8 +192,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     language_model.to(device)
     model_obj.to(device)
 
-    ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=2, bilinear=False)
-    ConTEXTual_seg_model.to(device)
+    test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=2, bilinear=False)
+    test_obj.to(device)
 
     #print(model)
 
@@ -254,7 +254,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print("image encoder output")
             #print(test.size())
 
-            ConTEXTual_seg_model(images, ids, mask, token_type_ids)
+            test_obj(images, ids, mask, token_type_ids)
 
 
             #text_emb_l, text_emb_g, sents = text_encoder(ids, mask, token_type_ids)
