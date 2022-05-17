@@ -45,7 +45,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #print(x4.size())
         x5 = self.down4(x4)
         #print(x5.size())
-        joint_rep = torch.cat(x5, lang_rep)
+        joint_rep = torch.cat((x5, lang_rep), dim=1)
         x = self.up1(joint_rep, x4)
 
         # x = self.up1(lang_rep, x4)
