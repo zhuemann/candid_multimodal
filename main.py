@@ -22,22 +22,23 @@ def create_parser():
 
 if __name__ == '__main__':
     args = create_parser()
-    local = args.local
+    #local = args.local
+
+    local = True
+
     if local:
-        zach_directory_base = "Z:/"  # rename to dir_base for Zach
-        # directory_base = "/Users/kritigoyal/Documents/CS_769_NLP/"
+        directory_base = "Z:/"
     else:
-        zach_directory_base = "/UserData/"
-        directory_base = "/Users/kritigoyal/Documents/CS_769_NLP/"
+        directory_base = "/UserData/"
 
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
-              "IMG_SIZE": 256, "train_samples": 120, "test_samples": 120, "data_path": "D:/candid_ptx/"}
+              "IMG_SIZE": 256, "train_samples": 120, "test_samples": 120, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "pretraining":True}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
         report_generation(config)
 
-    siim_datasetup(dir_base=directory_base)
+    #siim_datasetup(dir_base=directory_base)
     mlm_pretraining = args.mlm_pretraining
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base=directory_base)
@@ -71,13 +72,6 @@ if __name__ == '__main__':
         matrix = acc
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        # file_name = 'pretraining_vision_run_v3'
-        # file_name = 'image_net_weights_v2'
-        # file_name = 'gloria_vision_run_v3'
-        # folder_name = "imagenet_models"
-        # folder_name = "bio_clincial_bert_v1_ep100"
-        # folder_name = "roberta_100_images"
-        # folder_name = "gloria_100_images"
         folder_name = "imagenet_labeling_functions"
         # save to xlsx file
         filepath = os.path.join(directory_base,

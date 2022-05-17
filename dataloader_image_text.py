@@ -25,8 +25,7 @@ class TextImageDataset(Dataset):
         self.df_data = dataframe.values
         self.transforms = transforms
         self.mode = mode
-        self.data_path = os.path.join(dir_base, "dataset/candid_data/dataset1/dataset/")
-        # Zach: "public_datasets/candid_ptx/dataset1/dataset/"
+        self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
         self.resize = resize
 
     def __len__(self):
@@ -50,6 +49,7 @@ class TextImageDataset(Dataset):
             None,
             add_special_tokens=True,
             # max_length=self.max_len,
+            pad_to_max_length=True,
             padding=True,  # TODO self.max_len,
             # padding='longest',
             # truncation='True'
