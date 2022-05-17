@@ -1,4 +1,6 @@
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 
 
@@ -20,6 +22,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.down3 = Down(256, 512)
         factor = 2 if bilinear else 1
         self.down4 = Down(512, 1024 // factor)
+
+        self.up0 = Up(2048, 1024 // factor, bilinear)
         self.up1 = Up(1024, 512 // factor, bilinear)
         self.up2 = Up(512, 256 // factor, bilinear)
         self.up3 = Up(256, 128 // factor, bilinear)
@@ -45,9 +49,10 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #print(x4.size())
         x5 = self.down4(x4)
         #print(x5.size())
-        joint_rep = torch.cat((x5, lang_rep), dim=1)
-        x = self.up1(joint_rep, x4)
+        #joint_rep = torch.cat((x5, lang_rep), dim=1)
+        x = self.up0(x5, lang_rep)
 
+        x = self.up1(x, x4)
         # x = self.up1(lang_rep, x4)
         # x = self.up1(x5, x4)
         x = self.up2(x, x3)
@@ -58,13 +63,6 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
         return logits
 
-
-
-
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 
 class DoubleConv(nn.Module):
