@@ -254,20 +254,20 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print("image encoder output")
             #print(test.size())
 
-            test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images, ids, mask, token_type_ids)
 
 
             #text_emb_l, text_emb_g, sents = text_encoder(ids, mask, token_type_ids)
             #print(text_emb_g.size()) #[batchsize, 768]
             #print(text_emb_l.size()) #[batchsize, 768, 512]
 
-            outputs = lang_output = language_model(ids, mask, token_type_ids)
+            lang_output = language_model(ids, mask, token_type_ids)
             #print(type(lang_output))
             #print(lang_output[0].size())
             #print(lang_output[1].size())
             #print(torch.unsqueeze(lang_output[1], 2).size())
-            lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-            lang_rep = lang_rep.repeat(1,2,8,8)
+            #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
+            #lang_rep = lang_rep.repeat(1,2,8,8)
             #print(lang_rep.size())
 
             test1 = model_obj.encoder(images)
