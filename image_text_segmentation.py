@@ -19,6 +19,7 @@ import albumentations as albu
 #import torch.nn.functional as F
 from torch.optim import lr_scheduler
 from Gloria import GLoRIA
+from ConTEXTual_Segmentation_model import ConTEXTual_seg_model
 
 
 #from PIL import Image
@@ -191,6 +192,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     language_model.to(device)
     model_obj.to(device)
 
+    ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=2, bilinear=False)
+    ConTEXTual_seg_model.to(device)
+
     #print(model)
 
     #vision_model.to(device)
@@ -250,18 +254,21 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print("image encoder output")
             #print(test.size())
 
+            ConTEXTual_seg_model(images, ids, mask, token_type_ids)
+
+
             #text_emb_l, text_emb_g, sents = text_encoder(ids, mask, token_type_ids)
             #print(text_emb_g.size()) #[batchsize, 768]
             #print(text_emb_l.size()) #[batchsize, 768, 512]
 
             lang_output = language_model(ids, mask, token_type_ids)
-            print(type(lang_output))
-            print(lang_output[0].size())
-            print(lang_output[1].size())
-            print(torch.unsqueeze(lang_output[1], 2).size())
+            #print(type(lang_output))
+            #print(lang_output[0].size())
+            #print(lang_output[1].size())
+            #print(torch.unsqueeze(lang_output[1], 2).size())
             lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
             lang_rep = lang_rep.repeat(1,2,8,8)
-            print(lang_rep.size())
+            #print(lang_rep.size())
 
             test1 = model_obj.encoder(images)
             #print(test1)
@@ -283,14 +290,12 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 print(i)
                 print(test2[i].size())
             print("mask")
-            masks = model_obj.segmentation_head(test2)
-            print(type(masks))
-            print(masks.size())
-            print(model_obj.classification_head is None)
+            outputs = model_obj.segmentation_head(test2)
 
 
 
-            outputs = model_obj(images)
+
+            #outputs = model_obj(images)
             # print(type(outputs))
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
