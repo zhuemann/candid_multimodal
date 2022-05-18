@@ -114,6 +114,8 @@ class TextImageDataset(Dataset):
                     image = self.resize(image)  # resizes the image to be the same as the model size
                     # segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
                     # segmentation_mask = self.resize(segmentation_mask)
+                    print(type(image))
+                    print(image.size())
 
                 else:
                     # img = Image.fromarray(img).convert("RGB")
@@ -121,6 +123,8 @@ class TextImageDataset(Dataset):
                     img = np.array(img)
                     # image = Image.fromarray(img)  # makes the image into a PIL image
                     image = self.transforms(img)
+                    print(type(image))
+                    print(image.size())
             except:
                 print("can't transform")
                 print(img_path)
