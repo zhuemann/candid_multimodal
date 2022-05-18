@@ -183,7 +183,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
         #save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-        #model_obj.load_state_dict(torch.load(save_path))
+        model_obj.load_state_dict(torch.load(save_path))
 
     #text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
     #img_encoder = ImageEncoder()
@@ -243,6 +243,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         #vision_model.train()
         #language_model.train()
         model_obj.train()
+        test_obj.train()
         training_dice = []
         gc.collect()
         torch.cuda.empty_cache()
@@ -290,7 +291,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         with torch.no_grad():
             valid_dice = []
             gc.collect()
-            for _, data in tqdm(enumerate(training_loader, 0)):
+            for _, data in tqdm(enumerate(valid_loader, 0)):
                 ids = data['ids'].to(device, dtype=torch.long)
                 mask = data['mask'].to(device, dtype=torch.long)
                 token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
@@ -325,9 +326,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 #                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
                 #                             seed))
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
-                torch.save(model_obj.state_dict(), save_path)
+                torch.save(test_obj.state_dict(), save_path)
 
-    model_obj.eval()
+    test_obj.eval()
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
     saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
@@ -335,7 +336,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #                          'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
     #                              seed))
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
-    model_obj.load_state_dict(torch.load(saved_path))
+    test_obj.load_state_dict(torch.load(saved_path))
 
     with torch.no_grad():
         test_dice = []

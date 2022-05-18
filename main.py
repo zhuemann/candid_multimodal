@@ -39,7 +39,7 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    #train_image_text_segmentation(config)
+    train_image_text_segmentation(config)
 
 
     #siim_datasetup(dir_base=directory_base)
