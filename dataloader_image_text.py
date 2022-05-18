@@ -48,7 +48,7 @@ class TextImageDataset(Dataset):
             text,
             None,
             add_special_tokens=True,
-            # max_length=self.max_len,
+            max_length=self.max_len,
             # pad_to_max_length=True,
             padding= 'max_length',   #True,  # #TOD self.max_len,
             # padding='longest',
