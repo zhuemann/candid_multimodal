@@ -367,10 +367,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
+            targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            # outputs = model_obj(ids, mask, token_type_ids, images)
-            outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = model_obj(images)
+            # outputs = test_obj(images, ids, mask, token_type_ids)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             sigmoid = torch.sigmoid(outputs)
