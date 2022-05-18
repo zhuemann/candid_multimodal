@@ -48,7 +48,7 @@ ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
 
     # model specific global variables
-    IMG_SIZE = 256 #256 #1024 #512 #384
+    IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     BATCH_SIZE = batch_size
     LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
