@@ -97,38 +97,35 @@ class TextImageDataset(Dataset):
 
         if self.transforms is not None:
             # image = self.transforms(img)
-            try:
-                if self.mode == "train":
-                    # print(type(img))
-                    # print(img.shape)
-                    # img = Image.fromarray(img).convert("RGB") # should make this more rigous but stich this guy
-                    # print(type(img))
-                    img = Image.fromarray(img)
-                    img = np.array(img)
-                    # segmentation_mask_org = np.uint8(segmentation_mask_org)
-                    # print(type(img))
-                    transformed = self.transforms(image=img, mask=segmentation_mask_org)
-                    image = transformed['image']
-                    segmentation_mask_org = transformed['mask']
-                    image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
-                    image = self.resize(image)  # resizes the image to be the same as the model size
-                    # segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
-                    # segmentation_mask = self.resize(segmentation_mask)
+
+            if self.mode == "train":
+                # print(type(img))
+                # print(img.shape)
+                # img = Image.fromarray(img).convert("RGB") # should make this more rigous but stich this guy
+                # print(type(img))
+                img = Image.fromarray(img)
+                img = np.array(img)
+                # segmentation_mask_org = np.uint8(segmentation_mask_org)
+                # print(type(img))
+                transformed = self.transforms(image=img, mask=segmentation_mask_org)
+                image = transformed['image']
+                segmentation_mask_org = transformed['mask']
+                image = Image.fromarray(np.uint8(image))  # makes the image into a PIL image
+                image = self.resize(image)  # resizes the image to be the same as the model size
+                # segmentation_mask = Image.fromarray(np.uint8(segmentation_mask))
+                # segmentation_mask = self.resize(segmentation_mask)
 
 
-                else:
-                    # img = Image.fromarray(img).convert("RGB")
-                    # img = Image.fromarray(img)
-                    img = np.array(img)
-                    # image = Image.fromarray(img)  # makes the image into a PIL image
-                    print(type(img))
-                    print(img.size())
-                    image = self.transforms(img)
-                    print(type(image))
-                    print(image.size())
-            except:
-                print("can't transform")
-                print(img_path)
+            else:
+                # img = Image.fromarray(img).convert("RGB")
+                # img = Image.fromarray(img)
+                img = np.array(img)
+                # image = Image.fromarray(img)  # makes the image into a PIL image
+                print(type(img))
+                print(img.size())
+                image = self.transforms(img)
+
+
         else:
             image = img
 
