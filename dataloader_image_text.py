@@ -121,6 +121,8 @@ class TextImageDataset(Dataset):
                 image = self.transforms(img)
 
         else:
+            print("can't transform")
+            print(img_path)
             image = img
 
         # print(img.shape)
