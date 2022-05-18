@@ -200,8 +200,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         torch.save(model_obj.state_dict(), save_path)
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
-        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-        #model_obj.load_state_dict(torch.load(save_path))
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
+        model_obj.load_state_dict(torch.load(save_path))
 
     #text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
     #img_encoder = ImageEncoder()
