@@ -375,6 +375,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             outputs = test_obj(images, ids, mask, token_type_ids)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
+            targets = output_resize(targets)
+
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
             row_ids.extend(data['row_ids'])
