@@ -307,6 +307,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
         # each epoch, look at validation data
         with torch.no_grad():
+
+            model_obj.eval()
             valid_dice = []
             gc.collect()
             for _, data in tqdm(enumerate(valid_loader, 0)):
@@ -314,6 +316,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 mask = data['mask'].to(device, dtype=torch.long)
                 token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
                 targets = data['targets'].to(device, dtype=torch.float)
+                targets = torch.squeeze(targets)
                 images = data['images'].to(device, dtype=torch.float)
 
                 outputs = model_obj(images)
