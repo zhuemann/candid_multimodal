@@ -50,7 +50,7 @@ class TextImageDataset(Dataset):
             add_special_tokens=True,
             # max_length=self.max_len,
             pad_to_max_length=True,
-            padding= self.max_len,   #True,  # #TOD self.max_len,
+            padding= 'max_length',   #True,  # #TOD self.max_len,
             # padding='longest',
             # truncation='True'
             return_token_type_ids=True
