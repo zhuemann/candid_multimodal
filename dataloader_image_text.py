@@ -122,7 +122,6 @@ class TextImageDataset(Dataset):
                 img = np.array(img)
                 # image = Image.fromarray(img)  # makes the image into a PIL image
                 print(type(img))
-                print(img.size())
                 image = self.transforms(img)
 
 
