@@ -266,7 +266,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             optimizer.zero_grad()
             loss = criterion(outputs, targets)
-            if _ % 20 == 0:
+            if _ % 80 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
             optimizer.zero_grad()
