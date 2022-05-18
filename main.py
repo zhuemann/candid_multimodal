@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
-        acc, valid_log = segmentation_training(seed=seed, batch_size=16, dir_base=directory_base, epoch=15,
+        acc, valid_log = segmentation_training(seed=seed, batch_size=16, dir_base=directory_base, epoch=50,
                                                n_classes=2, pretrained_model=None)
         accuracy_list.append(acc)
         print(valid_log)
@@ -82,7 +82,7 @@ if __name__ == '__main__':
                                 '/UserData/Zach_Analysis/result_logs/candid_result/weak_supervision/' + str(
                                     folder_name) + '/valid_run_seed' + str(
                                     seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        #df.to_excel(filepath, index=False)
 
     print(accuracy_list)
     # print(lowest_loss)
