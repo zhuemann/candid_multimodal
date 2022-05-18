@@ -290,7 +290,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         with torch.no_grad():
             valid_dice = []
             gc.collect()
-            for _, data in tqdm(enumerate(valid_loader, 0)):
+            for _, data in tqdm(enumerate(training_loader, 0)):
                 ids = data['ids'].to(device, dtype=torch.long)
                 mask = data['mask'].to(device, dtype=torch.long)
                 token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
