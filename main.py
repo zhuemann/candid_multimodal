@@ -39,7 +39,9 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    train_image_text_segmentation(config)
+    #train_image_text_segmentation(config)
+
+
     #siim_datasetup(dir_base=directory_base)
     mlm_pretraining = args.mlm_pretraining
     if mlm_pretraining:
@@ -67,7 +69,7 @@ if __name__ == '__main__':
 
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
-        acc, valid_log = segmentation_training(seed=seed, batch_size=16, dir_base=directory_base, epoch=150,
+        acc, valid_log = segmentation_training(seed=seed, batch_size=16, dir_base=directory_base, epoch=15,
                                                n_classes=2, pretrained_model=None)
         accuracy_list.append(acc)
         print(valid_log)
