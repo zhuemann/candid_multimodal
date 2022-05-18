@@ -183,7 +183,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     else:
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
         #save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-        model_obj.load_state_dict(torch.load(save_path))
+        #model_obj.load_state_dict(torch.load(save_path))
 
     #text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
     #img_encoder = ImageEncoder()
@@ -204,7 +204,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #gloria_model.to(device)
 
     language_model.to(device)
-    model_obj.to(device)
+    #model_obj.to(device)
 
     test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     test_obj.to(device)
