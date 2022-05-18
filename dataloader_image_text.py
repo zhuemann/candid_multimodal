@@ -116,7 +116,6 @@ class TextImageDataset(Dataset):
 
                 else:
                     # img = Image.fromarray(img).convert("RGB")
-                    print("invalidloader")
                     img = Image.fromarray(img)
                     # img = np.array(img)
                     # image = Image.fromarray(img)  # makes the image into a PIL image

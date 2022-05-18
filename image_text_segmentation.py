@@ -155,6 +155,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
     print(training_set)
+    print("valid set")
+    print(valid_set)
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
