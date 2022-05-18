@@ -204,10 +204,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #gloria_model.to(device)
 
     language_model.to(device)
-    #model_obj.to(device)
+    model_obj.to(device)
 
     test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
-    test_obj.to(device)
+    #test_obj.to(device)
 
     #print(model)
 
@@ -228,7 +228,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # criterion = global_loss()
 
     # defines which optimizer is being used
-    optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(params=model_obj.parameters(), lr=LR)
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
@@ -260,8 +260,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            outputs = test_obj(images, ids, mask, token_type_ids)
-
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = model_obj(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
 
@@ -298,8 +298,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 targets = data['targets'].to(device, dtype=torch.float)
                 images = data['images'].to(device, dtype=torch.float)
 
-                # outputs = model_obj(ids, mask, token_type_ids, images)
-                outputs = test_obj(images, ids, mask, token_type_ids)
+                outputs = model_obj(images)
+                #outputs = test_obj(images, ids, mask, token_type_ids)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
                 targets = output_resize(targets)
