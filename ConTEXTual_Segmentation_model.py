@@ -36,9 +36,9 @@ class ConTEXTual_seg_model(torch.nn.Module):
         lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_rep.repeat(1, 1, 16, 16)
         #print(lang_rep.size())
-        size = lang_rep.size()
+        # size = lang_rep.size()
 
-        zeros = torch.zeros(size, device=torch.device('cuda:0') )
+        # zeros = torch.zeros(size, device=torch.device('cuda:0') )
 
         #print("forwards")
         #print(img.size())
@@ -60,8 +60,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #x = self.up0(x5, lang_rep)
         #x = self.up1(x, x4)
 
-        x = self.up1(zeros, x4)
-        #x = self.up1(lang_rep, x4)
+        #x = self.up1(zeros, x4)
+        x = self.up1(lang_rep, x4)
         #x = self.up1(x5, x4)
 
         x = self.up2(x, x3)
