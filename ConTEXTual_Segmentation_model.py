@@ -61,8 +61,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #x = self.up1(x, x4)
 
         #x = self.up1(zeros, x4)
-        #x = self.up1(lang_rep, x4)
-        x = self.up1(x5, x4)
+        x = self.up1(lang_rep, x4)
+        #x = self.up1(x5, x4)
 
         x = self.up2(x, x3)
         x = self.up3(x, x2)
