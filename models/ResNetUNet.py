@@ -13,10 +13,11 @@ class ResNetUNet(nn.Module):
     def __init__(self,lang_model, n_class):
         super().__init__()
 
-        self.base_model = models.resnet18(pretrained=True)
+        self.base_model = models.resnet34(pretrained=True)
         self.base_layers = list(self.base_model.children())
 
         print(self.base_layers)
+        print(len(self.base_layers))
 
         self.lang_encoder = lang_model
         self.layer0 = nn.Sequential(*self.base_layers[:3]) # size=(N, 64, x.H/2, x.W/2)
@@ -54,17 +55,16 @@ class ResNetUNet(nn.Module):
         x_original = self.conv_original_size0(input)
         x_original = self.conv_original_size1(x_original)
 
+        print("start of layers: ")
         layer0 = self.layer0(input)
+        print(layer0.size())
         layer1 = self.layer1(layer0)
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
-
+        print(layer4.size())
         layer5 = self.layer5(layer4)
-        print(layer5.size())
-        print(layer4.size())
         layer4 = self.layer4_1x1(layer4)
-        print(layer4.size())
         x = self.upsample(layer4)
         layer3 = self.layer3_1x1(layer3)
         x = torch.cat([x, layer3], dim=1)
