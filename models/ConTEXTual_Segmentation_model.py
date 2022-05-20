@@ -17,14 +17,15 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.bilinear = bilinear
 
         self.inc = DoubleConv(n_channels, 8)
-        self.down1 = Down(8, 16)
-        self.down2 = Down(16, 32)
-        self.down3 = Down(32, 64)
-        self.down4 = Down(64, 128)
-        self.down5 = Down(128, 256)
-        self.down6 = Down(256, 512)
+        self.down1 = Down(4, 8)
+        self.down2 = Down(8, 16)
+        self.down3 = Down(16, 32)
+        self.down4 = Down(32, 64)
+        self.down5 = Down(64, 128)
+        self.down6 = Down(128, 256)
+        self.down7 = Down(256, 512)
         factor = 2 if bilinear else 1
-        self.down7 = Down(512, 1024 // factor)
+        self.down8 = Down(512, 1024 // factor)
 
         self.combine = DoubleConv(2048, 1024)
         #self.up0 = Up(1024, 1024 // factor, bilinear)
@@ -56,13 +57,14 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x6 = self.down5(x5)
         x7 = self.down6(x6)
         x8 = self.down7(x7)
+        x9 = self.down8(x8)
         print(x7.size())
         print(x8.size())
-        joint_rep = torch.cat((x8, lang_rep), dim=1)
+        joint_rep = torch.cat((x9, lang_rep), dim=1)
 
-        x8 = self.combine(joint_rep)
+        x_comb = self.combine(joint_rep)
 
-        x = self.up1(x8, x7)
+        x = self.up1(x_comb, x9)
         x = self.up2(x, x6)
         x = self.up3(x, x5)
         x = self.up4(x, x4)
