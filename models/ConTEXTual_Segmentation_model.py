@@ -37,7 +37,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.up6 = Up(32, 16, bilinear)
         self.up7 = Up(16, 8, bilinear)
         self.up8 = Up(8, 4, bilinear)
-        self.outc = OutConv(64, n_classes)
+        #self.outc = OutConv(64, n_classes)
+        self.outc = OutConv(4, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
 
