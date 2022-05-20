@@ -13,7 +13,7 @@ class ResNetUNet(nn.Module):
     def __init__(self,lang_model, n_class):
         super().__init__()
 
-        self.base_model = models.resnet34(pretrained=True)
+        self.base_model = models.resnet18(pretrained=True)
         self.base_layers = list(self.base_model.children())
 
         #print(self.base_layers)
