@@ -103,7 +103,7 @@ class TextImageDataset(Dataset):
                 # print(img.shape)
                 img = Image.fromarray(img).convert("RGB") # should make this more rigous but stich this guy
                 # print(type(img))
-                img = Image.fromarray(img)
+                #img = Image.fromarray(img)
                 img = np.array(img)
                 # segmentation_mask_org = np.uint8(segmentation_mask_org)
                 # print(type(img))
@@ -119,7 +119,7 @@ class TextImageDataset(Dataset):
             else:
                 img = Image.fromarray(img).convert("RGB")
                 #img = Image.fromarray(img)
-                # img = np.array(img)
+                img = np.array(img)
                 # image = Image.fromarray(img)  # makes the image into a PIL image
                 image = self.transforms(img)
 
