@@ -8,8 +8,8 @@ from nltk.tokenize import RegexpTokenizer
 from sklearn import metrics
 
 from loss_functions import global_loss, local_loss, attention_fn, cosine_similarity
-from text_encoder import BertEncoder
-from vision_encoder import ImageEncoder
+from models.text_encoder import BertEncoder
+from models.vision_encoder import ImageEncoder
 
 
 class GLoRIA(nn.Module):
