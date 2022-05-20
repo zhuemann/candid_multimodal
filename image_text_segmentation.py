@@ -13,6 +13,9 @@ import numpy as np
 import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
+
+from torch.optim.lr_scheduler import MultiStepLR
+
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
@@ -244,6 +247,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
+    scheduler = MultiStepLR(optimizer, milestones=[5, 10, 25, 37, 50, 75, 100,125], gamma=0.70)
+
     print("about to start training loop")
     lowest_loss = 100
     best_acc = 0
@@ -329,6 +334,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                     dice = dice.item()
                     valid_dice.append(dice)
 
+            scheduler.step()
             avg_valid_dice = np.average(valid_dice)
             print(f"Epoch {str(epoch)}, Average Valid Dice Score = {avg_valid_dice}")
             valid_log.append(avg_valid_dice)
