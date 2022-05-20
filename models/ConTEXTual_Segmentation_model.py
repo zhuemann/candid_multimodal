@@ -16,7 +16,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.n_classes = n_classes
         self.bilinear = bilinear
 
-        self.inc = DoubleConv(n_channels, 64)
+        self.inc = DoubleConv(n_channels, 8)
         self.down1 = Down(8, 16)
         self.down2 = Down(16, 32)
         self.down3 = Down(32, 64)
