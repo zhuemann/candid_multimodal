@@ -41,7 +41,12 @@ class ResNetUNet(nn.Module):
 
         self.conv_last = nn.Conv2d(64, n_class, 1)
 
-    def forward(self, input):
+    def forward(self, input, ids, mask, token_type_ids):
+
+        lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
+        lang_rep = lang_rep.repeat(1, 1, 16, 16)
+
         x_original = self.conv_original_size0(input)
         x_original = self.conv_original_size1(x_original)
 
