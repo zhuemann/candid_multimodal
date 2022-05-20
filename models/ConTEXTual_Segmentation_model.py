@@ -65,6 +65,10 @@ class ConTEXTual_seg_model(torch.nn.Module):
         joint_rep = torch.cat((x9, lang_rep), dim=1)
 
         x_comb = self.combine(joint_rep)
+        print("combined")
+        print(x_comb.size())
+        print("x9")
+        print(x9.size())
 
         x = self.up1(x_comb, x9)
         x = self.up2(x, x7)
