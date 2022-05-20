@@ -54,7 +54,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x5 = self.down4(x4)
         x6 = self.down5(x5)
         x7 = self.down6(x6)
-        x8 = self.down6(x7)
+        x8 = self.down7(x7)
 
 
         joint_rep = torch.cat((x8, lang_rep), dim=1)
@@ -63,11 +63,11 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
         x = self.up1(x8, x7)
         x = self.up2(x, x6)
-        x = self.up2(x, x5)
-        x = self.up2(x, x4)
-        x = self.up2(x, x3)
-        x = self.up3(x, x2)
-        x = self.up4(x, x1)
+        x = self.up3(x, x5)
+        x = self.up4(x, x4)
+        x = self.up5(x, x3)
+        x = self.up6(x, x2)
+        x = self.up7(x, x1)
         logits = self.outc(x)
         """
         #print("forwards")
