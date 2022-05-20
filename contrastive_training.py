@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer, BertModel
 
-from Gloria import GLoRIA
+from models.Gloria import GLoRIA
 from dataloader_image_text import TextImageDataset
 
 # from PIL import Image

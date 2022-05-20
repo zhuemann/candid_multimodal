@@ -1,12 +1,11 @@
 import os
 from sklearn import model_selection
 import torchvision.transforms as transforms
-from transformers import AutoTokenizer, RobertaModel, BertModel
+from transformers import AutoTokenizer, RobertaModel
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
 import pandas as pd
-from bert_base import BERTClass
 
 from tqdm import tqdm
 
@@ -17,9 +16,8 @@ import albumentations as albu
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
-from torch.optim import lr_scheduler
-from Gloria import GLoRIA
-from ConTEXTual_Segmentation_model import ConTEXTual_seg_model
+from models.ConTEXTual_Segmentation_model import ConTEXTual_seg_model
+from models.ResNetUNet import ResNetUNet
 
 
 #from PIL import Image
@@ -28,18 +26,12 @@ from ConTEXTual_Segmentation_model import ConTEXTual_seg_model
 #from sklearn import metrics
 #from sklearn.metrics import accuracy_score, hamming_loss
 
-from candid_datasetup import get_candid_labels, get_all_text_image_pairs
 from dataloader_image_text import TextImageDataset
 #from vit_base import ViTBase16
 #from utility import compute_metrics
-from utility import hamming_score, dice_coeff
+from utility import dice_coeff
 #from vgg16 import VGG16
-from ResNet import resnet_34, resnet_50
 #import matplotlib.pyplot as plt
-from loss_functions import ContrastiveLoss, global_loss, get_global_similarities
-
-from text_encoder import BertEncoder
-from vision_encoder import ImageEncoder
 
 import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
@@ -224,7 +216,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     language_model.to(device)
     #model_obj.to(device)
 
-    test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
+    #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
+    test_obj = ResNetUNet(lang_model=language_model, n_classes=1)
     test_obj.to(device)
 
     #print(model)
@@ -285,7 +278,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             optimizer.zero_grad()
             loss = criterion(outputs, targets)
-            if _ % 80 == 0:
+            if _ % 400 == 0:
                 print(f'Epoch: {epoch}, Loss:  {loss.item()}')
 
             optimizer.zero_grad()

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from ResNet import resnet_50
+from models.ResNet import resnet_50
 
 
 class ImageEncoder(nn.Module):

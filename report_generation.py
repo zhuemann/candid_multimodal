@@ -11,7 +11,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, GPT2LMHeadModel, GPT2Tokenizer
 
 from dataloader_image_text import TextImageDataset
-from vision_encoder import ImageEncoder
+from models.vision_encoder import ImageEncoder
 
 
 # import IPython
