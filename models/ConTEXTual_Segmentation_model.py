@@ -16,7 +16,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.n_classes = n_classes
         self.bilinear = bilinear
 
-        self.inc = DoubleConv(n_channels, 8)
+        self.inc = DoubleConv(n_channels, 4)
         self.down1 = Down(4, 8)
         self.down2 = Down(8, 16)
         self.down3 = Down(16, 32)
@@ -36,6 +36,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.up5 = Up(64, 32, bilinear)
         self.up6 = Up(32, 16, bilinear)
         self.up7 = Up(16, 8, bilinear)
+        self.up8 = Up(8, 4, bilinear)
         self.outc = OutConv(64, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
@@ -66,12 +67,13 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x_comb = self.combine(joint_rep)
 
         x = self.up1(x_comb, x9)
-        x = self.up2(x, x6)
-        x = self.up3(x, x5)
-        x = self.up4(x, x4)
-        x = self.up5(x, x3)
-        x = self.up6(x, x2)
-        x = self.up7(x, x1)
+        x = self.up2(x, x7)
+        x = self.up3(x, x6)
+        x = self.up4(x, x5)
+        x = self.up5(x, x4)
+        x = self.up6(x, x3)
+        x = self.up7(x, x2)
+        x = self.up8(x, x1)
         logits = self.outc(x)
         """
         #print("forwards")
