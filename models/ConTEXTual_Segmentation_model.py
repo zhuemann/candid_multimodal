@@ -15,16 +15,16 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.n_classes = n_classes
         self.bilinear = bilinear
 
-        self.inc = DoubleConv(n_channels, 4)
-        self.down1 = Down(4, 8)
-        self.down2 = Down(8, 16)
-        self.down3 = Down(16, 32)
-        self.down4 = Down(32, 64)
-        self.down5 = Down(64, 128)
-        self.down6 = Down(128, 256)
-        self.down7 = Down(256, 512)
+        self.inc = DoubleConv(n_channels, 64)
+        self.down1 = Down(64, 128)
+        self.down2 = Down(128, 256)
+        self.down3 = Down(256, 512)
+        #self.down4 = Down(32, 64)
+        #self.down5 = Down(64, 128)
+        #self.down6 = Down(128, 256)
+        #self.down7 = Down(256, 512)
         factor = 2 if bilinear else 1
-        self.down8 = Down(512, 1024 // factor)
+        self.down4 = Down(512, 1024 // factor)
 
         self.combine = DoubleConv(2048, 1024)
         #self.up0 = Up(1024, 1024 // factor, bilinear)
@@ -32,23 +32,23 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.up2 = Up(512, 256 // factor, bilinear)
         self.up3 = Up(256, 128 // factor, bilinear)
         self.up4 = Up(128, 64, bilinear)
-        self.up5 = Up(64, 32, bilinear)
-        self.up6 = Up(32, 16, bilinear)
-        self.up7 = Up(16, 8, bilinear)
-        self.up8 = Up(8, 4, bilinear)
+        #self.up5 = Up(64, 32, bilinear)
+        #self.up6 = Up(32, 16, bilinear)
+        #self.up7 = Up(16, 8, bilinear)
+        #self.up8 = Up(8, 4, bilinear)
         #self.outc = OutConv(64, n_classes)
-        self.outc = OutConv(4, n_classes)
+        self.outc = OutConv(64, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
 
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        #lang_rep = lang_rep.repeat(1, 1, , 16)
+        lang_rep = lang_rep.repeat(1, 1, 16 , 16)
         #print(lang_rep.size())
         # size = lang_rep.size()
 
         # zeros = torch.zeros(size, device=torch.device('cuda:0') )
-
+        """
         x1 = self.inc(img)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
@@ -73,6 +73,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x = self.up8(x, x1)
         logits = self.outc(x)
         """
+
         #print("forwards")
         #print(img.size())
         x1 = self.inc(img)
@@ -102,7 +103,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x = self.up3(x, x2)
         x = self.up4(x, x1)
         logits = self.outc(x)
-        """
+
 
         return logits
 

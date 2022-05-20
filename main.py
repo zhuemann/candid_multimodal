@@ -32,13 +32,15 @@ if __name__ == '__main__':
     else:
         directory_base = "/UserData/"
 
-    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-4,
+    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 1, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "pretraining":False}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
         report_generation(config)
 
+
+    """
     acc, valid_log = train_image_text_segmentation(config)
 
     df = pd.DataFrame(valid_log)
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     # save to xlsx file
     filepath = os.path.join(directory_base,'/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/' + str( folder_name) + '/valid_150ep' +"seed"+str(seed) +'.xlsx')
     df.to_excel(filepath, index=False)
-
+    """
 
 
 
@@ -75,6 +77,20 @@ if __name__ == '__main__':
     seeds = [295]
     # seeds = [915]
     accuracy_list = []
+
+    for seed in seeds:
+
+        config["seed"] = seed
+        acc, valid_log = train_image_text_segmentation(config)
+
+        df = pd.DataFrame(valid_log)
+        df["test_accuracy"] = acc
+        folder_name = "multimodal"
+        # save to xlsx file
+        filepath = os.path.join(directory_base,
+                                '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/' + str(
+                                    folder_name) + '/valid_150ep' + "seed" + str(seed) + '.xlsx')
+        df.to_excel(filepath, index=False)
 
     """
     # loops through the segmentation training multiple times with different seeds
