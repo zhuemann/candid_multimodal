@@ -117,7 +117,7 @@ class TextImageDataset(Dataset):
 
 
             else:
-                RGB = True
+                RGB = False
                 if RGB:
                     img = Image.fromarray(img).convert("RGB")
 
