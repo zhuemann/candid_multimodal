@@ -58,8 +58,9 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x7 = self.down6(x6)
         x8 = self.down7(x7)
         x9 = self.down8(x8)
-        print(x7.size())
         print(x8.size())
+        print(x9.size())
+
         joint_rep = torch.cat((x9, lang_rep), dim=1)
 
         x_comb = self.combine(joint_rep)
