@@ -8,7 +8,6 @@ class ConTEXTual_seg_model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
 
         super(ConTEXTual_seg_model, self).__init__()
-        print("hi")
 
         self.lang_encoder = lang_model
 
@@ -44,7 +43,6 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        print(lang_rep.size())
         #lang_rep = lang_rep.repeat(1, 1, , 16)
         #print(lang_rep.size())
         # size = lang_rep.size()
@@ -60,16 +58,10 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x7 = self.down6(x6)
         x8 = self.down7(x7)
         x9 = self.down8(x8)
-        print(x8.size())
-        print(x9.size())
 
         joint_rep = torch.cat((x9, lang_rep), dim=1)
 
         x_comb = self.combine(joint_rep)
-        print("combined")
-        print(x_comb.size())
-        print("x9")
-        print(x9.size())
 
         x = self.up1(x_comb, x8)
         x = self.up2(x, x7)
