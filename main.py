@@ -33,7 +33,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
-              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "pretraining":False}
+              "IMG_SIZE": 256, "train_samples": 2, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "pretraining":False}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
