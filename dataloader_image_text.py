@@ -117,11 +117,16 @@ class TextImageDataset(Dataset):
 
 
             else:
-                #img = Image.fromarray(img).convert("RGB")
+                RGB = True
+                if RGB:
+                    img = Image.fromarray(img).convert("RGB")
                 #img = Image.fromarray(img)
-                # img = np.array(img)
+                    img = np.array(img)
                 # image = Image.fromarray(img)  # makes the image into a PIL image
-                image = self.transforms(img)
+                    image = self.transforms(img)
+                else:
+                    img = Image.fromarray(img)
+                    image = self.transforms(img)
 
 
         else:
