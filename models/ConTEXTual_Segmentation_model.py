@@ -70,7 +70,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         print("x9")
         print(x9.size())
 
-        x = self.up1(x9, joint_rep)
+        x = self.up1(x_comb, x9)
         x = self.up2(x, x7)
         x = self.up3(x, x6)
         x = self.up4(x, x5)
