@@ -13,7 +13,7 @@ class ResNetUNet(nn.Module):
     def __init__(self,lang_model, n_class):
         super().__init__()
 
-        self.base_model = models.resnet18(pretrained=True)
+        self.base_model = models.resnet50(pretrained=True)
         self.base_layers = list(self.base_model.children())
 
         #print(self.base_layers)
@@ -31,6 +31,7 @@ class ResNetUNet(nn.Module):
         self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
         self.layer4_1x1 = convrelu(512, 512, 1, 0)
         self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
+
         self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
 
         self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
@@ -50,7 +51,7 @@ class ResNetUNet(nn.Module):
 
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        lang_rep = lang_rep.repeat(1, 1, 16, 16)
+        lang_rep = lang_rep.repeat(1, 2, 8, 8)
 
         x_original = self.conv_original_size0(input)
         x_original = self.conv_original_size1(x_original)
