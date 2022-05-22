@@ -45,9 +45,9 @@ class ConTEXTual_seg_model(torch.nn.Module):
         lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_rep.repeat(1, 1, 16, 16)
         #print(lang_rep.size())
-        # size = lang_rep.size()
+        size = lang_rep.size()
 
-        # zeros = torch.zeros(size, device=torch.device('cuda:0') )
+        zeros = torch.zeros(size, device=torch.device('cuda:0') )
         """
         x1 = self.inc(img)
         x2 = self.down1(x1)
@@ -81,7 +81,9 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        joint_rep = torch.cat((x5, lang_rep), dim=1)
+        #joint_rep = torch.cat((x5, lang_rep), dim=1)
+        joint_rep = torch.cat((x5, zeros), dim=1)
+
 
         x5 = self.combine(joint_rep)
         #print(x5.size())
