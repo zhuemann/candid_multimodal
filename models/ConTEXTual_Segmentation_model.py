@@ -26,7 +26,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         factor = 2 if bilinear else 1
         self.down4 = Down(512, 1024 // factor)
 
-        self.combine = DownSample1x1(2048, 1024)
+        self.combine = OutConv(2048, 1024)
         #self.up0 = Up(1024, 1024 // factor, bilinear)
         self.up1 = Up(1024, 512 // factor, bilinear)
         self.up2 = Up(512, 256 // factor, bilinear)
@@ -125,16 +125,17 @@ class DoubleConv(nn.Module):
     def forward(self, x):
         return self.double_conv(x)
 
+"""
 class DownSample1x1(nn.Module):
-    """Uses 1x1 convolution to downsample channel"""
 
     def __init__(selfself, in_channels, out_channels):
         super().__init__()
 
-        onexone = nn.Conv2d(in_channels, out_channels, kernel_size=(1,1), padding = 0)
+        self.onexone = nn.Conv2d(in_channels, out_channels, kernel_size=(1,1), padding = 0)
 
     def forward(self, x):
         return self.onexone(x)
+"""
 
 
 class Down(nn.Module):
