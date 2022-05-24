@@ -66,6 +66,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #lang_rep = lang_rep.repeat(1, 1, 16, 16)
         #print(lang_rep.size())
         #size = lang_rep.size()
+        batch_size = lang_rep.size()[0]
 
         #zeros = torch.zeros(size, device=torch.device('cuda:0') )
         """
@@ -108,7 +109,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         joint_rep = self.flatten(x5)
         joint_rep = torch.cat((joint_rep, lang_rep), dim=1)
         x5 = self.linear(joint_rep)
-        x5 = torch.reshape(x5, (8, 64, 16, 16))
+        x5 = torch.reshape(x5, (batch_size, 64, 16, 16))
         #x5 = self.combine(joint_rep)
         #print(x5.size())
         #print(lang_rep.size())
