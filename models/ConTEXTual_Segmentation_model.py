@@ -15,6 +15,24 @@ class ConTEXTual_seg_model(torch.nn.Module):
         self.n_classes = n_classes
         self.bilinear = bilinear
 
+        self.inc = DoubleConv(n_channels, 4)
+        self.down1 = Down(4, 8)
+        self.down2 = Down(8, 16)
+        self.down3 = Down(16, 32)
+        factor = 2 if bilinear else 1
+        self.down4 = Down(32, 64 // factor)
+
+        self.flatten = nn.Flatten(1,-1)
+        self.linear = nn.Linear(64*16*16+1024, 64*16*16)
+        #self.combine = OutConv(2048, 1024)
+        # self.up0 = Up(1024, 1024 // factor, bilinear)
+        self.up1 = Up(64, 32 // factor, bilinear)
+        self.up2 = Up(32, 16 // factor, bilinear)
+        self.up3 = Up(16, 8 // factor, bilinear)
+        self.up4 = Up(8, 4, bilinear)
+        self.outc = OutConv(4, n_classes)
+
+        """
         self.inc = DoubleConv(n_channels, 64)
         self.down1 = Down(64, 128)
         self.down2 = Down(128, 256)
@@ -38,6 +56,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #self.up8 = Up(8, 4, bilinear)
         #self.outc = OutConv(64, n_classes)
         self.outc = OutConv(64, n_classes)
+        """
 
     def forward(self, img, ids, mask, token_type_ids):
 
@@ -85,7 +104,9 @@ class ConTEXTual_seg_model(torch.nn.Module):
         #joint_rep = torch.cat((x5, zeros), dim=1)
 
 
-        x5 = self.combine(joint_rep)
+        joint_rep = self.flatten(joint_rep)
+        x5 = self.linear(joint_rep)
+        #x5 = self.combine(joint_rep)
         #print(x5.size())
         #print(lang_rep.size())
 

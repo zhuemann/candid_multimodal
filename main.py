@@ -8,7 +8,8 @@ from contrastive_training import contrastive_pretraining
 from report_generation import report_generation
 from segmentation_training import segmentation_training
 from image_text_segmentation import train_image_text_segmentation
-# from create_unet import load_img_segmentation_model
+#from create_unet import load_img_segmentation_model
+#from test_model import load_best_model
 from siim_dataloader import siim_datasetup
 
 def create_parser():
@@ -85,7 +86,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "multimodal_v3"
+        folder_name = "multimodal_v4"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/' + str(
