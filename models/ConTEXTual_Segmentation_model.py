@@ -100,11 +100,12 @@ class ConTEXTual_seg_model(torch.nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        joint_rep = torch.cat((x5, lang_rep), dim=1)
+        #joint_rep = torch.cat((x5, lang_rep), dim=1)
         #joint_rep = torch.cat((x5, zeros), dim=1)
 
 
-        joint_rep = self.flatten(joint_rep)
+        joint_rep = self.flatten(x5)
+        joint_rep = torch.cat((joint_rep, lang_rep))
         print(joint_rep.size())
         x5 = self.linear(joint_rep)
         #x5 = self.combine(joint_rep)
