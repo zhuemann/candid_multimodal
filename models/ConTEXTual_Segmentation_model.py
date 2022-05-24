@@ -61,7 +61,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
     def forward(self, img, ids, mask, token_type_ids):
 
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
-        lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
+        #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         #lang_rep = lang_rep.repeat(1, 1, 16, 16)
         #print(lang_rep.size())
         #size = lang_rep.size()
@@ -105,6 +105,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
 
         joint_rep = self.flatten(x5)
+        print(joint_rep.size())
+        print(lang_rep.size())
         joint_rep = torch.cat((joint_rep, lang_rep))
         print(joint_rep.size())
         x5 = self.linear(joint_rep)
