@@ -105,6 +105,7 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
 
         joint_rep = self.flatten(joint_rep)
+        print(joint_rep.size())
         x5 = self.linear(joint_rep)
         #x5 = self.combine(joint_rep)
         #print(x5.size())
