@@ -44,14 +44,14 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
-    BATCH_SIZE = batch_size
+    #BATCH_SIZE = batch_size
     LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
     N_CLASS = n_classes
 
     dir_base = config["dir_base"]
     seed = config["seed"]
-    batch_size = config["batch_size"]
+    BATCH_SIZE = config["batch_size"]
     N_EPOCHS = config["epochs"]
 
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
