@@ -76,6 +76,7 @@ class Attention_conTEXTual_seg_model():
 
         logits = self.outc(x)
 
+
         return logits
 
 
