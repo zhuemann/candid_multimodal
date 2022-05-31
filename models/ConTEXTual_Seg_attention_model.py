@@ -40,9 +40,9 @@ class Attention_conTEXTual_seg_model():
         self.outc = OutConv(64, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
-        lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        lang_rep = lang_output[1]
+        #lang_rep = lang_output[1]
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
         # print(lang_rep.size())
         # size = lang_rep.size()
@@ -56,22 +56,22 @@ class Attention_conTEXTual_seg_model():
 
         x = self.up1(x5)
         #
-        x = concatentation_layers(x, x4)
+        x = concatenate_layers(x, x4)
         x = self.up_conv1(x)
 
         x = self.up2(x)
         #
-        x = concatentation_layers(x, x3)
+        x = concatenate_layers(x, x3)
         x = self.up_conv2(x)
 
         x = self.up3(x)
         #
-        x = concatentation_layers(x, x2)
+        x = concatenate_layers(x, x2)
         x = self.up_conv3(x)
 
         x = self.up4(x)
         #
-        x = concatentation_layers(x, x1)
+        x = concatenate_layers(x, x1)
         x = self.up_conv4(x)
 
         logits = self.outc(x)
@@ -98,10 +98,9 @@ class Up(nn.Module):
         return x1
 
 
-def concatentation_layers(x1, x2):
+def concatenate_layers(x1, x2):
     x = torch.cat([x2, x1], dim=1)
     return x
-
 
 
 class DoubleConv(nn.Module):
@@ -123,6 +122,7 @@ class DoubleConv(nn.Module):
     def forward(self, x):
         return self.double_conv(x)
 
+
 class Down(nn.Module):
     """Downscaling with maxpool then double conv"""
 
@@ -135,6 +135,7 @@ class Down(nn.Module):
 
     def forward(self, x):
         return self.maxpool_conv(x)
+
 
 class OutConv(nn.Module):
     def __init__(self, in_channels, out_channels):
