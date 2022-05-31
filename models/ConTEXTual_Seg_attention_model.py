@@ -4,8 +4,8 @@ import torch.nn.functional as F
 
 
 class Attention_conTEXTual_seg_model():
-
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
+
         super(Attention_conTEXTual_seg_model, self).__init__()
 
         self.lang_encoder = lang_model
