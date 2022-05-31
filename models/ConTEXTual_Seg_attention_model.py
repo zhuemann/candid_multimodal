@@ -21,19 +21,19 @@ class Attention_conTEXTual_seg_model():
         self.down3 = Down(256, 512)
         self.down4 = Down(512, 1024 // factor)
 
-        self.up1 = Up(1024, 512 // factor, bilinear)
+        self.up1 = Up(1024, bilinear)
         #
         self.up_conv1 = DoubleConv(1024, 512)
 
-        self.up2 = Up(512, 256 // factor, bilinear)
+        self.up2 = Up(512, bilinear)
         #
         self.up_conv2 = DoubleConv(512, 256)
 
-        self.up3 = Up(256, 128 // factor, bilinear)
+        self.up3 = Up(256, bilinear)
         #
         self.up_conv3 = DoubleConv(256, 128)
 
-        self.up4 = Up(128, 64, bilinear)
+        self.up4 = Up(128, bilinear)
         #
         self.up_conv4 = DoubleConv(128, 64)
 
