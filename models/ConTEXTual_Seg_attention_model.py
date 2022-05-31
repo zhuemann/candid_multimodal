@@ -33,7 +33,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.up_conv3 = DoubleConv(256, 128)
 
         self.up4 = Up(128, bilinear)
-        self.attention1 = Attention_block(64, 64, 32)
+        self.attention4 = Attention_block(64, 64, 32)
         self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_classes)
@@ -54,7 +54,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x5 = self.down4(x4)
 
         decode1 = self.up1(x5)
-        x4 = self.attention1(decode1,x4)
+        x4 = self.attention1(decode1, x4)
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
