@@ -1,9 +1,8 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
-class Attention_ConTEXTual_Seg_Model():
+class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
 
         super(Attention_ConTEXTual_Seg_Model, self).__init__()
