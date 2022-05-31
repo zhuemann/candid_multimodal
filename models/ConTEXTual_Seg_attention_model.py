@@ -3,10 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class Attention_conTEXTual_seg_model():
+class Attention_ConTEXTual_Seg_Model():
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
 
-        super(Attention_conTEXTual_seg_model, self).__init__()
+        super(Attention_ConTEXTual_Seg_Model, self).__init__()
 
         self.lang_encoder = lang_model
 
@@ -22,19 +22,15 @@ class Attention_conTEXTual_seg_model():
         self.down4 = Down(512, 1024 // factor)
 
         self.up1 = Up(1024, bilinear)
-        #
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
-        #
         self.up_conv2 = DoubleConv(512, 256)
 
         self.up3 = Up(256, bilinear)
-        #
         self.up_conv3 = DoubleConv(256, 128)
 
         self.up4 = Up(128, bilinear)
-        #
         self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_classes)
@@ -55,27 +51,22 @@ class Attention_conTEXTual_seg_model():
         x5 = self.down4(x4)
 
         x = self.up1(x5)
-        #
         x = concatenate_layers(x, x4)
         x = self.up_conv1(x)
 
         x = self.up2(x)
-        #
         x = concatenate_layers(x, x3)
         x = self.up_conv2(x)
 
         x = self.up3(x)
-        #
         x = concatenate_layers(x, x2)
         x = self.up_conv3(x)
 
         x = self.up4(x)
-        #
         x = concatenate_layers(x, x1)
         x = self.up_conv4(x)
 
         logits = self.outc(x)
-
 
         return logits
 
