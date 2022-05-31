@@ -131,6 +131,8 @@ class ConTEXTual_seg_model(torch.nn.Module):
 
 
 
+
+
 class DoubleConv(nn.Module):
     """(convolution => [BN] => ReLU) * 2"""
 
