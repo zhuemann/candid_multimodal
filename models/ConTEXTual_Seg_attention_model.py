@@ -21,15 +21,19 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.down4 = Down(512, 1024 // factor)
 
         self.up1 = Up(1024, bilinear)
+        self.attention1 = Attention_block(512, 512, 256)
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
+        self.attention2 = Attention_block(256, 256, 128)
         self.up_conv2 = DoubleConv(512, 256)
 
         self.up3 = Up(256, bilinear)
+        self.attention3 = Attention_block(128, 128, 64)
         self.up_conv3 = DoubleConv(256, 128)
 
         self.up4 = Up(128, bilinear)
+        self.attention1 = Attention_block(64, 64, 32)
         self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_classes)
@@ -49,20 +53,24 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x4 = self.down3(x3)
         x5 = self.down4(x4)
 
-        x = self.up1(x5)
-        x = concatenate_layers(x, x4)
+        decode1 = self.up1(x5)
+        x4 = self.attention1(decode1,x4)
+        x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
-        x = self.up2(x)
-        x = concatenate_layers(x, x3)
+        decode2 = self.up2(x)
+        x3 = self.attention2(decode2, x3)
+        x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
-        x = self.up3(x)
-        x = concatenate_layers(x, x2)
+        decode3 = self.up3(x)
+        x2 = self.attention3(decode3, x2)
+        x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
-        x = self.up4(x)
-        x = concatenate_layers(x, x1)
+        decode4 = self.up4(x)
+        x1 = self.attention4(decode4, x1)
+        x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 
         logits = self.outc(x)
@@ -134,3 +142,35 @@ class OutConv(nn.Module):
 
     def forward(self, x):
         return self.conv(x)
+
+
+class Attention_block(nn.Module):
+
+    """https://github.com/LeeJunHyun/Image_Segmentation"""
+    def __init__(self, F_g, F_l, F_int):
+        super(Attention_block, self).__init__()
+        self.gate = nn.Sequential(
+            nn.Conv2d(F_g, F_int, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.BatchNorm2d(F_int)
+        )
+
+        self.x_layer = nn.Sequential(
+            nn.Conv2d(F_l, F_int, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.BatchNorm2d(F_int)
+        )
+
+        self.psi = nn.Sequential(
+            nn.Conv2d(F_int, 1, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.BatchNorm2d(1),
+            nn.Sigmoid()
+        )
+
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, g, x):
+        gated_conv = self.gate(g)
+        layer_conv = self.x_layer(x)
+        psi = self.relu(gated_conv + layer_conv)
+        psi = self.psi(psi)
+
+        return x * psi

@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "multimodal_v6"
+        folder_name = "multimodal_v7"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/' + str(
