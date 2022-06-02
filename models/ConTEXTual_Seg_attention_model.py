@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
@@ -39,13 +40,13 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.outc = OutConv(64, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
-        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        # lang_output = self.lang_encoder(ids, mask, token_type_ids)
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        #lang_rep = lang_output[1]
+        # lang_rep = lang_output[1]
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
         # print(lang_rep.size())
         # size = lang_rep.size()
-        #batch_size = lang_rep.size()[0]
+        # batch_size = lang_rep.size()[0]
 
         x1 = self.inc(img)
         x2 = self.down1(x1)
@@ -85,6 +86,8 @@ class Up(nn.Module):
         super().__init__()
 
         # if bilinear, use the normal convolutions to reduce the number of channels
+        print("bilinear")
+        print(bilinear)
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
         else:
@@ -97,6 +100,14 @@ class Up(nn.Module):
 
 
 def concatenate_layers(x1, x2):
+
+    # input is CHW
+    diffY = x2.size()[2] - x1.size()[2]
+    diffX = x2.size()[3] - x1.size()[3]
+
+    x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
+                    diffY // 2, diffY - diffY // 2])
+
     x = torch.cat([x2, x1], dim=1)
     return x
 
