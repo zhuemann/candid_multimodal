@@ -55,22 +55,22 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x5 = self.down4(x4)
 
         decode1 = self.up1(x5)
-        x4 = self.attention1(decode1, x4)
+        #x4 = self.attention1(decode1, x4)
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        x3 = self.attention2(decode2, x3)
+        #x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
-        x2 = self.attention3(decode3, x2)
+        #x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
-        x1 = self.attention4(decode4, x1)
+        #x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 

@@ -243,6 +243,7 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base="/home/zmh001/r-
             # print(images.shape)
             # outputs = model_obj(ids, mask, token_type_ids, images)
             outputs = model_obj(images)
+
             # print(type(outputs))
             outputs = output_resize(torch.squeeze(outputs, dim=1))
 

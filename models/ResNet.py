@@ -2,6 +2,7 @@ import os
 
 import torch.nn as nn
 from torchvision import models as models_2d
+import torch
 
 
 class Identity(nn.Module):
@@ -18,11 +19,11 @@ def resnet_34(pretrained=True):
     return model, feature_dims, 1024
 
 
-def resnet_50(pretrained=True, dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"):
+def resnet_50(pretrained=True, dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"): #"/Users/kritigoyal/Documents/CS_769_NLP/"
     if pretrained:
-        save_path = os.path.join(dir_base, 'CS769_Gloria_models/resnet50')
+        save_path = os.path.join(dir_base, 'models/resnet/resnet50')
         model = models_2d.resnet50(pretrained=False)
-        # model.load_state_dict(torch.load(save_path)) # TODO uncomment this line
+        model.load_state_dict(torch.load(save_path))
     else:
         model = models_2d.resnet50(pretrained=False)
 
