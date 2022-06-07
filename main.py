@@ -17,7 +17,7 @@ def create_parser():
     parser.add_argument('--local', '-l', type=bool, help="Should the program run locally", default=False)
     parser.add_argument('--report_gen', '-r', type=bool, help="Should we train report generation?", default=False)
     parser.add_argument('--mlm_pretraining', '-m', type=bool, help="Should we perform MLM pretraining?", default=False)
-    parser.add_argument('--pretraining', '-p', type=bool, help="Should we perform multimodal pretraining?", default=False)
+    parser.add_argument('--contrastive_training', '-p', type=bool, help="Should we perform multimodal pretraining?", default=False)
     arg = parser.parse_args()
     return arg
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
-              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "pretraining":False}
+              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training":True}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
@@ -59,11 +59,14 @@ if __name__ == '__main__':
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base=directory_base)
 
-    pretraining = args.pretraining
-    if pretraining:
-        pretrained_model, lowest_loss, loss_list = contrastive_pretraining(seed=7, batch_size=16,
-                                                                           dir_base=directory_base, epoch=50,
-                                                                           n_classes=2)
+    contrastive_training = args.contrastive_training
+    if contrastive_training:
+        print("contastive training")
+        #pretrained_model, lowest_loss, loss_list = contrastive_pretraining(seed=7, batch_size=16,
+        #                                                                   dir_base=directory_base, epoch=50,
+        #n_classes=2)
+        pretrained_model, lowest_loss, loss_list = contrastive_pretraining(config)
+
         folder_name = "bert_loss"
         filepath = os.path.join(directory_base, '/UserData/Zach_Analysis/result_logs/candid_result/' + str(
             folder_name) + '/base_bert_mlm/contrastive_ep_loss' + '.xlsx')

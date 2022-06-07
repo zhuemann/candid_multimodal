@@ -26,15 +26,18 @@ from dataloader_image_text import TextImageDataset
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
-def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base="/home/zmh001/r-fcb-isilon/research/Bradshaw/",
-                            n_classes=2):
+def contrastive_pretraining(config):
+
     # model specific global variables
-    IMG_SIZE = 256  # 256 #1024 #512 #384
-    BATCH_SIZE = batch_size
+    IMG_SIZE = config["IMG_SIZE"]  # 256 #1024 #512 #384
+    # BATCH_SIZE = batch_size
     LR = 5e-5  # 8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
-    N_EPOCHS = epoch
-    N_CLASS = n_classes
-    seed = seed
+    N_CLASS = 2
+
+    dir_base = config["dir_base"]
+    seed = config["seed"]
+    BATCH_SIZE = config["batch_size"]
+    N_EPOCHS = config["epochs"]
 
     dataframe_location = os.path.join(dir_base,
                                       'Zach_Analysis/candid_data/images_with_text_df.xlsx')  # pneumothorax_df chest_tube_df rib_fracture
@@ -153,7 +156,7 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base="/home/zmh001/
     # vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
     gloria_model = GLoRIA(cfg=None, tokenizer=tokenizer, language_model=language_model)
 
-    run_from_checkpoint = False
+    run_from_checkpoint = True
     if run_from_checkpoint:
         checkpoint_path = os.path.join(dir_base,
                                        'Zach_Analysis/models/candid_pretrained_models/bert/full_gloria_checkpoint_40ep')
@@ -218,6 +221,8 @@ def contrastive_pretraining(seed, batch_size=8, epoch=1, dir_base="/home/zmh001/
 
             img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
+
+            print(attn_maps.shape)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
