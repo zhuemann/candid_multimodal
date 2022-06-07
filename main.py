@@ -34,7 +34,7 @@ if __name__ == '__main__':
         directory_base = "/UserData/"
 
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
-              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training":True}
+              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
@@ -52,8 +52,7 @@ if __name__ == '__main__':
     df.to_excel(filepath, index=False)
     """
 
-
-
+    pretrained_model, lowest_loss, loss_list = contrastive_pretraining(config)
     #siim_datasetup(dir_base=directory_base)
     mlm_pretraining = args.mlm_pretraining
     if mlm_pretraining:
