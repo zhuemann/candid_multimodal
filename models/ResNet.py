@@ -19,7 +19,7 @@ def resnet_34(pretrained=True):
     return model, feature_dims, 1024
 
 
-def resnet_50(pretrained=True, dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"): #"/Users/kritigoyal/Documents/CS_769_NLP/"
+def resnet_50(pretrained=True, dir_base="/UserData/"): #"/Users/kritigoyal/Documents/CS_769_NLP/"
     if pretrained:
         save_path = os.path.join(dir_base, 'models/resnet/resnet50')
         model = models_2d.resnet50(pretrained=False)

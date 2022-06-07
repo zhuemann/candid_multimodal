@@ -5,7 +5,7 @@ from models.ResNet import resnet_50
 
 
 class ImageEncoder(nn.Module):
-    def __init__(self, cfg=None):
+    def __init__(self, config):
         super(ImageEncoder, self).__init__()
         # self.output_dim = cfg.model.text.embedding_dim
         # self.norm = cfg.model.norm
@@ -15,7 +15,7 @@ class ImageEncoder(nn.Module):
         # self.model, self.feature_dim, self.interm_feature_dim = model_function(
         #    pretrained=cfg.model.vision.pretrained
         # )
-        self.model, self.feature_dim, self.interm_feature_dim = resnet_50(pretrained=True)
+        self.model, self.feature_dim, self.interm_feature_dim = resnet_50(pretrained=True, dir_base=config["dir_base"])
 
         self.global_embedder = nn.Linear(self.feature_dim, self.output_dim)
         self.local_embedder = nn.Conv2d(

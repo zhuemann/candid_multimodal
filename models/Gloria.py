@@ -17,13 +17,13 @@ class GLoRIA(nn.Module):
     Model adopted form GLORIA REPO
     """
 
-    def __init__(self, cfg, tokenizer, language_model):
+    def __init__(self, config, tokenizer, language_model):
         super(GLoRIA, self).__init__()
         # self.cfg = cfg
         # self.text_encoder = builder.build_text_model(cfg)
         # self.img_encoder = builder.build_img_model(cfg)
         self.text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
-        self.img_encoder = ImageEncoder()
+        self.img_encoder = ImageEncoder(config=config)
         # self.local_loss = loss.gloria_loss.local_loss
         # self.global_loss = loss.gloria_loss.global_loss
         self.local_loss = local_loss

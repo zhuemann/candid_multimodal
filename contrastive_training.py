@@ -154,7 +154,7 @@ def contrastive_pretraining(config):
     # vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
 
     # vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
-    gloria_model = GLoRIA(cfg=None, tokenizer=tokenizer, language_model=language_model)
+    gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
 
     run_from_checkpoint = True
     if run_from_checkpoint:
