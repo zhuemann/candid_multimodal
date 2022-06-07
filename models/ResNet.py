@@ -21,7 +21,7 @@ def resnet_34(pretrained=True):
 
 def resnet_50(pretrained=True, dir_base="/UserData/"): #"/Users/kritigoyal/Documents/CS_769_NLP/"
     if pretrained:
-        save_path = os.path.join(dir_base, 'models/resnet/resnet50')
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
         model = models_2d.resnet50(pretrained=False)
         model.load_state_dict(torch.load(save_path))
     else:
