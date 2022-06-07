@@ -222,7 +222,7 @@ def contrastive_pretraining(config):
             img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents = gloria_model(x)
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
 
-            print(attn_maps.shape)
+            print(attn_maps)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
