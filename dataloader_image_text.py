@@ -94,7 +94,7 @@ class TextImageDataset(Dataset):
         # makes the segmentation mask into a PIL image
         # segmentation_mask = self.resize(segmentation_mask_org)
         # print(segmentation_mask.size())
-        RGB = False
+        RGB = True
         if self.transforms is not None:
             # image = self.transforms(img)
 
@@ -103,6 +103,9 @@ class TextImageDataset(Dataset):
                 # print(img.shape)
                 if RGB:
                     img = Image.fromarray(img).convert("RGB") # should make this more rigous but stich this guy
+                else:
+                    img = Image.fromarray(img)
+
                 # print(type(img))
                 img = Image.fromarray(img)
                 img = np.array(img)
