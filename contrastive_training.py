@@ -234,7 +234,7 @@ def contrastive_pretraining(config):
                 #print(type(im))
                 #print(np.shape(im[0]))
                 for j in range(0, 100):
-                    im = Image.fromarray(im[j], 'RGB')
+                    im = Image.fromarray(im[j])
 
                     fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
                     im.save(fullpath)
