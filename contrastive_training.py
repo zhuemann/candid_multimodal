@@ -240,7 +240,7 @@ def contrastive_pretraining(config):
                     #im = Image.fromarray(img[j])
                     im = img[j]
 
-                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.jpeg')
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
                     #im.save(fullpath)
                     cv2.imwrite(fullpath, im)
 
