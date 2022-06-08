@@ -229,15 +229,16 @@ def contrastive_pretraining(config):
             for i in range(0, 8):
                 print("iteration thingy: " + str(i))
                 #print(attn_maps[i])
-                im = attn_maps[i].squeeze().cpu().detach().numpy()
+                img = attn_maps[i].squeeze().cpu().detach().numpy()
                 #print(im)
                 #print(type(im))
                 #print(np.shape(im[0]))
 
-                im = Image.fromarray(im[15], 'RGB')
+                for j in range(0,15):
+                    im = Image.fromarray(img[j], 'RGB')
 
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(i) + '.png')
-                im.save(fullpath)
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
+                    im.save(fullpath)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
