@@ -238,7 +238,7 @@ def contrastive_pretraining(config):
 
                 # f, ax = plt.subplots(1, 3)
                 # ax[0].imshow(img_raw, cmap=plt.cm.bone)
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img.png')
                 im.save(fullpath)
 
             # loss = criterion(pooler_outputs, vision_outputs)
