@@ -233,7 +233,7 @@ def contrastive_pretraining(config):
                 img = attn_maps[i].squeeze().cpu().detach().numpy()
                 #print(im)
                 #print(type(im))
-                print(np.shape(attn_maps))
+                print(np.shape(img))
 
                 for j in range(0, 120):
                     #im = Image.fromarray(img[j], 'RGB')
