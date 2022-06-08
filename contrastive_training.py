@@ -237,7 +237,7 @@ def contrastive_pretraining(config):
                 for j in range(0,15):
                     im = Image.fromarray(img[j], 'RGB')
 
-                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.jpeg')
                     im.save(fullpath)
 
             # loss = criterion(pooler_outputs, vision_outputs)
