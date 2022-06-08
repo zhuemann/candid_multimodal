@@ -233,6 +233,7 @@ def contrastive_pretraining(config):
                 im = attn_maps[i].squeeze().cpu().detach().numpy()
                 print(im)
                 print(type(im))
+                print(np.shape(im))
                 im = Image.fromarray(im)
 
                 # f, ax = plt.subplots(1, 3)
