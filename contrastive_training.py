@@ -24,6 +24,7 @@ from dataloader_image_text import TextImageDataset
 # import matplotlib.pyplot as plt
 
 import matplotlib.pyplot as plt
+from PIL import Image
 
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
@@ -229,10 +230,13 @@ def contrastive_pretraining(config):
             for i in range(0, 8):
                 print("iteration thingy: " + str(i))
                 print(attn_maps[i])
-                img_raw = np.uint8(attn_maps[i])
+                im = np.uint8(attn_maps[i])
+                im = Image.fromarray(im)
 
-                f, ax = plt.subplots(1, 3)
-                ax[0].imshow(img_raw, cmap=plt.cm.bone)
+                # f, ax = plt.subplots(1, 3)
+                # ax[0].imshow(img_raw, cmap=plt.cm.bone)
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img')
+                im.save(fullpath)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
