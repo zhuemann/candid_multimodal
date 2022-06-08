@@ -91,6 +91,9 @@ def local_loss(
         word = word.view(batch_size * words_num, -1)  # [1200, 768]
         weiContext = weiContext.view(batch_size * words_num, -1)  # [1200, 768]
 
+        print(weiContext.shape())
+
+
         row_sim = cosine_similarity(word, weiContext)
         row_sim = row_sim.view(batch_size, words_num)  # [48, 25]
 
@@ -166,22 +169,23 @@ class ContrastiveLoss(nn.Module):
 
 def attention_fn(query, context, temp1):
     """
+    query is the word embeddings and context are the image features 19x19
     query: batch x ndf x queryL
     context: batch x ndf x ih x iw (sourceL=ihxiw)
     mask: batch_size x sourceL
     """
     batch_size, queryL = query.size(0), query.size(2)
-    ih, iw = context.size(2), context.size(3)
-    sourceL = ih * iw
+    ih, iw = context.size(2), context.size(3) #height and width of the image
+    sourceL = ih * iw # total number of pixels
 
     # --> batch x sourceL x ndf
     context = context.view(batch_size, -1, sourceL)
-    contextT = torch.transpose(context, 1, 2).contiguous()
+    contextT = torch.transpose(context, 1, 2).contiguous() #transpose of the context i guess?
 
     # Get attention
     # (batch x sourceL x ndf)(batch x ndf x queryL)
     # -->batch x sourceL x queryL
-    attn = torch.bmm(contextT, query)
+    attn = torch.bmm(contextT, query)   # does the multipliation in the atttention
     # --> batch*sourceL x queryL
     attn = attn.view(batch_size * sourceL, queryL)
     attn = nn.Softmax(dim=-1)(attn)
