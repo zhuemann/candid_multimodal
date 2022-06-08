@@ -227,7 +227,7 @@ def contrastive_pretraining(config):
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
 
             #print(len(attn_maps))
-            for i in range(0, 8):
+            for i in range(0, 2):
                 print("iteration thingy: " + str(i))
                 #print(attn_maps[i])
                 img = attn_maps[i].squeeze().cpu().detach().numpy()
@@ -235,7 +235,7 @@ def contrastive_pretraining(config):
                 #print(type(im))
                 #print(np.shape(im[0]))
 
-                for j in range(0,20):
+                for j in range(0, 20):
                     #im = Image.fromarray(img[j], 'RGB')
                     #im = Image.fromarray(img[j])
                     im = img[j]
