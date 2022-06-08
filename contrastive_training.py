@@ -230,11 +230,11 @@ def contrastive_pretraining(config):
                 print("iteration thingy: " + str(i))
                 #print(attn_maps[i])
                 im = attn_maps[i].squeeze().cpu().detach().numpy()
-                #print(im)
+                print(im)
                 #print(type(im))
                 #print(np.shape(im[0]))
                 for j in range(0, 100):
-                    #im = Image.fromarray(im[i])
+                    im = Image.fromarray(im)
                     fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
                     im.save(fullpath)
 
