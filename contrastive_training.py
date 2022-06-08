@@ -226,17 +226,19 @@ def contrastive_pretraining(config):
             loss, attn_maps = gloria_model.calc_loss(img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents)
 
             #print(len(attn_maps))
-            for i in range(0, 1):
+            for i in range(0, 8):
                 print("iteration thingy: " + str(i))
                 #print(attn_maps[i])
                 im = attn_maps[i].squeeze().cpu().detach().numpy()
                 #print(im)
                 #print(type(im))
-                print(np.shape(im[0]))
-                for j in range(0, 100):
-                    im = Image.fromarray(im)
-                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
-                    im.save(fullpath)
+                #print(np.shape(im[0]))
+                im = Image.fromarray(im[15], 'RGB')
+
+                # f, ax = plt.subplots(1, 3)
+                # ax[0].imshow(img_raw, cmap=plt.cm.bone)
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(i) + '.png')
+                im.save(fullpath)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
