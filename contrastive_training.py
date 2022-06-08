@@ -23,6 +23,8 @@ from dataloader_image_text import TextImageDataset
 # from vgg16 import VGG16
 # import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
+
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
@@ -57,7 +59,7 @@ def contrastive_pretraining(config):
     # language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
-    language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bert_mlm/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bert_mlm/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
     # language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
 
@@ -224,9 +226,13 @@ def contrastive_pretraining(config):
 
             #print(len(attn_maps))
 
-            for i in range(0,8):
+            for i in range(0, 8):
                 print("iteration thingy: " + str(i))
                 print(attn_maps[i])
+                img_raw = np.uint8(attn_maps[i])
+
+                f, ax = plt.subplots(1, 3)
+                ax[0].imshow(img_raw, cmap=plt.cm.bone)
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
