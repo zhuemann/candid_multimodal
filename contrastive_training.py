@@ -229,8 +229,8 @@ def contrastive_pretraining(config):
 
             for i in range(0, 8):
                 print("iteration thingy: " + str(i))
-                print(attn_maps[i])
-                im = np.uint8(attn_maps[i])
+                #print(attn_maps[i])
+                im = np.uint8(attn_maps[i].squeeze().cpu().detach().numpy())
                 im = Image.fromarray(im)
 
                 # f, ax = plt.subplots(1, 3)
