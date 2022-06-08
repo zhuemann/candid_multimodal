@@ -241,7 +241,7 @@ def contrastive_pretraining(config):
                     im = img[j]
 
                     max = np.amax(im)
-                    im = (im*255)/max
+                    #im = (im*255)/max
 
                     fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
                     #im.save(fullpath)
