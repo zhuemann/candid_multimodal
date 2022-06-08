@@ -225,8 +225,8 @@ def contrastive_pretraining(config):
             #print(len(attn_maps))
 
             for i in range(0,8):
-                print(str(i))
-                print(len(attn_maps[i]))
+                print("iteration thingy: " + str(i))
+                print(attn_maps[i])
 
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
