@@ -234,7 +234,7 @@ def contrastive_pretraining(config):
                 print(im)
                 print(type(im))
                 print(np.shape(im[0]))
-                im = Image.fromarray(im[0])
+                im = Image.fromarray(im[0], 'RGB')
 
                 # f, ax = plt.subplots(1, 3)
                 # ax[0].imshow(img_raw, cmap=plt.cm.bone)
