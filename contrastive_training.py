@@ -235,7 +235,7 @@ def contrastive_pretraining(config):
                 #print(type(im))
                 print(np.shape(img)[0])
 
-                for j in range(0, 120):
+                for j in range(0, np.shape(img)[0]):
                     #im = Image.fromarray(img[j], 'RGB')
                     #im = Image.fromarray(img[j])
                     im = img[j]
