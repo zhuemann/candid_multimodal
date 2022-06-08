@@ -91,7 +91,7 @@ def local_loss(
         word = word.view(batch_size * words_num, -1)  # [1200, 768]
         weiContext = weiContext.view(batch_size * words_num, -1)  # [1200, 768]
 
-        print(weiContext.shape())
+        print(weiContext.size)
 
 
         row_sim = cosine_similarity(word, weiContext)
