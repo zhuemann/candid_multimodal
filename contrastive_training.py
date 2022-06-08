@@ -234,23 +234,22 @@ def contrastive_pretraining(config):
                 #print(im)
                 #print(type(im))
                 print(np.shape(img)[0])
-
+                sum = 0
                 for j in range(0, np.shape(img)[0]):
                     #im = Image.fromarray(img[j], 'RGB')
                     #im = Image.fromarray(img[j])
                     im = img[j]
 
                     max = np.amax(im)
-                    print(max)
                     min = np.amin(im)
-                    print(min)
                     im = (im*255)/max
-
+                    dif = max - min
 
                     fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
                     #im.save(fullpath)
                     cv2.imwrite(fullpath, im)
-
+                    sum += dif
+                print(sum)
             # loss = criterion(pooler_outputs, vision_outputs)
             # loss_lang, loss_vision = get_global_similarities(vision_outputs, pooler_outputs)
             # loss = ContrastiveLoss(pooler_outputs, vision_outputs)
