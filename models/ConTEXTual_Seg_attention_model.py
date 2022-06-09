@@ -27,7 +27,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.up1 = Up(1024, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
         self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
-        self.multihead_attn = nn.MultiheadAttention(batch_first=True, embed_dim=256, num_heads=1)
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=256, num_heads=1)
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
@@ -63,7 +63,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         #x4 = self.attention1(decode1, x4)
         #test = self.multiplicativeAttention(lang_output[1], decode1)
         print(decode1.size())
-        test = self.multihead_attn(query = decode1, key = lang_output[1],value = lang_output[1])
+        test = self.multihead_attn(query = decode1, key = lang_output[1],value = lang_output[1], batch_first=True)
         print(test.size)
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
