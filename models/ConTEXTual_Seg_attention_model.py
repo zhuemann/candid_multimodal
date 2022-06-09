@@ -27,7 +27,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.up1 = Up(1024, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
         self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=512, num_heads=1, kdim=1024, vdim=1024)
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1, kdim=1024, vdim=1024)
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
