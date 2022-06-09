@@ -202,6 +202,10 @@ class DotProductAttention(nn.Module):
     def forward(self, query: Tensor, value: Tensor) -> Tuple[Tensor, Tensor]:
         batch_size, hidden_dim, input_size = query.size(0), query.size(2), value.size(1)
 
+        print("query:")
+        print(query.size)
+        print("value")
+        print(value.size)
         score = torch.bmm(query, value.transpose(1, 2))
         attn = F.softmax(score.view(-1, input_size), dim=1).view(batch_size, -1, input_size)
         context = torch.bmm(attn, value)
