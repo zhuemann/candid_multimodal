@@ -47,9 +47,9 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def forward(self, img, ids, mask, token_type_ids):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        # lang_rep = lang_output[1]
+        lang_rep = lang_output[1]
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
-        # print(lang_rep.size())
+        print(lang_rep.size())
         # size = lang_rep.size()
         # batch_size = lang_rep.size()[0]
 
