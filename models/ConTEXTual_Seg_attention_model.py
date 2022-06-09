@@ -2,6 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from torch import Tensor
+from typing import Tuple
+
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
@@ -23,6 +26,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         self.up1 = Up(1024, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
+        self.multiplicativeAttention = DotProductAttention()
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
@@ -40,7 +44,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.outc = OutConv(64, n_classes)
 
     def forward(self, img, ids, mask, token_type_ids):
-        # lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        lang_output = self.lang_encoder(ids, mask, token_type_ids)
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         # lang_rep = lang_output[1]
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
@@ -56,6 +60,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1 = self.up1(x5)
         #x4 = self.attention1(decode1, x4)
+        test = self.multiplicativeAttention(decode1, lang_output[1])
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
@@ -184,3 +189,20 @@ class Attention_block(nn.Module):
         psi = self.psi(psi)
 
         return x * psi
+
+
+class DotProductAttention(nn.Module):
+    """
+    Compute the dot products of the query with all values and apply a softmax function to obtain the weights on the values
+    """
+    def __init__(self, hidden_dim):
+        super(DotProductAttention, self).__init__()
+
+    def forward(self, query: Tensor, value: Tensor) -> Tuple[Tensor, Tensor]:
+        batch_size, hidden_dim, input_size = query.size(0), query.size(2), value.size(1)
+
+        score = torch.bmm(query, value.transpose(1, 2))
+        attn = F.softmax(score.view(-1, input_size), dim=1).view(batch_size, -1, input_size)
+        context = torch.bmm(attn, value)
+
+        return context, attn
