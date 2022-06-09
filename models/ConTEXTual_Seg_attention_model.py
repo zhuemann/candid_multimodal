@@ -60,7 +60,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1 = self.up1(x5)
         #x4 = self.attention1(decode1, x4)
-        test = self.multiplicativeAttention(decode1, lang_output[1])
+        test = self.multiplicativeAttention(lang_output[1], decode1)
         print(test.size)
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
