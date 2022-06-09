@@ -65,7 +65,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         decode1 = torch.squeeze(x5, dim=0)
         print("after squeeze")
         print(decode1.size())
-        decode1 = torch.flatten(decode1, dims=2)
+        decode1 = torch.flatten(decode1, start_dim=2)
         print(decode1.size())
         test = self.multihead_attn(query = decode1, key = lang_output[1],value = lang_output[1])
         print(test.size)
