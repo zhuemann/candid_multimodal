@@ -52,7 +52,6 @@ if __name__ == '__main__':
     df.to_excel(filepath, index=False)
     """
 
-    pretrained_model, lowest_loss, loss_list = contrastive_pretraining(config)
     #siim_datasetup(dir_base=directory_base)
     mlm_pretraining = args.mlm_pretraining
     if mlm_pretraining:
