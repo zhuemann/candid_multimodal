@@ -49,6 +49,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_output[1]
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
+        lang_rep = torch.unsqueeze(lang_rep, 1)
 
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
         print(lang_rep.size())
