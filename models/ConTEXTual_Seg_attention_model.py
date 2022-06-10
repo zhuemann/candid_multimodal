@@ -53,6 +53,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
         print(lang_rep.size())
+        print(torch.__version__)
         # size = lang_rep.size()
         # batch_size = lang_rep.size()[0]
 
