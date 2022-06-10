@@ -2,6 +2,7 @@ pip
 numpy
 matplotlib
 torch
+#torch==1.11
 torchvision
 timm
 tqdm
