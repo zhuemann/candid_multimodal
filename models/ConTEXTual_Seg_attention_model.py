@@ -53,8 +53,6 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = torch.unsqueeze(lang_rep, 1)
 
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
-        print(lang_rep.size())
-        print(torch.__version__)
         # size = lang_rep.size()
         # batch_size = lang_rep.size()[0]
 
@@ -263,8 +261,12 @@ class LangCrossAtt(nn.Module):
 
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
-        print("atten weights")
+        attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
+        attn_output_weights = attn_output_weights.repeat(1, 1, 1024)
         print(attn_output_weights.size())
+
+        vision_rep = vision_rep * attn_output_weights
+        print("atten weights")
         print("vision rep")
         print(vision_rep.size())
         #out_img = vision_rep_flat
