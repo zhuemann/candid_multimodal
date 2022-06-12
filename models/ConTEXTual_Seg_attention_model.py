@@ -27,7 +27,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.up1 = Up(1024, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
+        #self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
+        self.lang_attn = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(1024, 512)
 
         self.up2 = Up(512, bilinear)
@@ -63,18 +64,20 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x4 = self.down3(x3)
         x5 = self.down4(x4)
 
+        print("x5 shape before lang attn")
+        x5 = self.lang_attn(x5)
+        print(x5.size())
+
         decode1 = self.up1(x5)
         print("x5 shape")
         print(x5.size())
         #x4 = self.attention1(decode1, x4)
         #test = self.multiplicativeAttention(lang_output[1], decode1)
-        decode1 = torch.swapaxes(x5, 0, 1)
+        x5 = torch.swapaxes(x5, 0, 1)
 
-        #print(decode1.size())
-        decode1 = torch.flatten(decode1, start_dim=2)
-        decode1 = torch.swapaxes(decode1, 2, 0)
-        #print("decode size")
-        #print(decode1.size())
+        x5 = torch.flatten(x5, start_dim=2)
+        x5 = torch.swapaxes(x5, 2, 0)
+
 
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
@@ -224,6 +227,8 @@ class DotProductAttention(nn.Module):
     def __init__(self, hidden_dim):
         super(DotProductAttention, self).__init__()
 
+
+
     def forward(self, query: Tensor, value: Tensor) -> Tuple[Tensor, Tensor]:
         batch_size, hidden_dim, input_size = query.size(0), query.size(2), value.size(1)
 
@@ -236,3 +241,32 @@ class DotProductAttention(nn.Module):
         context = torch.bmm(attn, value)
 
         return context, attn
+
+
+class LangCrossAtt(nn.Module):
+    "add documentaiton"
+
+
+    def __init__(self, emb_dim):
+        super(LangCrossAtt, self).__init__()
+
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1)
+
+    def forward(self, lang_rep, vision_rep, attention_layer):
+        vision_rep = torch.swapaxes(vision_rep, 0, 1)
+
+        vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
+        vision_rep = torch.swapaxes(vision_rep_flat, 2, 0)
+
+        lang_rep = torch.swapaxes(lang_rep, 0, 1)
+        lang_rep = torch.swapaxes(lang_rep, 1, 2)
+
+        att_matrix, attn_output_weights = attention_layer(query=vision_rep, key=lang_rep, value=lang_rep)
+
+        print("atten weights")
+        print(attn_output_weights.size())
+        print("vision rep")
+        print(vision_rep.size())
+        #out_img = vision_rep_flat
+
+        return 0
