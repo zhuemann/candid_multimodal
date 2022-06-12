@@ -251,6 +251,19 @@ class LangCrossAtt(nn.Module):
         self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1)
 
     def forward(self, lang_rep, vision_rep):
+
+        print("input shape")
+        print(vision_rep.size())
+        input_width = vision_rep.size()[0]
+        input_height =  vision_rep.size()[1]
+        input_batch =  vision_rep.size()[2]
+        input_channel =  vision_rep.size()[3]
+
+        print(input_width)
+        print(input_height)
+        print(input_batch)
+        print(input_channel)
+
         vision_rep = torch.swapaxes(vision_rep, 0, 1)
 
         vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
@@ -269,6 +282,9 @@ class LangCrossAtt(nn.Module):
         print("atten weights")
         print("vision rep")
         print(vision_rep.size())
+        out = vision_rep.contiguous()
+        out = vision_rep.view(16,16,8,1024)
+
         #out_img = vision_rep_flat
 
         return vision_rep
