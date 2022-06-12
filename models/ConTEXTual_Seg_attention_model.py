@@ -254,10 +254,10 @@ class LangCrossAtt(nn.Module):
 
         print("input shape")
         print(vision_rep.size())
-        input_width = vision_rep.size()[0]
-        input_height =  vision_rep.size()[1]
-        input_batch =  vision_rep.size()[2]
-        input_channel =  vision_rep.size()[3]
+        input_batch = vision_rep.size()[0]
+        input_channel =  vision_rep.size()[1]
+        input_width = vision_rep.size()[2]
+        input_height =  vision_rep.size()[3]
 
         print(input_width)
         print(input_height)
