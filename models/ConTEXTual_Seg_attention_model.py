@@ -271,4 +271,4 @@ class LangCrossAtt(nn.Module):
         print(vision_rep.size())
         #out_img = vision_rep_flat
 
-        return 0
+        return vision_rep
