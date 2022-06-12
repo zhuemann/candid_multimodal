@@ -73,8 +73,13 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         decode1 = torch.swapaxes(decode1, 2, 0)
         print("decode size")
         print(decode1.size())
+
+        lang_rep = torch.swapaxes(lang_rep, 0, 1)
+        lang_rep = torch.swapaxes(lang_rep, 1, 2)
+
         print("lang_rep")
         print(lang_rep.size())
+
         test = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
         #test = self.multihead_attn(query=lang_rep, key=decode1, value=decode1)
         print(test.size)
