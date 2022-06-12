@@ -65,7 +65,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x5 = self.down4(x4)
 
         print("x5 shape before lang attn")
-        x5 = self.lang_attn(x5)
+        x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
         print(x5.size())
 
         decode1 = self.up1(x5)
@@ -252,7 +252,7 @@ class LangCrossAtt(nn.Module):
 
         self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1)
 
-    def forward(self, lang_rep, vision_rep, attention_layer):
+    def forward(self, lang_rep, vision_rep):
         vision_rep = torch.swapaxes(vision_rep, 0, 1)
 
         vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
@@ -261,7 +261,7 @@ class LangCrossAtt(nn.Module):
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
-        att_matrix, attn_output_weights = attention_layer(query=vision_rep, key=lang_rep, value=lang_rep)
+        att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
         print("atten weights")
         print(attn_output_weights.size())
