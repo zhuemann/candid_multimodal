@@ -68,20 +68,21 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         #test = self.multiplicativeAttention(lang_output[1], decode1)
         decode1 = torch.swapaxes(x5, 0, 1)
 
-        print(decode1.size())
+        #print(decode1.size())
         decode1 = torch.flatten(decode1, start_dim=2)
         decode1 = torch.swapaxes(decode1, 2, 0)
-        print("decode size")
-        print(decode1.size())
+        #print("decode size")
+        #print(decode1.size())
 
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
-        print("lang_rep")
-        print(lang_rep.size())
+        #print("lang_rep")
+        #print(lang_rep.size())
 
         test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
         #test = self.multihead_attn(query=lang_rep, key=decode1, value=decode1)
+        print("attention size")
         print(test_att.size())
         print(test_other.size())
         x = concatenate_layers(decode1, x4)
