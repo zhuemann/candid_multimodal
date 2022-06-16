@@ -302,6 +302,10 @@ class LangCrossAtt(nn.Module):
 
         print(attn_output_weights.size())
 
+        print("gpu test")
+        if torch.cuda.is_available():
+            print("gpu is availible")
+
         # take this out later
         attn_output_weights = torch.nan_to_num(attn_output_weights)
 
