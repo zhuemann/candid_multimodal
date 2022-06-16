@@ -51,10 +51,15 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = lang_output[1]
         print("first lang nans:")
         print(torch.isnan(lang_rep).any())
+        # take this out later
+        lang_rep = torch.nan_to_num(lang_rep,  nan=0.0)
+        print("lang rep contains nan after trying to replace it with zeros:")
+        print(torch.isnan(lang_rep).any())
+
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.unsqueeze(lang_rep, 1)
 
-        print("first lang nans:")
+        print("third lang nans:")
         print(torch.isnan(lang_rep).any())
 
         # lang_rep = lang_rep.repeat(1, 1, 16, 16)
