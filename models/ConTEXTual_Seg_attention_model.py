@@ -48,8 +48,14 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def forward(self, img, ids, mask, token_type_ids):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
 
-        print("mask")
-        print(mask)
+        print("nan check in forward")
+        print(torch.isnan(ids).any())
+        print(torch.isnan(mask).any())
+        print(torch.isnan(token_type_ids).any())
+
+
+
+
 
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_output[1]
