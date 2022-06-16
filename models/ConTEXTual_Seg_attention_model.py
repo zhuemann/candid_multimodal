@@ -294,4 +294,4 @@ class LangCrossAtt(nn.Module):
 
         #out_img = vision_rep_flat
 
-        return vision_rep
+        return out
