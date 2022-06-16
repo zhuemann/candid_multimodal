@@ -79,10 +79,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True, map_location=device)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     # roberta_model = BertModel.from_pretrained(roberta_path)
 
