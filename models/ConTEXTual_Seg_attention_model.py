@@ -279,7 +279,7 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
-        attn_output_weights = attn_output_weights.repeat(1, 1, 1024)
+        attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
         print(attn_output_weights.size())
 
         vision_rep = vision_rep * attn_output_weights
