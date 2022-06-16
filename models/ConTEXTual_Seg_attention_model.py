@@ -276,6 +276,13 @@ class LangCrossAtt(nn.Module):
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
+        print("lang nans:")
+        print(torch.isnan(lang_rep).any())
+
+        print("vision nans:")
+        print(torch.isnan(vision_rep).any())
+
+
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
         print("contains nan:")
         print(torch.isnan(attn_output_weights).any())
