@@ -285,6 +285,9 @@ class LangCrossAtt(nn.Module):
         out = vision_rep.contiguous()
         out = vision_rep.view(16,16,8,1024)
 
+        print("out size")
+        print(out.size())
+
         #out_img = vision_rep_flat
 
         return vision_rep
