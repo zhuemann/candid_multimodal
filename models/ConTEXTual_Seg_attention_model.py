@@ -49,6 +49,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_output[1]
+        print("first lang nans:")
+        print(torch.isnan(lang_rep).any())
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.unsqueeze(lang_rep, 1)
 
