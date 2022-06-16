@@ -282,7 +282,7 @@ class LangCrossAtt(nn.Module):
         print("atten weights")
         print("vision rep")
         print(vision_rep.size())
-        vision_rep = vision_rep.contiguous(vision_rep)
+        vision_rep = vision_rep.contiguous()
         # rearanges the output matrix to be the dimensions of the input
         out = vision_rep.view(input_width, input_height, input_batch, input_channel)
 
