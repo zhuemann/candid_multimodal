@@ -282,8 +282,9 @@ class LangCrossAtt(nn.Module):
         print("atten weights")
         print("vision rep")
         print(vision_rep.size())
-        out = vision_rep.contiguous()
-        out = vision_rep.view(16, 16, 8, 1024)
+        vision_rep = vision_rep.contiguous(vision_rep)
+        # rearanges the output matrix to be the dimensions of the input
+        out = vision_rep.view(input_width, input_height, input_batch, input_channel)
 
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
