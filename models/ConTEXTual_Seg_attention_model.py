@@ -47,6 +47,10 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
     def forward(self, img, ids, mask, token_type_ids):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
+
+        print("ids chekcing why getting nans")
+        print(ids)
+
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_output[1]
         print("first lang nans:")
