@@ -302,6 +302,9 @@ class LangCrossAtt(nn.Module):
 
         print(attn_output_weights.size())
 
+        # take this out later
+        attn_output_weights = torch.nan_to_num(attn_output_weights)
+
         vision_rep = vision_rep * attn_output_weights
         print("atten weights")
         print("vision rep")
