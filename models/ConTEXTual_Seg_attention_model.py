@@ -283,10 +283,13 @@ class LangCrossAtt(nn.Module):
         print("vision rep")
         print(vision_rep.size())
         out = vision_rep.contiguous()
-        out = vision_rep.view(16,16,8,1024)
+        out = vision_rep.view(16, 16, 8, 1024)
 
+        out = torch.swapaxes(out, 0, 2)
+        out = torch.swapaxes(out, 1, 3)
         print("out size")
         print(out.size())
+
 
         #out_img = vision_rep_flat
 
