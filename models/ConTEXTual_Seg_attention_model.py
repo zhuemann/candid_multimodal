@@ -61,6 +61,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = lang_output[1]
         print("first lang nans:")
         print(torch.isnan(lang_rep).any())
+        print(lang_rep)
+
         # take this out later
         lang_rep = torch.nan_to_num(lang_rep,  nan=0.0)
         print("lang rep contains nan after trying to replace it with zeros:")
