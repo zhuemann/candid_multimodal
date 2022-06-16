@@ -61,6 +61,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
+        print("lang_rep size")
+        print(lang_rep.size())
 
         print("x5 shape before lang attn")
         x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
