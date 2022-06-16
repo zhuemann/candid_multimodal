@@ -280,7 +280,13 @@ class LangCrossAtt(nn.Module):
 
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
+        print(attn_output_weights)
+        print("weight size:")
+
         print(attn_output_weights.size())
+
+        print("contains nan:")
+        print(torch.isnan(attn_output_weights).any())
 
         vision_rep = vision_rep * attn_output_weights
         print("atten weights")
