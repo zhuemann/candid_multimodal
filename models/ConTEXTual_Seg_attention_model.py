@@ -67,27 +67,28 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         print(x5.size())
 
         decode1 = self.up1(x5)
-        print("x5 shape")
-        print(x5.size())
+        #print("x5 shape")
+        #print(x5.size())
         #x4 = self.attention1(decode1, x4)
         #test = self.multiplicativeAttention(lang_output[1], decode1)
-        x5 = torch.swapaxes(x5, 0, 1)
+        #x5 = torch.swapaxes(x5, 0, 1)
 
-        x5 = torch.flatten(x5, start_dim=2)
-        x5 = torch.swapaxes(x5, 2, 0)
+        #x5 = torch.flatten(x5, start_dim=2)
+        #x5 = torch.swapaxes(x5, 2, 0)
 
 
-        lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        lang_rep = torch.swapaxes(lang_rep, 1, 2)
+        #lang_rep = torch.swapaxes(lang_rep, 0, 1)
+        #lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
         #print("lang_rep")
         #print(lang_rep.size())
 
-        test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
+        #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
+
         #test = self.multihead_attn(query=lang_rep, key=decode1, value=decode1)
-        print("attention size")
-        print(test_att.size())
-        print(test_other.size())
+        #print("attention size")
+        #print(test_att.size())
+        #print(test_other.size())
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
