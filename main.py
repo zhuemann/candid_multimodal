@@ -57,7 +57,6 @@ if __name__ == '__main__':
     if mlm_pretraining:
         candid_fine_tuning_candid(dir_base=directory_base)
 
-    pretrained_model, lowest_loss, loss_list = contrastive_pretraining(config)
 
     contrastive_training = args.contrastive_training
     if contrastive_training:
