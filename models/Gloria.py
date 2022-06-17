@@ -95,6 +95,8 @@ class GLoRIA(nn.Module):
         text_emb_l, text_emb_g, sents = self.text_encoder_forward(
             x["caption_ids"], x["attention_mask"], x["token_type_ids"]
         )
+        print("nan check in gloria forward")
+        print(torch.isnan(text_emb_g).any())
         return img_emb_l, img_emb_g, text_emb_l, text_emb_g, sents
 
     def get_global_similarities(self, img_emb_g, text_emb_g):
