@@ -220,8 +220,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     language_model.to(device)
     #model_obj.to(device)
 
-    print(transforms.__version__)
-
     #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     #test_obj = ResNetUNet(lang_model=language_model, n_class=1)
