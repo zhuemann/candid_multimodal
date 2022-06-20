@@ -270,17 +270,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             images = data['images'].to(device, dtype=torch.float)
 
 
-            #testing delete later
-            lang_output = language_model(ids, mask, token_type_ids)
-            print("testing langauge model in outer loop")
-            lang_rep = lang_output[0]
-            print(torch.isnan(lang_rep).any())
-            lang_rep = lang_output[1]
-            print(torch.isnan(lang_rep).any())
-            print(lang_rep)
-            print("done")
-
-
             outputs = test_obj(images, ids, mask, token_type_ids)
             #outputs = model_obj(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))

@@ -67,9 +67,6 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         print("x5 shape before lang attn")
         x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
-        print("x5 has nans:")
-        print(torch.isnan(x5).any())
-
         print("after lang attn")
         print(x5.size())
 
