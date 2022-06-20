@@ -282,34 +282,13 @@ class LangCrossAtt(nn.Module):
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
-        print("lang nans:")
-        print(torch.isnan(lang_rep).any())
-
-        print("vision nans:")
-        print(torch.isnan(vision_rep).any())
-
 
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
-        print("contains nan:")
-        print(torch.isnan(attn_output_weights).any())
-        print(attn_output_weights.size())
 
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
-        #print(attn_output_weights)
-        print("weight size:")
-
-        print(attn_output_weights.size())
-
-        # take this out later
-        attn_output_weights = torch.nan_to_num(attn_output_weights,  nan=0.0)
-        print("contains nan after trying to replace it with zeros:")
-        print(torch.isnan(attn_output_weights).any())
 
         vision_rep = vision_rep * attn_output_weights
-        print("atten weights")
-        print("vision rep")
-        print(vision_rep.size())
         vision_rep = vision_rep.contiguous()
         # rearanges the output matrix to be the dimensions of the input
         out = vision_rep.view(input_width, input_height, input_batch, input_channel)
