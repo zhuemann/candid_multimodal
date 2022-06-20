@@ -64,18 +64,11 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        print("lang_rep size")
-        print(lang_rep.size())
 
-        print("x5 shape before lang attn")
         x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
-        print("after lang attn")
-        print(x5.size())
-
         decode1 = self.up1(x5)
-        print("decode1")
-        print(decode1.size())
+
         #print("x5 shape")
         #print(x5.size())
         #x4 = self.attention1(decode1, x4)
@@ -262,43 +255,34 @@ class LangCrossAtt(nn.Module):
 
     def forward(self, lang_rep, vision_rep):
 
-        print("input shape")
-        print(vision_rep.size())
+        # gets all of the dimensions to be used in the attention
         input_batch = vision_rep.size()[0]
         input_channel =  vision_rep.size()[1]
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
 
-        print(input_width)
-        print(input_height)
-        print(input_batch)
-        print(input_channel)
-
+        # puts the vision representation into the right shape for attention mechanism
         vision_rep = torch.swapaxes(vision_rep, 0, 1)
-
         vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
         vision_rep = torch.swapaxes(vision_rep_flat, 2, 0)
 
+        # puts the language rep into the right shape for attention
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
-
+        # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
+        # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
 
+        # multiplies the attention to focus the vision rep based on the lang rep
         vision_rep = vision_rep * attn_output_weights
         vision_rep = vision_rep.contiguous()
+
         # rearanges the output matrix to be the dimensions of the input
         out = vision_rep.view(input_width, input_height, input_batch, input_channel)
-
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
-        print("out size")
-        print(out.size())
-
-
-        #out_img = vision_rep_flat
-
         return out
