@@ -48,37 +48,13 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def forward(self, img, ids, mask, token_type_ids):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
 
-        print("nan check in forward")
-        print(torch.isnan(ids).any())
-        print(torch.isnan(mask).any())
-        print(torch.isnan(token_type_ids).any())
-
-
-
-
+        assert torch.isnan(ids).any() == False, "Language model out nans"
 
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         lang_rep = lang_output[1]
-        print("first lang nans:")
-        print(torch.isnan(lang_rep).any())
-        print(lang_rep)
-        print("lang_rep size")
-        print(lang_rep.size())
-
-        # take this out later
-        lang_rep = torch.nan_to_num(lang_rep,  nan=0.0)
-        print("lang rep contains nan after trying to replace it with zeros:")
-        print(torch.isnan(lang_rep).any())
 
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.unsqueeze(lang_rep, 1)
-
-        print("third lang nans:")
-        print(torch.isnan(lang_rep).any())
-
-        # lang_rep = lang_rep.repeat(1, 1, 16, 16)
-        # size = lang_rep.size()
-        # batch_size = lang_rep.size()[0]
 
         x1 = self.inc(img)
         x2 = self.down1(x1)
