@@ -70,7 +70,7 @@ class ResNetUNet(nn.Module):
         layer4 = self.layer4(layer3)
         print(layer4.size())
         layer5 = self.layer5(layer4)
-        layer4 = self.layer4_1x1(layer4)
+        layer4 = self.layer4_1x1(layer5) #was layer4
         x = self.upsample(layer4)
         layer3 = self.layer3_1x1(layer3)
         x = torch.cat([x, layer3], dim=1)
