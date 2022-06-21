@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torchvision import models
+import os
 
 def convrelu(in_channels, out_channels, kernel, padding):
     return nn.Sequential(
@@ -10,10 +11,14 @@ def convrelu(in_channels, out_channels, kernel, padding):
 
 
 class ResNetUNet(nn.Module):
-    def __init__(self, n_class): #lang_model
+    def __init__(self, n_class, dir_base): #lang_model
         super().__init__()
 
-        self.base_model = models.resnet50(pretrained=True)
+        self.base_model = models.resnet50(pretrained=False)
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        self.base_model.load_state_dict(torch.load(save_path))
+
+
         self.base_layers = list(self.base_model.children())
 
         #print(self.base_layers)
