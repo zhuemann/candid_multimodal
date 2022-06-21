@@ -15,8 +15,8 @@ class ResNetUNet(nn.Module):
         super().__init__()
 
         self.base_model = models.resnet34(pretrained=False)
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
-        self.base_model.load_state_dict(torch.load(save_path))
+        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        #self.base_model.load_state_dict(torch.load(save_path))
 
 
         self.base_layers = list(self.base_model.children())
