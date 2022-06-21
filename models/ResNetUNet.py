@@ -15,8 +15,8 @@ class ResNetUNet(nn.Module):
         super().__init__()
 
         self.base_model = models.resnet50(pretrained=False)
-        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
-        #self.base_model.load_state_dict(torch.load(save_path))
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        self.base_model.load_state_dict(torch.load(save_path))
 
 
         self.base_layers = list(self.base_model.children())
@@ -70,17 +70,11 @@ class ResNetUNet(nn.Module):
         x_original = self.conv_original_size0(input)
         x_original = self.conv_original_size1(x_original)
 
-        print("start of layers: ")
         layer0 = self.layer0(input)
-        print(layer0.size())
         layer1 = self.layer1(layer0)
-        print(layer1.size())
         layer2 = self.layer2(layer1)
-        print(layer2.size())
         layer3 = self.layer3(layer2)
-        print(layer3.size())
         layer4 = self.layer4(layer3)
-        print(layer4.size())
         #layer5 = self.layer5(layer4)
         #print(layer5.size())
 
@@ -94,13 +88,13 @@ class ResNetUNet(nn.Module):
 
         layer3 = self.layer3_1x1(layer3)
         x = torch.cat([x, layer3], dim=1)
-        print(f"conv_up3 shape: {x.size()}")
+        #print(f"conv_up3 shape: {x.size()}")
         x = self.conv_up3(x)
 
         x = self.upsample(x)
         layer2 = self.layer2_1x1(layer2)
         x = torch.cat([x, layer2], dim=1)
-        print(f"conv_up2 shape: {x.size()}")
+        #print(f"conv_up2 shape: {x.size()}")
         x = self.conv_up2(x)
         x = self.upsample(x)
         layer1 = self.layer1_1x1(layer1)
