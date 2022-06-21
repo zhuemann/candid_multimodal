@@ -35,7 +35,7 @@ class ResNetUNet(nn.Module):
         self.layer3_1x1 = convrelu(256, 256, 1, 0)
         self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
         self.layer4_1x1 = convrelu(512, 512, 1, 0)
-        #self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
+        self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
 
         #self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
 
@@ -69,7 +69,8 @@ class ResNetUNet(nn.Module):
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
         print(layer4.size())
-        #layer5 = self.layer5(layer4)
+        layer5 = self.layer5(layer4)
+        print(layer5.size())
 
         #layer5 = self.layer5_1x1(layer5)
         #x = self.upsample(layer5)
