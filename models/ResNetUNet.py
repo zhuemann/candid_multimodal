@@ -10,7 +10,7 @@ def convrelu(in_channels, out_channels, kernel, padding):
 
 
 class ResNetUNet(nn.Module):
-    def __init__(self,lang_model, n_class):
+    def __init__(self, n_class): #lang_model
         super().__init__()
 
         self.base_model = models.resnet50(pretrained=True)
@@ -19,7 +19,7 @@ class ResNetUNet(nn.Module):
         #print(self.base_layers)
         #print(len(self.base_layers))
 
-        self.lang_encoder = lang_model
+        #self.lang_encoder = lang_model
         self.layer0 = nn.Sequential(*self.base_layers[:3]) # size=(N, 64, x.H/2, x.W/2)
         self.layer0_1x1 = convrelu(64, 64, 1, 0)
         self.layer1 = nn.Sequential(*self.base_layers[3:5]) # size=(N, 64, x.H/4, x.W/4)
@@ -49,9 +49,9 @@ class ResNetUNet(nn.Module):
 
     def forward(self, input, ids, mask, token_type_ids):
 
-        lang_output = self.lang_encoder(ids, mask, token_type_ids)
-        lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        lang_rep = lang_rep.repeat(1, 2, 8, 8)
+        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
+        #lang_rep = lang_rep.repeat(1, 2, 8, 8)
 
         x_original = self.conv_original_size0(input)
         x_original = self.conv_original_size1(x_original)
