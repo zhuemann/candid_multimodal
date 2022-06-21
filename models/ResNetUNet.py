@@ -35,9 +35,9 @@ class ResNetUNet(nn.Module):
         self.layer3_1x1 = convrelu(256, 256, 1, 0)
         self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
         self.layer4_1x1 = convrelu(512, 512, 1, 0)
-        self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
+        #self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
 
-        self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
+        #self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
 
         self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
 
@@ -69,13 +69,20 @@ class ResNetUNet(nn.Module):
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
         print(layer4.size())
-        layer5 = self.layer5(layer4)
-        layer4 = self.layer4_1x1(layer5) #was layer4
+        #layer5 = self.layer5(layer4)
+
+        #layer5 = self.layer5_1x1(layer5)
+        #x = self.upsample(layer5)
+        #x = torch.cat([x, layer4], dim=1)
+
+
+        layer4 = self.layer4_1x1(layer4) #was layer4
         x = self.upsample(layer4)
+
         layer3 = self.layer3_1x1(layer3)
         x = torch.cat([x, layer3], dim=1)
         x = self.conv_up3(x)
-        print("test1")
+
         x = self.upsample(x)
         layer2 = self.layer2_1x1(layer2)
         x = torch.cat([x, layer2], dim=1)
@@ -83,14 +90,18 @@ class ResNetUNet(nn.Module):
         print("test2")
         x = self.upsample(x)
         layer1 = self.layer1_1x1(layer1)
+
         x = torch.cat([x, layer1], dim=1)
         x = self.conv_up1(x)
         print("test3")
+
         x = self.upsample(x)
         layer0 = self.layer0_1x1(layer0)
+
         x = torch.cat([x, layer0], dim=1)
         x = self.conv_up0(x)
         print("test4")
+
         x = self.upsample(x)
         x = torch.cat([x, x_original], dim=1)
         x = self.conv_original_size2(x)
