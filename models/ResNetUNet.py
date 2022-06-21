@@ -100,6 +100,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer2 = self.layer2_1x1(layer2)
         x = torch.cat([x, layer2], dim=1)
+        print(f"conv_up2 shape: {x.size()}")
         x = self.conv_up2(x)
         x = self.upsample(x)
         layer1 = self.layer1_1x1(layer1)
