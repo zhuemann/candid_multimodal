@@ -67,6 +67,7 @@ class ResNetUNet(nn.Module):
         layer1 = self.layer1(layer0)
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
+        print(layer3.size())
         layer4 = self.layer4(layer3)
         print(layer4.size())
         layer5 = self.layer5(layer4)
