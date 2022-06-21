@@ -91,20 +91,17 @@ class ResNetUNet(nn.Module):
         layer2 = self.layer2_1x1(layer2)
         x = torch.cat([x, layer2], dim=1)
         x = self.conv_up2(x)
-        print("test2")
         x = self.upsample(x)
         layer1 = self.layer1_1x1(layer1)
 
         x = torch.cat([x, layer1], dim=1)
         x = self.conv_up1(x)
-        print("test3")
 
         x = self.upsample(x)
         layer0 = self.layer0_1x1(layer0)
 
         x = torch.cat([x, layer0], dim=1)
         x = self.conv_up0(x)
-        print("test4")
 
         x = self.upsample(x)
         x = torch.cat([x, x_original], dim=1)
