@@ -41,10 +41,10 @@ class ResNetUNet(nn.Module):
 
         self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
 
-        self.conv_up3 = convrelu(1024 + 2048, 2048, 3, 1)
-        self.conv_up2 = convrelu(512 + 1024, 1024, 3, 1)
-        self.conv_up1 = convrelu(256 + 512, 512, 3, 1)
-        self.conv_up0 = convrelu(64 + 256, 256, 3, 1)
+        self.conv_up3 = convrelu(1024 + 2048, 512, 3, 1)
+        self.conv_up2 = convrelu(512 + 1024, 256, 3, 1)
+        self.conv_up1 = convrelu(256 + 512, 256, 3, 1)
+        self.conv_up0 = convrelu(64 + 256, 128, 3, 1)
         #numbers for resnet34
         #self.conv_up3 = convrelu(256 + 512, 512, 3, 1)
         #self.conv_up2 = convrelu(128 + 512, 256, 3, 1)
