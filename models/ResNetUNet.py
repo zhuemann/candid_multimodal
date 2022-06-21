@@ -14,9 +14,9 @@ class ResNetUNet(nn.Module):
     def __init__(self, n_class, dir_base): #lang_model
         super().__init__()
 
-        self.base_model = models.resnet34(pretrained=False)
-        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
-        #self.base_model.load_state_dict(torch.load(save_path))
+        self.base_model = models.resnet50(pretrained=False)
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        self.base_model.load_state_dict(torch.load(save_path))
 
 
         self.base_layers = list(self.base_model.children())
@@ -35,7 +35,7 @@ class ResNetUNet(nn.Module):
         self.layer3_1x1 = convrelu(256, 256, 1, 0)
         self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
         self.layer4_1x1 = convrelu(512, 512, 1, 0) #was (512, 512, 1, 0)
-        self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
+        #self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
 
         #self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
 
