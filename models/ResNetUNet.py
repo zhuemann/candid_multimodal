@@ -14,7 +14,7 @@ class ResNetUNet(nn.Module):
     def __init__(self, n_class, dir_base): #lang_model
         super().__init__()
 
-        self.base_model = models.resnet34(pretrained=False)
+        self.base_model = models.resnet50(pretrained=False)
         #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
         #self.base_model.load_state_dict(torch.load(save_path))
 
@@ -28,13 +28,13 @@ class ResNetUNet(nn.Module):
         self.layer0 = nn.Sequential(*self.base_layers[:3]) # size=(N, 64, x.H/2, x.W/2)
         self.layer0_1x1 = convrelu(64, 64, 1, 0) # was (64, 64, 1, 0)
         self.layer1 = nn.Sequential(*self.base_layers[3:5]) # size=(N, 64, x.H/4, x.W/4)
-        self.layer1_1x1 = convrelu(64, 64, 1, 0) # was (64, 64, 1, 0)
+        self.layer1_1x1 = convrelu(256, 256, 1, 0) # was (64, 64, 1, 0)
         self.layer2 = self.base_layers[5]  # size=(N, 128, x.H/8, x.W/8)
-        self.layer2_1x1 = convrelu(128, 128, 1, 0) # was (128, 128, 1, 0)
+        self.layer2_1x1 = convrelu(512, 512, 1, 0) # was (128, 128, 1, 0)
         self.layer3 = self.base_layers[6]  # size=(N, 256, x.H/16, x.W/16)
-        self.layer3_1x1 = convrelu(256, 256, 1, 0) #was (256, 256, 1, 0)
+        self.layer3_1x1 = convrelu(1024, 1024, 1, 0) #was (256, 256, 1, 0)
         self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
-        self.layer4_1x1 = convrelu(512, 512, 1, 0) #was (512, 512, 1, 0)
+        self.layer4_1x1 = convrelu(2048, 2048, 1, 0) #was (512, 512, 1, 0)
         #self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
 
         #self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
