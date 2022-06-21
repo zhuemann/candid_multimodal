@@ -72,8 +72,8 @@ class ResNetUNet(nn.Module):
         print(layer3.size())
         layer4 = self.layer4(layer3)
         print(layer4.size())
-        layer5 = self.layer5(layer4)
-        print(layer5.size())
+        #layer5 = self.layer5(layer4)
+        #print(layer5.size())
 
         #layer5 = self.layer5_1x1(layer5)
         #x = self.upsample(layer5)
