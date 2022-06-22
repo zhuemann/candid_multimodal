@@ -81,7 +81,7 @@ class ResAttNetUNet(nn.Module):
         bilinear = False
         # layers from other versino
         self.up1 = Up(2048, bilinear)
-        #self.attention1 = Attention_block(512, 512, 256)
+        self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
         self.lang_attn = LangCrossAtt(emb_dim=1024)
@@ -121,11 +121,11 @@ class ResAttNetUNet(nn.Module):
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
-        print(f"layer0: {layer0.size()}")
-        print(f"layer1: {layer1.size()}")
-        print(f"layer2: {layer2.size()}")
-        print(f"layer3: {layer3.size()}")
-        print(f"layer4: {layer4.size()}")
+        #print(f"layer0: {layer0.size()}")
+        #print(f"layer1: {layer1.size()}")
+        #print(f"layer2: {layer2.size()}")
+        #print(f"layer3: {layer3.size()}")
+        #print(f"layer4: {layer4.size()}")
 
         #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
@@ -133,7 +133,7 @@ class ResAttNetUNet(nn.Module):
 
         #print("x5 shape")
         #print(x5.size())
-        #x4 = self.attention1(decode1, x4)
+        layer3 = self.attention1(decode1, layer3)
         #test = self.multiplicativeAttention(lang_output[1], decode1)
         #x5 = torch.swapaxes(x5, 0, 1)
 
@@ -150,28 +150,26 @@ class ResAttNetUNet(nn.Module):
         #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
 
         #test = self.multihead_attn(query=lang_rep, key=decode1, value=decode1)
-        #print("attention size")
-        #print(test_att.size())
-        #print(test_other.size())
+
         x = concatenate_layers(decode1, layer3)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        #x3 = self.attention2(decode2, x3)
+        layer2 = self.attention2(decode2, layer2)
         x = concatenate_layers(decode2, layer2)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
-        #x2 = self.attention3(decode3, x2)
+        layer1 = self.attention3(decode3, layer1)
         x = concatenate_layers(decode3, layer1)
         x = self.up_conv3(x)
 
 
-        print(f"x size before up4: {x.size()}")
+        #print(f"x size before up4: {x.size()}")
         decode4 = self.up4(x)
-        #x1 = self.attention4(decode4, x1)
-        print(f"decode4 size: {decode4.size()}")
-        print(f"layer0 size: {layer0.size()}")
+        layer0 = self.attention4(decode4, layer0)
+        #print(f"decode4 size: {decode4.size()}")
+        #print(f"layer0 size: {layer0.size()}")
 
         x = concatenate_layers(decode4, layer0)
         x = self.up_conv4(x)
