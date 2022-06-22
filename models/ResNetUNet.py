@@ -81,6 +81,13 @@ class ResNetUNet(nn.Module):
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
+        print(f"layer0: {layer0.size()}")
+        print(f"layer1: {layer1.size()}")
+        print(f"layer2: {layer2.size()}")
+        print(f"layer3: {layer3.size()}")
+        print(f"layer4: {layer4.size()}")
+
+
         #layer5 = self.layer5(layer4)
         #print(layer5.size())
 
@@ -90,9 +97,11 @@ class ResNetUNet(nn.Module):
         #print(f"layer3: {layer3.size()}")
         #print(f"before upsampling {layer4.size()}")
         layer4 = self.layer4_1x1(layer4)
+        print(f"layer4 size after 1x1 {layer4.size()}")
+
         #print(f"after upsampling {layer4.size()}")
         x = self.upsample(layer4)
-        #print(f"x value {x.size()}")
+        print(f"x value after upsampling layer4 {x.size()}")
 
         layer3 = self.layer3_1x1(layer3)
         #print(f"layer3 after 1x1 {layer3.size()}")
