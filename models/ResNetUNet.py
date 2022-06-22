@@ -62,9 +62,9 @@ class ResNetUNet(nn.Module):
         self.conv_last = nn.Conv2d(64, n_class, 1)
 
 
-        self.attention1 = Attention_block(2048, 2048, 1024)
-        self.attention2 = Attention_block(1024, 1024, 512)
-        self.attention3 = Attention_block(512, 512, 256)
+        self.attention1 = Attention_block(1024, 1024, 512)
+        self.attention2 = Attention_block(512, 512, 256)
+        self.attention3 = Attention_block(256, 256, 64)
 
 
     def forward(self, input, ids, mask, token_type_ids):
@@ -87,23 +87,23 @@ class ResNetUNet(nn.Module):
         #layer5 = self.layer5_1x1(layer5)
         #x = self.upsample(layer5)
         #x = torch.cat([x, layer4], dim=1)
-        print(f"layer3: {layer3.size()}")
-        print(f"before upsampling {layer4.size()}")
+        #print(f"layer3: {layer3.size()}")
+        #print(f"before upsampling {layer4.size()}")
         layer4 = self.layer4_1x1(layer4)
-        print(f"after upsampling {layer4.size()}")
+        #print(f"after upsampling {layer4.size()}")
         x = self.upsample(layer4)
-        print(f"x value {x.size()}")
+        #print(f"x value {x.size()}")
 
         layer3 = self.layer3_1x1(layer3)
-        print(f"layer3 after 1x1 {layer3.size()}")
+        #print(f"layer3 after 1x1 {layer3.size()}")
 
         #attention goes here
 
-        print("layer 4 after 1x1")
-        print(f"layer 4 size into attention{layer4.size()}")
-        print(layer3.size())
-        print(f"layer 3 size into attention{layer3.size()}")
-        print(f"x size into attention{x.size()}")
+        #print("layer 4 after 1x1")
+        #print(f"layer 4 size into attention{layer4.size()}")
+        #print(layer3.size())
+        #print(f"layer 3 size into attention{layer3.size()}")
+        #print(f"x size into attention{x.size()}")
 
         layer3 = self.attention1(layer3, x)
         x = torch.cat([x, layer3], dim=1)
