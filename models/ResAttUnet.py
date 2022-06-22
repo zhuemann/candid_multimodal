@@ -95,7 +95,7 @@ class ResAttNetUNet(nn.Module):
         #self.attention3 = Attention_block(128, 128, 64)
         self.up_conv3 = DoubleConv(512, 256)
 
-        self.up4 = Up(192, bilinear)
+        self.up4 = Up(256, bilinear)
         self.attention4 = Attention_block(64, 64, 32)
         self.up_conv4 = DoubleConv(192, 64)
 
