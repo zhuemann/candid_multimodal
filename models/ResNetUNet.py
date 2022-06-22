@@ -66,6 +66,9 @@ class ResNetUNet(nn.Module):
         self.attention2 = Attention_block(512, 512, 256)
         self.attention3 = Attention_block(256, 256, 64)
 
+        self.up1 = Up(2048, bilinear=False)
+
+
 
     def forward(self, input, ids, mask, token_type_ids):
 
@@ -102,6 +105,9 @@ class ResNetUNet(nn.Module):
         #print(f"after upsampling {layer4.size()}")
         x = self.upsample(layer4)
         print(f"x value after upsampling layer4 {x.size()}")
+
+        test = self.up1(layer4)
+        print(f"test dimensions: {test.size()}")
 
         layer3 = self.layer3_1x1(layer3)
         #print(f"layer3 after 1x1 {layer3.size()}")
@@ -182,3 +188,22 @@ class Attention_block(nn.Module):
         psi = self.psi(psi)
 
         return x * psi
+
+
+class Up(nn.Module):
+    """Upscaling"""
+
+    def __init__(self, in_channels, bilinear=True):
+        super().__init__()
+
+        # if bilinear, use the normal convolutions to reduce the number of channels
+
+        if bilinear:
+            self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        else:
+            self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
+
+    def forward(self, x1):
+        x1 = self.up(x1)
+
+        return x1
