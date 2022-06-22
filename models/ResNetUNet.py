@@ -87,13 +87,16 @@ class ResNetUNet(nn.Module):
         #layer5 = self.layer5_1x1(layer5)
         #x = self.upsample(layer5)
         #x = torch.cat([x, layer4], dim=1)
-
-
+        print(f"layer3: {layer3.size()}")
+        print("before upsampling")
+        print(layer4.size())
         layer4 = self.layer4_1x1(layer4)
         x = self.upsample(layer4)
         layer3 = self.layer3_1x1(layer3)
         #attention goes here
 
+        print("layer 4 after 1x1")
+        print(layer4.size())
         print(layer3.size())
         print(x.size())
 
