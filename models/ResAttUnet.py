@@ -167,10 +167,9 @@ class ResAttNetUNet(nn.Module):
 
         #print(f"x size before up4: {x.size()}")
         decode4 = self.up4(x)
+        print(f"decode4 size: {decode4.size()}")
+        print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
-        #print(f"decode4 size: {decode4.size()}")
-        #print(f"layer0 size: {layer0.size()}")
-
         x = concatenate_layers(decode4, layer0)
         x = self.up_conv4(x)
 
