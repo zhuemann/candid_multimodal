@@ -64,8 +64,7 @@ class ResNetUNet(nn.Module):
 
         self.attention1 = Attention_block(1024, 1024, 512)
         self.attention2 = Attention_block(512, 512, 256)
-        self.attention3 = Attention_block(256, 256, 128)
-        self.attention4 = Attention_block(128, 128, 64)
+        self.attention3 = Attention_block(256, 256, 64)
 
 
     def forward(self, input, ids, mask, token_type_ids):
@@ -94,6 +93,10 @@ class ResNetUNet(nn.Module):
         x = self.upsample(layer4)
         layer3 = self.layer3_1x1(layer3)
         #attention goes here
+
+        print(layer3.size())
+        print(x.size())
+
         layer3 = self.attention1(layer3, x)
         x = torch.cat([x, layer3], dim=1)
         #print(f"conv_up3 shape: {x.size()}")
@@ -102,7 +105,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer2 = self.layer2_1x1(layer2)
         #attention goes here
-        layer2 = self.attention1(layer2, x)
+        layer2 = self.attention2(layer2, x)
 
         x = torch.cat([x, layer2], dim=1)
         #print(f"conv_up2 shape: {x.size()}")
@@ -118,7 +121,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer0 = self.layer0_1x1(layer0)
 
-        layer0 = self.attention1(layer0, x)
+        layer0 = self.attention3(layer0, x)
 
 
         x = torch.cat([x, layer0], dim=1)
