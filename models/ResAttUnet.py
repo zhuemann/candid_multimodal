@@ -96,8 +96,10 @@ class ResAttNetUNet(nn.Module):
         self.up_conv3 = DoubleConv(512, 256)
 
         self.up4 = Up(256, bilinear)
-        self.attention4 = Attention_block(256, 256, 64)
-        self.up_conv4 = DoubleConv(192, 64)
+        self.up4_1x1 = convrelu(128, 64, 1, 0) #was (512, 512, 1, 0)
+
+        self.attention4 = Attention_block(128, 128, 64)
+        self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_class)
 
@@ -167,6 +169,9 @@ class ResAttNetUNet(nn.Module):
 
         #print(f"x size before up4: {x.size()}")
         decode4 = self.up4(x)
+        #print(f"decode4 size: {decode4.size()}")
+        #print(f"layer0 size: {layer0.size()}")
+        decode4 = self.up4_1x1(decode4)
         print(f"decode4 size: {decode4.size()}")
         print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
