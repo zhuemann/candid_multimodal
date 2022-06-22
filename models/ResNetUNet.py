@@ -62,9 +62,9 @@ class ResNetUNet(nn.Module):
         self.conv_last = nn.Conv2d(64, n_class, 1)
 
 
-        self.attention1 = Attention_block(1024, 1024, 512)
-        self.attention2 = Attention_block(512, 512, 256)
-        self.attention3 = Attention_block(256, 256, 64)
+        self.attention1 = Attention_block(2048, 2048, 1024)
+        self.attention2 = Attention_block(1024, 1024, 512)
+        self.attention3 = Attention_block(512, 512, 256)
 
 
     def forward(self, input, ids, mask, token_type_ids):
@@ -107,7 +107,6 @@ class ResNetUNet(nn.Module):
 
         layer3 = self.attention1(layer3, x)
         x = torch.cat([x, layer3], dim=1)
-        #print(f"conv_up3 shape: {x.size()}")
         x = self.conv_up3(x)
 
         x = self.upsample(x)
