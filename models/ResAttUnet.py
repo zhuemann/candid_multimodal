@@ -68,20 +68,20 @@ class ResAttNetUNet(nn.Module):
         self.attention2 = Attention_block(512, 512, 256)
         self.attention3 = Attention_block(256, 256, 64)
 
-        self.up1 = Up(2048, bilinear=False)
-        self.up2 = Up(1024, bilinear=False)
-        self.up3 = Up(512, bilinear=False)
-        self.up4 = Up(256, bilinear=False)
-        self.up5 = Up(128, bilinear=False)
+        #self.up1 = Up(2048, bilinear=False)
+        #self.up2 = Up(1024, bilinear=False)
+        #self.up3 = Up(512, bilinear=False)
+        #self.up4 = Up(256, bilinear=False)
+        #self.up5 = Up(128, bilinear=False)
 
 
 
 
 
         bilinear = False
-        # layers from other versino
+        # layers from other version
         self.up1 = Up(2048, bilinear)
-        self.attention1 = Attention_block(1024, 1024, 512)
+        #self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
         self.lang_attn = LangCrossAtt(emb_dim=1024)
@@ -96,7 +96,7 @@ class ResAttNetUNet(nn.Module):
         self.up_conv3 = DoubleConv(512, 256)
 
         self.up4 = Up(256, bilinear)
-        self.attention4 = Attention_block(64, 64, 32)
+        self.attention4 = Attention_block(256, 256, 64)
         self.up_conv4 = DoubleConv(192, 64)
 
         self.outc = OutConv(64, n_class)
