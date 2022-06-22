@@ -62,11 +62,17 @@ class ResNetUNet(nn.Module):
         self.conv_last = nn.Conv2d(64, n_class, 1)
 
 
-        self.attention1 = Attention_block(1024, 1024, 512)
-        self.attention2 = Attention_block(512, 512, 256)
-        self.attention3 = Attention_block(256, 256, 64)
+        #self.attention1 = Attention_block(1024, 1024, 512)
+        #self.attention2 = Attention_block(512, 512, 256)
+        #self.attention3 = Attention_block(256, 256, 64)
 
-        self.up1 = Up(2048, bilinear=False)
+        #self.up1 = Up(2048, bilinear=False)
+        #self.up2 = Up(1024, bilinear=False)
+        #self.up3 = Up(512, bilinear=False)
+        #self.up4 = Up(256, bilinear=False)
+        #self.up5 = Up(128, bilinear=False)
+
+
 
 
 
@@ -90,15 +96,6 @@ class ResNetUNet(nn.Module):
         print(f"layer3: {layer3.size()}")
         print(f"layer4: {layer4.size()}")
 
-
-        #layer5 = self.layer5(layer4)
-        #print(layer5.size())
-
-        #layer5 = self.layer5_1x1(layer5)
-        #x = self.upsample(layer5)
-        #x = torch.cat([x, layer4], dim=1)
-        #print(f"layer3: {layer3.size()}")
-        #print(f"before upsampling {layer4.size()}")
         layer4 = self.layer4_1x1(layer4)
         print(f"layer4 size after 1x1 {layer4.size()}")
 
