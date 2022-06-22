@@ -112,7 +112,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer2 = self.layer2_1x1(layer2)
         #attention goes here
-        layer2 = self.attention2(layer2, x)
+        #layer2 = self.attention2(layer2, x)
 
         x = torch.cat([x, layer2], dim=1)
         #print(f"conv_up2 shape: {x.size()}")
@@ -120,7 +120,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer1 = self.layer1_1x1(layer1)
 
-        layer1 = self.attention1(layer1, x)
+        #layer1 = self.attention1(layer1, x)
 
         x = torch.cat([x, layer1], dim=1)
         x = self.conv_up1(x)
@@ -128,7 +128,7 @@ class ResNetUNet(nn.Module):
         x = self.upsample(x)
         layer0 = self.layer0_1x1(layer0)
 
-        layer0 = self.attention3(layer0, x)
+        #layer0 = self.attention3(layer0, x)
 
 
         x = torch.cat([x, layer0], dim=1)
