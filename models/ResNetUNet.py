@@ -105,7 +105,7 @@ class ResNetUNet(nn.Module):
         #print(f"layer 3 size into attention{layer3.size()}")
         #print(f"x size into attention{x.size()}")
 
-        layer3 = self.attention1(layer3, x)
+        #layer3 = self.attention1(layer3, x)
         x = torch.cat([x, layer3], dim=1)
         x = self.conv_up3(x)
 
