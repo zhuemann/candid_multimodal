@@ -84,11 +84,11 @@ class ResAttNetUNet(nn.Module):
         #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
 
-        layer4 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer4)
+        layer4 = self.lang_attn0(lang_rep=lang_rep, vision_rep=layer4)
 
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
-        layer3 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer3)
+        layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
 
 
         #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
@@ -100,7 +100,7 @@ class ResAttNetUNet(nn.Module):
 
         decode2 = self.up2(x)
         layer2 = self.attention2(decode2, layer2)
-        layer2 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer2)
+        layer2 = self.lang_attn2(lang_rep=lang_rep, vision_rep=layer2)
 
 
 
@@ -109,7 +109,7 @@ class ResAttNetUNet(nn.Module):
 
         decode3 = self.up3(x)
         layer1 = self.attention3(decode3, layer1)
-        layer1 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer1)
+        layer1 = self.lang_attn3(lang_rep=lang_rep, vision_rep=layer1)
 
         x = concatenate_layers(decode3, layer1)
         x = self.up_conv3(x)
@@ -123,7 +123,7 @@ class ResAttNetUNet(nn.Module):
         #print(f"decode4 size: {decode4.size()}")
         #print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
-        layer0 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer0)
+        layer0 = self.lang_attn4(lang_rep=lang_rep, vision_rep=layer0)
 
         x = concatenate_layers(decode4, layer0)
         x = self.up_conv4(x)
