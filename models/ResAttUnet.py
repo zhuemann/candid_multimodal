@@ -105,6 +105,9 @@ class ResAttNetUNet(nn.Module):
 
         decode2 = self.up2(x)
         layer2 = self.attention2(decode2, layer2)
+
+        print(f"lang size: {lang_rep.size()}")
+        print(f"layer2 size: {layer2.size()}")
         layer2 = self.lang_attn2(lang_rep=lang_rep, vision_rep=layer2)
 
 
