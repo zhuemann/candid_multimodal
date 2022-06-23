@@ -267,8 +267,8 @@ class LangCrossAtt(nn.Module):
         print(f"lang rep before attention {lang_rep.size()}")
 
         # does cross attention between vision and language
-        att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
-        #att_matrix, attn_output_weights = self.multihead_attn(query=lang_rep, key=vision_rep, value=vision_rep)
+        #att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+        att_matrix, attn_output_weights = self.multihead_attn(query=lang_rep, key=vision_rep, value=vision_rep)
 
         print(f"attn output weights size {attn_output_weights.size()}")
         print(f"attn matrix weights size {att_matrix.size()}")
@@ -277,6 +277,11 @@ class LangCrossAtt(nn.Module):
         # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
+
+
+        print(f"about to multiple")
+        print(f"vision_rep {vision_rep.size()}")
+        print(f"atte weight thingy {attn_output_weights.size()}")
 
         # multiplies the attention to focus the vision rep based on the lang rep
         vision_rep = vision_rep * attn_output_weights
