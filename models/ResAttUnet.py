@@ -88,6 +88,11 @@ class ResAttNetUNet(nn.Module):
 
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
+
+        print(f"lang seize: {lang_rep.size()}")
+        print(f"lang seize: {layer3.size()}")
+
+
         layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
 
 
@@ -245,9 +250,15 @@ class LangCrossAtt(nn.Module):
         vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
         vision_rep = torch.swapaxes(vision_rep_flat, 2, 0)
 
+        print(f"vision rep size inside forward {vision_rep.size()}")
+
+
         # puts the language rep into the right shape for attention
+        print(f"lang_rep inside forward {lang_rep.size()}")
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         lang_rep = torch.swapaxes(lang_rep, 1, 2)
+        print(f"lang_rep after swaps forward {lang_rep.size()}")
+
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
