@@ -13,8 +13,10 @@ def convrelu(in_channels, out_channels, kernel, padding):
 
 
 class ResAttNetUNet(nn.Module):
-    def __init__(self, n_class, dir_base): #lang_model
+    def __init__(self, lang_model, n_class, dir_base): #lang_model
         super().__init__()
+
+        self.lang_encoder = lang_model
 
         self.base_model = models.resnet50(pretrained=False)
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
@@ -41,31 +43,37 @@ class ResAttNetUNet(nn.Module):
         self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
-        self.lang_attn = LangCrossAtt(emb_dim=1024)
+        self.lang_attn1 = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
         self.up2 = Up(1024, bilinear)
         self.attention2 = Attention_block(512, 512, 256)
+        self.lang_attn2 = LangCrossAtt(emb_dim=1024)
+
         self.up_conv2 = DoubleConv(1024, 512)
 
         self.up3 = Up(512, bilinear)
         self.attention3 = Attention_block(256, 256, 128)
+        self.lang_attn3 = LangCrossAtt(emb_dim=1024)
+
         self.up_conv3 = DoubleConv(512, 256)
 
         self.up4 = Up(256, bilinear)
         self.up4_1x1 = convrelu(128, 64, 1, 0)
 
         self.attention4 = Attention_block(64, 64, 64)
+        self.lang_attn4 = LangCrossAtt(emb_dim=1024)
+
         self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_class)
 
     def forward(self, input, ids, mask, token_type_ids):
 
-        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        lang_output = self.lang_encoder(ids, mask, token_type_ids)
         #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         #lang_rep = lang_rep.repeat(1, 2, 8, 8)
-
+        lang_rep = lang_output[1]
 
         layer0 = self.layer0(input)
         layer1 = self.layer1(layer0)
@@ -75,8 +83,13 @@ class ResAttNetUNet(nn.Module):
 
         #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
+
+        layer4 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer4)
+
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
+        layer3 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer3)
+
 
         #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
 
@@ -87,11 +100,17 @@ class ResAttNetUNet(nn.Module):
 
         decode2 = self.up2(x)
         layer2 = self.attention2(decode2, layer2)
+        layer2 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer2)
+
+
+
         x = concatenate_layers(decode2, layer2)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
         layer1 = self.attention3(decode3, layer1)
+        layer1 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer1)
+
         x = concatenate_layers(decode3, layer1)
         x = self.up_conv3(x)
 
@@ -104,6 +123,8 @@ class ResAttNetUNet(nn.Module):
         #print(f"decode4 size: {decode4.size()}")
         #print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
+        layer0 = self.lang_attn(lang_rep=lang_rep, vision_rep=layer0)
+
         x = concatenate_layers(decode4, layer0)
         x = self.up_conv4(x)
 
