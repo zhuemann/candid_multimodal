@@ -43,12 +43,12 @@ class ResAttNetUNet(nn.Module):
         self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
-        self.lang_attn1 = LangCrossAtt(emb_dim=1024)
+        self.lang_attn1 = LangCrossAtt(emb_dim=1024, vdimension=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
         self.up2 = Up(1024, bilinear)
         self.attention2 = Attention_block(512, 512, 256)
-        self.lang_attn2 = LangCrossAtt(emb_dim=1024)
+        self.lang_attn2 = LangCrossAtt(emb_dim=1024, vdimension=512)
 
         self.up_conv2 = DoubleConv(1024, 512)
 
@@ -235,10 +235,10 @@ class LangCrossAtt(nn.Module):
     "add documentaiton"
 
 
-    def __init__(self, emb_dim):
+    def __init__(self, emb_dim, vdimension):
         super(LangCrossAtt, self).__init__()
 
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1)
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1, vdim=vdimension)
 
     def forward(self, lang_rep, vision_rep):
 
