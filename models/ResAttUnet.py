@@ -275,7 +275,7 @@ class LangCrossAtt(nn.Module):
 
 
         # gets the attention weights and repeats them to have the same size as the total channels
-        attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
+        # attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
 
 
