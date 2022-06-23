@@ -89,8 +89,8 @@ class ResAttNetUNet(nn.Module):
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
 
-        print(f"lang seize: {lang_rep.size()}")
-        print(f"lang seize: {layer3.size()}")
+        print(f"lang size: {lang_rep.size()}")
+        print(f"layer3 size: {layer3.size()}")
 
 
         layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
@@ -265,6 +265,10 @@ class LangCrossAtt(nn.Module):
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+
+        print(f"attn_output_weights size {attn_output_weights.size()}")
+        print(f"attn matrix weights size {att_matrix.size()}")
+
 
         # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
