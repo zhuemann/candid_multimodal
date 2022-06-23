@@ -28,40 +28,11 @@ class ResAttNetUNet(nn.Module):
 
         #self.lang_encoder = lang_model
         self.layer0 = nn.Sequential(*self.base_layers[:3]) # size=(N, 64, x.H/2, x.W/2)
-        self.layer0_1x1 = convrelu(64, 64, 1, 0) # was (64, 64, 1, 0)
-        self.layer1 = nn.Sequential(*self.base_layers[3:5]) # size=(N, 64, x.H/4, x.W/4)
-        self.layer1_1x1 = convrelu(256, 256, 1, 0) # was (64, 64, 1, 0)
-        self.layer2 = self.base_layers[5]  # size=(N, 128, x.H/8, x.W/8)
-        self.layer2_1x1 = convrelu(512, 512, 1, 0) # was (128, 128, 1, 0)
-        self.layer3 = self.base_layers[6]  # size=(N, 256, x.H/16, x.W/16)
-        self.layer3_1x1 = convrelu(1024, 1024, 1, 0) #was (256, 256, 1, 0)
-        self.layer4 = self.base_layers[7]  # size=(N, 512, x.H/32, x.W/32)
-        self.layer4_1x1 = convrelu(2048, 2048, 1, 0) #was (512, 512, 1, 0)
-        #self.layer5 = self.base_layers[8]  # size=(N, 1024, x.H/64, x.W/64)
+        self.layer1 = nn.Sequential(*self.base_layers[3:5]) # size=(N, 256, x.H/4, x.W/4)
+        self.layer2 = self.base_layers[5]  # size=(N, 512, x.H/8, x.W/8)
+        self.layer3 = self.base_layers[6]  # size=(N, 1024, x.H/16, x.W/16)
+        self.layer4 = self.base_layers[7]  # size=(N, 2048, x.H/32, x.W/32)
 
-        #self.layer5_1x1 = convrelu(1024, 1024, 1, 0)
-
-        self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
-
-        self.conv_up3 = convrelu(1024 + 2048, 1024, 3, 1)
-        self.conv_up2 = convrelu(512 + 1024, 512, 3, 1)
-        self.conv_up1 = convrelu(256 + 512, 256, 3, 1)
-        self.conv_up0 = convrelu(64 + 256, 128, 3, 1)
-        #numbers for resnet34
-        #self.conv_up3 = convrelu(256 + 512, 512, 3, 1)
-        #self.conv_up2 = convrelu(128 + 512, 256, 3, 1)
-        #self.conv_up1 = convrelu(64 + 256, 256, 3, 1)
-        #self.conv_up0 = convrelu(64 + 256, 128, 3, 1)
-
-        #self.conv_original_size0 = convrelu(3, 64, 3, 1)
-        #self.conv_original_size1 = convrelu(256, 256, 3, 1)
-        #self.conv_original_size2 = convrelu(256 + 512, 64, 3, 1)
-        #numbers for resnet34
-        self.conv_original_size0 = convrelu(3, 64, 3, 1)
-        self.conv_original_size1 = convrelu(64, 64, 3, 1)
-        self.conv_original_size2 = convrelu(64 + 128, 64, 3, 1)
-
-        self.conv_last = nn.Conv2d(64, n_class, 1)
 
         # layers from other version
         bilinear = False
@@ -101,31 +72,11 @@ class ResAttNetUNet(nn.Module):
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
-        #print(f"layer0: {layer0.size()}")
-        #print(f"layer1: {layer1.size()}")
-        #print(f"layer2: {layer2.size()}")
-        #print(f"layer3: {layer3.size()}")
-        #print(f"layer4: {layer4.size()}")
 
         #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
         decode1 = self.up1(layer4)
-
-        #print("x5 shape")
-        #print(x5.size())
         layer3 = self.attention1(decode1, layer3)
-        #test = self.multiplicativeAttention(lang_output[1], decode1)
-        #x5 = torch.swapaxes(x5, 0, 1)
-
-        #x5 = torch.flatten(x5, start_dim=2)
-        #x5 = torch.swapaxes(x5, 2, 0)
-
-
-        #lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        #lang_rep = torch.swapaxes(lang_rep, 1, 2)
-
-        #print("lang_rep")
-        #print(lang_rep.size())
 
         #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
 
