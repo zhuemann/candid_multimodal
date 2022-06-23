@@ -256,7 +256,7 @@ class LangCrossAtt(nn.Module):
         # puts the language rep into the right shape for attention
         print(f"lang_rep inside forward {lang_rep.size()}")
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        lang_rep = torch.swapaxes(lang_rep, 1, 2)
+        #lang_rep = torch.swapaxes(lang_rep, 1, 2)
         print(f"lang_rep after swaps forward {lang_rep.size()}")
 
         print(f"vision rep before attention {vision_rep.size()}")
