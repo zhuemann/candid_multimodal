@@ -52,7 +52,7 @@ class ResAttNetUNet(nn.Module):
         self.attention2 = Attention_block(512, 512, 256)
 
         self.lang_proj2 = nn.Linear(1024, 512)
-        self.lang_attn2 = LangCrossAtt(emb_dim=1024, vdimension=512)
+        self.lang_attn2 = LangCrossAtt(emb_dim=512, vdimension=512)
 
         self.up_conv2 = DoubleConv(1024, 512)
 
