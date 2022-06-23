@@ -253,7 +253,7 @@ class LangCrossAtt(nn.Module):
     def __init__(self, emb_dim, vdimension):
         super(LangCrossAtt, self).__init__()
 
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1, vdim=vdimension)
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1) #vdim=vdimension
 
     def forward(self, lang_rep, vision_rep):
 
