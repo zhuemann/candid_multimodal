@@ -267,7 +267,8 @@ class LangCrossAtt(nn.Module):
         print(f"lang rep before attention {lang_rep.size()}")
 
         # does cross attention between vision and language
-        att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+        #att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+        att_matrix, attn_output_weights = self.multihead_attn(query=lang_rep, key=vision_rep, value=vision_rep)
 
         print(f"attn_output_weights size {attn_output_weights.size()}")
         print(f"attn matrix weights size {att_matrix.size()}")
