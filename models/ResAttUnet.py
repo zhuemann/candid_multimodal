@@ -252,7 +252,7 @@ class LangCrossAtt(nn.Module):
 
         print(f"vision rep size inside forward {vision_rep.size()}")
 
-
+        lang_rep = torch.unsqueeze(lang_rep, 1)
         # puts the language rep into the right shape for attention
         print(f"lang_rep inside forward {lang_rep.size()}")
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
