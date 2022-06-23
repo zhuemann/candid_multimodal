@@ -144,7 +144,7 @@ class ResAttNetUNet(nn.Module):
         #print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
 
-        lang_rep4 = self.lang_proj2(lang_rep)
+        lang_rep4 = self.lang_proj4(lang_rep)
 
         layer0 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=layer0)
 
