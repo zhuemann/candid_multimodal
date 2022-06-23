@@ -97,9 +97,6 @@ class ResAttNetUNet(nn.Module):
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
 
-        print(f"lang size: {lang_rep.size()}")
-        print(f"layer3 size: {layer3.size()}")
-
         #lang_rep2 = self.lang_proj2(lang_rep)
         layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
 
@@ -114,12 +111,8 @@ class ResAttNetUNet(nn.Module):
         decode2 = self.up2(x)
         layer2 = self.attention2(decode2, layer2)
 
-        print(f"lang size: {lang_rep.size()}")
-        print(f"layer2 size: {layer2.size()}")
         lang_rep2 = self.lang_proj2(lang_rep)
         layer2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=layer2)
-
-
 
         x = concatenate_layers(decode2, layer2)
         x = self.up_conv2(x)
