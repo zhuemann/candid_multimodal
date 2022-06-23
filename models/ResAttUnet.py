@@ -243,7 +243,7 @@ class LangCrossAtt(nn.Module):
     "add documentaiton"
 
 
-    def __init__(self, emb_dim, vdimension):
+    def __init__(self, emb_dim):
         super(LangCrossAtt, self).__init__()
 
         self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1) #vdim=vdimension
