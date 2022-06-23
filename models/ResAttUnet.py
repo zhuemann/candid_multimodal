@@ -45,14 +45,14 @@ class ResAttNetUNet(nn.Module):
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
 
 
-        self.lang_attn1 = LangCrossAtt(emb_dim=1024, vdimension=1024)
+        self.lang_attn1 = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
         self.up2 = Up(1024, bilinear)
         self.attention2 = Attention_block(512, 512, 256)
 
         self.lang_proj2 = nn.Linear(1024, 512)
-        self.lang_attn2 = LangCrossAtt(emb_dim=512, vdimension=512)
+        self.lang_attn2 = LangCrossAtt(emb_dim=512)
 
         self.up_conv2 = DoubleConv(1024, 512)
 
@@ -60,7 +60,7 @@ class ResAttNetUNet(nn.Module):
         self.attention3 = Attention_block(256, 256, 128)
 
         self.lang_proj3 = nn.Linear(1024, 256)
-        self.lang_attn3 = LangCrossAtt(emb_dim=256, vdimension=256)
+        self.lang_attn3 = LangCrossAtt(emb_dim=256)
 
         self.up_conv3 = DoubleConv(512, 256)
 
@@ -70,7 +70,7 @@ class ResAttNetUNet(nn.Module):
         self.attention4 = Attention_block(64, 64, 64)
 
         self.lang_proj4 = nn.Linear(1024, 64)
-        self.lang_attn4 = LangCrossAtt(emb_dim=64, vdimension=128)
+        self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
         self.up_conv4 = DoubleConv(128, 64)
 
@@ -268,36 +268,19 @@ class LangCrossAtt(nn.Module):
         vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
         vision_rep = torch.swapaxes(vision_rep_flat, 2, 0)
 
-        print(f"vision rep size inside forward {vision_rep.size()}")
 
         lang_rep = torch.unsqueeze(lang_rep, 1)
         # puts the language rep into the right shape for attention
-        print(f"lang_rep inside forward {lang_rep.size()}")
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         #lang_rep = torch.swapaxes(lang_rep, 1, 2)
-        print(f"lang_rep after swaps forward {lang_rep.size()}")
-
-        print(f"vision rep before attention {vision_rep.size()}")
-
-        print(f"lang rep before attention {lang_rep.size()}")
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
-        #att_matrix, attn_output_weights = self.multihead_attn(query=lang_rep, key=vision_rep, value=vision_rep)
-
-        print(f"attn output weights size {attn_output_weights.size()}")
-        #print(f"attn matrix weights size {att_matrix.size()}")
-
 
         # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
         #attn_output_weights = torch.swapaxes(attn_output_weights, 0, 2)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
-
-
-        print(f"about to multiple")
-        print(f"vision_rep {vision_rep.size()}")
-        print(f"atte weight thingy {attn_output_weights.size()}")
 
         # multiplies the attention to focus the vision rep based on the lang rep
         vision_rep = vision_rep * attn_output_weights
