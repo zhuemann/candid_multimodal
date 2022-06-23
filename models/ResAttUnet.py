@@ -43,17 +43,23 @@ class ResAttNetUNet(nn.Module):
         self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
+
+
         self.lang_attn1 = LangCrossAtt(emb_dim=1024, vdimension=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
         self.up2 = Up(1024, bilinear)
         self.attention2 = Attention_block(512, 512, 256)
+
+        self.lang_proj2 = nn.Linear(1024, 512)
         self.lang_attn2 = LangCrossAtt(emb_dim=1024, vdimension=512)
 
         self.up_conv2 = DoubleConv(1024, 512)
 
         self.up3 = Up(512, bilinear)
         self.attention3 = Attention_block(256, 256, 128)
+
+        self.lang_proj3 = nn.Linear(1024, 256)
         self.lang_attn3 = LangCrossAtt(emb_dim=1024, vdimension=256)
 
         self.up_conv3 = DoubleConv(512, 256)
@@ -62,6 +68,8 @@ class ResAttNetUNet(nn.Module):
         self.up4_1x1 = convrelu(128, 64, 1, 0)
 
         self.attention4 = Attention_block(64, 64, 64)
+
+        self.lang_proj4 = nn.Linear(1024, 128)
         self.lang_attn4 = LangCrossAtt(emb_dim=1024, vdimension=128)
 
         self.up_conv4 = DoubleConv(128, 64)
@@ -92,7 +100,7 @@ class ResAttNetUNet(nn.Module):
         print(f"lang size: {lang_rep.size()}")
         print(f"layer3 size: {layer3.size()}")
 
-
+        #lang_rep2 = self.lang_proj2(lang_rep)
         layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
 
 
@@ -108,7 +116,8 @@ class ResAttNetUNet(nn.Module):
 
         print(f"lang size: {lang_rep.size()}")
         print(f"layer2 size: {layer2.size()}")
-        layer2 = self.lang_attn2(lang_rep=lang_rep, vision_rep=layer2)
+        lang_rep2 = self.lang_proj2(lang_rep)
+        layer2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=layer2)
 
 
 
@@ -117,7 +126,10 @@ class ResAttNetUNet(nn.Module):
 
         decode3 = self.up3(x)
         layer1 = self.attention3(decode3, layer1)
-        layer1 = self.lang_attn3(lang_rep=lang_rep, vision_rep=layer1)
+
+        lang_rep3 = self.lang_proj3(lang_rep)
+
+        layer1 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=layer1)
 
         x = concatenate_layers(decode3, layer1)
         x = self.up_conv3(x)
@@ -131,7 +143,10 @@ class ResAttNetUNet(nn.Module):
         #print(f"decode4 size: {decode4.size()}")
         #print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
-        layer0 = self.lang_attn4(lang_rep=lang_rep, vision_rep=layer0)
+
+        lang_rep4 = self.lang_proj2(lang_rep)
+
+        layer0 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=layer0)
 
         x = concatenate_layers(decode4, layer0)
         x = self.up_conv4(x)
