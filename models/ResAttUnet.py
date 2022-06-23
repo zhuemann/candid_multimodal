@@ -63,23 +63,9 @@ class ResAttNetUNet(nn.Module):
 
         self.conv_last = nn.Conv2d(64, n_class, 1)
 
-
-        self.attention1 = Attention_block(1024, 1024, 512)
-        self.attention2 = Attention_block(512, 512, 256)
-        self.attention3 = Attention_block(256, 256, 64)
-
-        #self.up1 = Up(2048, bilinear=False)
-        #self.up2 = Up(1024, bilinear=False)
-        #self.up3 = Up(512, bilinear=False)
-        #self.up4 = Up(256, bilinear=False)
-        #self.up5 = Up(128, bilinear=False)
-
-
-
-
-
-        bilinear = False
         # layers from other version
+        bilinear = False
+
         self.up1 = Up(2048, bilinear)
         self.attention1 = Attention_block(1024, 1024, 512)
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
@@ -96,18 +82,12 @@ class ResAttNetUNet(nn.Module):
         self.up_conv3 = DoubleConv(512, 256)
 
         self.up4 = Up(256, bilinear)
-        self.up4_1x1 = convrelu(128, 64, 1, 0) #was (512, 512, 1, 0)
+        self.up4_1x1 = convrelu(128, 64, 1, 0)
 
         self.attention4 = Attention_block(64, 64, 64)
         self.up_conv4 = DoubleConv(128, 64)
 
         self.outc = OutConv(64, n_class)
-
-
-
-
-
-
 
     def forward(self, input, ids, mask, token_type_ids):
 
@@ -115,8 +95,6 @@ class ResAttNetUNet(nn.Module):
         #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
         #lang_rep = lang_rep.repeat(1, 2, 8, 8)
 
-        x_original = self.conv_original_size0(input)
-        x_original = self.conv_original_size1(x_original)
 
         layer0 = self.layer0(input)
         layer1 = self.layer1(layer0)
