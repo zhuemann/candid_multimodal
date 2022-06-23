@@ -84,7 +84,7 @@ class ResAttNetUNet(nn.Module):
         #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
 
-        layer4 = self.lang_attn0(lang_rep=lang_rep, vision_rep=layer4)
+        #layer4 = self.lang_attn0(lang_rep=lang_rep, vision_rep=layer4)
 
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
