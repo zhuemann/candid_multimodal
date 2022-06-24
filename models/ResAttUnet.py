@@ -78,10 +78,18 @@ class ResAttNetUNet(nn.Module):
 
     def forward(self, input, ids, mask, token_type_ids):
 
-        lang_output = self.lang_encoder(ids, mask, token_type_ids)
-        #lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-        #lang_rep = lang_rep.repeat(1, 2, 8, 8)
-        lang_rep = lang_output[1]
+        #for t5
+        lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
+        pooled_sentence = lang_output.last_hidden_state
+        print(pooled_sentence)
+        print(pooled_sentence.shape())
+
+        pooled_sentence = torch.mean(pooled_sentence, dim=1)
+        print(pooled_sentence.size())
+
+        #for roberta
+        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        #lang_rep = lang_output[1]
 
         layer0 = self.layer0(input)
         layer1 = self.layer1(layer0)
