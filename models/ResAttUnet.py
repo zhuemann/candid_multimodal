@@ -83,7 +83,8 @@ class ResAttNetUNet(nn.Module):
         pooled_sentence = lang_output.last_hidden_state
         #print(pooled_sentence)
         pooled_sentence = torch.mean(pooled_sentence, dim=1)
-        print(pooled_sentence.size())
+        #print(pooled_sentence.size())
+        lang_rep = pooled_sentence
 
         #for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)
