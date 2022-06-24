@@ -86,6 +86,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
+    print(t5_path)
     language_model = T5Model.from_pretrained(t5_path)
     #was using roberta
     #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
