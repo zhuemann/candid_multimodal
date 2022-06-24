@@ -1,7 +1,7 @@
 import os
 from sklearn import model_selection
 import torchvision.transforms as transforms
-from transformers import AutoTokenizer, RobertaModel, BertModel
+from transformers import AutoTokenizer, RobertaModel, BertModel, T5Model
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
@@ -79,13 +79,17 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bert_mlm/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
 
     latient_layer = 768
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
+    language_model = T5Model.from_pretrained(t5_path)
+    #was using roberta
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
+
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
     # df = truncate_left_text_dataset(df, tokenizer)
