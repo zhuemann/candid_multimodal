@@ -11,9 +11,8 @@ from utility import rle_decode_modified
 
 class TextImageDataset(Dataset):
     def __init__(self, dataframe, tokenizer, max_len, truncation=True,
-                 dir_base='/Users/kritigoyal/Documents/CS_769_NLP/', mode=None, transforms=None, resize=None,
+                 dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms=None, resize=None,
                  img_size=256):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
-        # Zach  /home/zmh001/r-fcb-isilon/research/Bradshaw/
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text

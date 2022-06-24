@@ -79,6 +79,9 @@ class ResAttNetUNet(nn.Module):
     def forward(self, input, ids, mask, token_type_ids):
 
         #for t5
+        print(ids)
+        print(mask)
+
         lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
         pooled_sentence = lang_output.last_hidden_state
         print(pooled_sentence)
