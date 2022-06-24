@@ -1,7 +1,7 @@
 import os
 from sklearn import model_selection
 import torchvision.transforms as transforms
-from transformers import AutoTokenizer, RobertaModel, BertModel, T5Model
+from transformers import AutoTokenizer, RobertaModel, BertModel, T5Model, T5Tokenizer
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
@@ -82,7 +82,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
 
     latient_layer = 768
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
