@@ -82,8 +82,6 @@ class ResAttNetUNet(nn.Module):
         lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
         pooled_sentence = lang_output.last_hidden_state
         #print(pooled_sentence)
-        print(pooled_sentence.shape())
-
         pooled_sentence = torch.mean(pooled_sentence, dim=1)
         print(pooled_sentence.size())
 
