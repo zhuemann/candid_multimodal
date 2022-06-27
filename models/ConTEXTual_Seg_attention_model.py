@@ -5,6 +5,8 @@ import torch.nn.functional as F
 from torch import Tensor
 from typing import Tuple
 
+from LanguageCrossAttention import LangCrossAtt
+
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
@@ -74,8 +76,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
 
-        lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        lang_rep = torch.unsqueeze(lang_rep, 1)
+        #lang_rep = torch.swapaxes(lang_rep, 0, 1)
+        #lang_rep = torch.unsqueeze(lang_rep, 1)
 
         x1 = self.inc(img)
         x2 = self.down1(x1)
@@ -249,6 +251,7 @@ class DotProductAttention(nn.Module):
         return context, attn
 
 
+"""
 class LangCrossAtt(nn.Module):
     "add documentaiton"
 
@@ -291,3 +294,5 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
         return out
+        
+"""
