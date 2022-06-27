@@ -39,6 +39,7 @@ class ResAttNetUNet(nn.Module):
             del new_state_dict["_embedder.bias"]
             del new_state_dict["embedder.weight"]
 
+            print(type(state_dict["global_embedder.weight"]))
             new_state_dict["fc.bias"] = state_dict["global_embedder.bias"]
             new_state_dict["fc.weight"] = state_dict["local_embedder.weight"]
 
