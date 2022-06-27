@@ -35,17 +35,17 @@ class ResAttNetUNet(nn.Module):
                 new_state_dict[name] = v
 
             # delete extra layers
-            #del new_state_dict["_embedder.weight"]
-            #del new_state_dict["_embedder.bias"]
+            del new_state_dict["_embedder.weight"]
+            del new_state_dict["_embedder.bias"]
             del new_state_dict["embedder.weight"]
 
-            new_state_dict["fc.bias"] = state_dict["global_embedder.bias"]
-            new_state_dict["fc.weight"] = state_dict["global_embedder.weight"]
+            #new_state_dict["fc.bias"] = state_dict["global_embedder.bias"]
+            #new_state_dict["fc.weight"] = state_dict["global_embedder.weight"]
 
 
             # load in the parameters
-            self.base_model.load_state_dict(new_state_dict)
-            #self.base_model.load_state_dict(torch.load(pretrained_path))
+            #self.base_model.load_state_dict(new_state_dict)
+            self.base_model.load_state_dict(torch.load(pretrained_path))
         else:
             self.base_model.load_state_dict(torch.load(save_path))
 
