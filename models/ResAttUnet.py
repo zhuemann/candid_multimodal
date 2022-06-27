@@ -4,6 +4,8 @@ from torchvision import models
 import torch.nn.functional as F
 
 import os
+from collections import OrderedDict
+
 
 def convrelu(in_channels, out_channels, kernel, padding):
     return nn.Sequential(
@@ -19,10 +21,28 @@ class ResAttNetUNet(nn.Module):
         self.lang_encoder = lang_model
 
         self.base_model = models.resnet50(pretrained=False)
-        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
-        save_path = os.path.join(dir_base,
+        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        pretrained_path = os.path.join(dir_base,
                                        'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
-        self.base_model.load_state_dict(torch.load(save_path))
+        pretrained_model = True
+        if pretrained_model:
+            state_dict = torch.load(pretrained_path)
+            # seg_model.encoder.load_state_dict(ckpt)
+            # create new OrderedDict that does not contain `module.`
+            new_state_dict = OrderedDict()
+            for k, v in state_dict.items():
+                name = k[6:]  # remove `model.`
+                new_state_dict[name] = v
+
+            # delete extra layers
+            del new_state_dict["_embedder.weight"]
+            del new_state_dict["_embedder.bias"]
+            del new_state_dict["embedder.weight"]
+
+            # load in the parameters
+            self.base_model.load_state_dict(new_state_dict)
+        else:
+            self.base_model.load_state_dict(torch.load(save_path))
 
 
         self.base_layers = list(self.base_model.children())
