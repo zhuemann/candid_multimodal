@@ -40,7 +40,8 @@ class ResAttNetUNet(nn.Module):
             del new_state_dict["embedder.weight"]
 
             # load in the parameters
-            self.base_model.load_state_dict(new_state_dict)
+            #self.base_model.load_state_dict(new_state_dict)
+            self.base_model.load_state_dict(pretrained_model)
         else:
             self.base_model.load_state_dict(torch.load(save_path))
 
