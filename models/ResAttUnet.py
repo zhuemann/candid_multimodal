@@ -41,7 +41,7 @@ class ResAttNetUNet(nn.Module):
 
             # load in the parameters
             #self.base_model.load_state_dict(new_state_dict)
-            self.base_model.load_state_dict(torch.load(pretrained_model))
+            self.base_model.load_state_dict(torch.load(pretrained_path))
         else:
             self.base_model.load_state_dict(torch.load(save_path))
 
