@@ -39,10 +39,15 @@ class ResAttNetUNet(nn.Module):
             del new_state_dict["_embedder.bias"]
             del new_state_dict["embedder.weight"]
 
-            print(type(state_dict["global_embedder.weight"]))
-            new_state_dict["fc.bias"] = state_dict["global_embedder.bias"]
-            new_state_dict["fc.weight"] = state_dict["local_embedder.weight"]
-
+            #print(type(state_dict["global_embedder.weight"]))
+            #new_state_dict["fc.bias"] = state_dict["global_embedder.bias"]
+            #new_state_dict["fc.weight"] = state_dict["local_embedder.weight"]
+            bias = torch.empty(1000)
+            load_bias = nn.init.xavier_uniform(bias)
+            weight = torch.empty(1000, 2048)
+            load_weight = nn.init.xavier_uniform(weight)
+            new_state_dict["fc.bias"] = load_bias
+            new_state_dict["fc.weight"] = load_weight
 
             # load in the parameters
             self.base_model.load_state_dict(new_state_dict)
