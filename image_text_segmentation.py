@@ -8,6 +8,8 @@ import torch
 import pandas as pd
 
 from tqdm import tqdm
+from collections import OrderedDict
+
 
 import numpy as np
 import gc
@@ -104,7 +106,18 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
     gloria_model.load_state_dict(torch.load(roberta_path_contrastive_pretraining))
-    language_model.load_state_dict(gloria_model.text_encoder.state_dict())
+
+    pretrained_model = True
+    if pretrained_model:
+        state_dict = gloria_model.text_encoder.state_dict()
+        # create new OrderedDict that does not contain `model.`
+        new_state_dict = OrderedDict()
+        for k, v in state_dict.items():
+            name = k[6:]  # remove `model.`
+            new_state_dict[name] = v
+
+    language_model.load_state_dict(new_state_dict)
+    #language_model.load_state_dict(gloria_model.text_encoder.state_dict())
 
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
