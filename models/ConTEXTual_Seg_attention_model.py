@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torch import Tensor
 from typing import Tuple
 
-from LanguageCrossAttention import LangCrossAtt
+from .LanguageCrossAttention import LangCrossAtt
 
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
