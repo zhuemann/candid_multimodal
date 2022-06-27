@@ -89,6 +89,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1 = self.up1(x5)
 
+        print(f"lang size: {lang_rep.size()}")
+        print(f"vision size: {decode1.size()}")
         decode1 = self.lang_attn1(lang_rep=lang_rep, vision_rep=decode1)
 
         x = concatenate_layers(decode1, x4)
