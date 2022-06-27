@@ -14,6 +14,9 @@ import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
 
+from models.Gloria import GLoRIA
+
+
 from torch.optim.lr_scheduler import MultiStepLR
 
 #from albumentations.pytorch.transforms import ToTensorV2
@@ -73,26 +76,35 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bert_mlm/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
 
     latient_layer = 768
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
-    #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
-
-    language_model = T5Model.from_pretrained(t5_path)
-    #was using roberta
-    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
+    #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
 
 
+    # use t5 as text encoder
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
+
+    #load in a language model used in the contrastive learning
+    roberta_path_contrastive_pretraining = os.path.join(dir_base,
+                                   'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria')
+
+    gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
+    gloria_model.load_state_dict(torch.load(roberta_path_contrastive_pretraining))
+    language_model = gloria_model.text_encoder()
     # takes just the last 512 tokens if there are more than 512 tokens in the text
     # df = truncate_left_text_dataset(df, tokenizer)
 
