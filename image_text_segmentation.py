@@ -230,13 +230,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     #test_obj = ResNetUNet(n_class=1, dir_base=dir_base) #lang_model=language_model
-    #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
+    test_obj = ResAttNetUNet(lang_model=language_model, n_class=3, dir_base=dir_base)
 
     for param in language_model.parameters():
         param.requires_grad = False
 
 
-    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     test_obj.to(device)
 

@@ -19,7 +19,9 @@ class ResAttNetUNet(nn.Module):
         self.lang_encoder = lang_model
 
         self.base_model = models.resnet50(pretrained=False)
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet/resnet50')
+        save_path = os.path.join(dir_base,
+                                       'Zach_Analysis/models/candid_pretrained_models/roberta/candid_best_contrastive')
         self.base_model.load_state_dict(torch.load(save_path))
 
 

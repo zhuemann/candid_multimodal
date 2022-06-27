@@ -69,23 +69,11 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         pooled_sentence = torch.mean(pooled_sentence, dim=1)
         lang_rep = pooled_sentence
 
-
-        #if torch.isnan(ids).any() == True:
-        #    print("Language model is outputing nans")
-        #assert torch.isnan(ids).any() == False, "Language model out nans"
-
-        # lang_rep = torch.unsqueeze(torch.unsqueeze(lang_output[1], 2), 3)
-
-        #lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        #lang_rep = torch.unsqueeze(lang_rep, 1)
-
         x1 = self.inc(img)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-
-        #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
 
         decode1 = self.up1(x5)
 
