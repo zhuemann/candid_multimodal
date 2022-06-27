@@ -78,41 +78,32 @@ class ResAttNetUNet(nn.Module):
 
     def forward(self, input, ids, mask, token_type_ids):
 
+        # language representations
         #for t5
         lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
         pooled_sentence = lang_output.last_hidden_state
-        #print(pooled_sentence)
         pooled_sentence = torch.mean(pooled_sentence, dim=1)
-        #print(pooled_sentence.size())
         lang_rep = pooled_sentence
 
         #for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)
         #lang_rep = lang_output[1]
 
+        # vision representations
         layer0 = self.layer0(input)
         layer1 = self.layer1(layer0)
         layer2 = self.layer2(layer1)
         layer3 = self.layer3(layer2)
         layer4 = self.layer4(layer3)
 
-        #x5 = self.lang_attn(lang_rep=lang_rep, vision_rep=x5)
-
-
         #layer4 = self.lang_attn0(lang_rep=lang_rep, vision_rep=layer4)
 
         decode1 = self.up1(layer4)
         layer3 = self.attention1(decode1, layer3)
 
-
-        #uncomment later
-        lang_rep2 = self.lang_proj2(lang_rep)
+        # language attention
+        # this one does not have a projection because it is already 1024
         layer3 = self.lang_attn1(lang_rep=lang_rep, vision_rep=layer3)
-
-
-        #test_att, test_other = self.multihead_attn(query = decode1, key = lang_rep, value = lang_rep)
-
-        #test = self.multihead_attn(query=lang_rep, key=decode1, value=decode1)
 
         x = concatenate_layers(decode1, layer3)
         x = self.up_conv1(x)
@@ -120,8 +111,7 @@ class ResAttNetUNet(nn.Module):
         decode2 = self.up2(x)
         layer2 = self.attention2(decode2, layer2)
 
-
-        #uncomment later
+        # language attention
         lang_rep2 = self.lang_proj2(lang_rep)
         layer2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=layer2)
 
@@ -131,24 +121,18 @@ class ResAttNetUNet(nn.Module):
         decode3 = self.up3(x)
         layer1 = self.attention3(decode3, layer1)
 
-        #uncomment later
+        # language attention
         lang_rep3 = self.lang_proj3(lang_rep)
         layer1 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=layer1)
 
         x = concatenate_layers(decode3, layer1)
         x = self.up_conv3(x)
 
-
-        #print(f"x size before up4: {x.size()}")
         decode4 = self.up4(x)
-        #print(f"decode4 size: {decode4.size()}")
-        #print(f"layer0 size: {layer0.size()}")
         decode4 = self.up4_1x1(decode4)
-        #print(f"decode4 size: {decode4.size()}")
-        #print(f"layer0 size: {layer0.size()}")
         layer0 = self.attention4(decode4, layer0)
 
-        # uncomment later
+        # language attention
         lang_rep4 = self.lang_proj4(lang_rep)
         layer0 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=layer0)
 
