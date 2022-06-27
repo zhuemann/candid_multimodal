@@ -75,8 +75,8 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    #seeds = [98, 117, 295, 456, 915]
-    seeds = [456, 915]
+    seeds = [98, 117, 295, 456, 915]
+    #seeds = [456, 915]
     # seeds = [295]
     # seeds = [915]
     accuracy_list = []
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "multimodal_v20_unet_t5_with_lang_att"
+        folder_name = "multimodal_v21_vis_lang_aligned_lang_attention"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/' + str(
