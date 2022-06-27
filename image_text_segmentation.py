@@ -104,7 +104,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
     gloria_model.load_state_dict(torch.load(roberta_path_contrastive_pretraining))
-    language_model = gloria_model.text_encoder.state_dict()
+    language_model.load_state_dict(gloria_model.text_encoder.state_dict())
 
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
