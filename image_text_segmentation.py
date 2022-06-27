@@ -234,6 +234,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     for param in language_model.parameters():
         param.requires_grad = False
+
         print(param)
 
 
