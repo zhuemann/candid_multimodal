@@ -45,7 +45,7 @@ class ResAttNetUNet(nn.Module):
             bias = torch.empty(1000)
             #load_bias = nn.init.xavier_uniform(bias)
             weight = torch.empty(1000, 2048)
-            load_weight = nn.init.xavier_uniform(weight)
+            load_weight = nn.init.xavier_uniform_(weight)
             new_state_dict["fc.bias"] = bias
             new_state_dict["fc.weight"] = load_weight
 
