@@ -144,11 +144,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             albu.RandomGamma(),
             albu.RandomBrightness(),
         ], p=.3),  # p=0.3),
-        albu.OneOf([
-            albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-            albu.GridDistortion(),
-            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-        ], p=.3),  # p=0.3),
+        #albu.OneOf([
+        #    albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+        #    albu.GridDistortion(),
+        #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+        #], p=.3),  # turned off all three to stabilize training
         albu.ShiftScaleRotate(),
         # albu.Resize(img_size, img_size, always_apply=True),
     ])
@@ -255,10 +255,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #model_obj.to(device)
 
     #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
-    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
     #test_obj = ResNetUNet(n_class=1, dir_base=dir_base) #lang_model=language_model
 
-    test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
+    #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
     for param in language_model.parameters():
         param.requires_grad = False
@@ -278,7 +278,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # criterion = global_loss()
 
     # defines which optimizer is being used
-    optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR)
+    optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
+
+    #optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR) # was used for all the baselines
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
