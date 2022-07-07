@@ -100,15 +100,17 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
     #language_model = T5Model.from_pretrained(t5_path)
 
+
     #load in a language model used in the contrastive learning
-    roberta_path_contrastive_pretraining = os.path.join(dir_base,
-                                   'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria')
 
-    gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
-    gloria_model.load_state_dict(torch.load(roberta_path_contrastive_pretraining))
 
-    pretrained_model = True
+    pretrained_model = False
     if pretrained_model:
+        roberta_path_contrastive_pretraining = os.path.join(dir_base,
+                                       'Zach_Analysis/models/candid_pretrained_models/roberta/full_gloria')
+
+        gloria_model = GLoRIA(config=config, tokenizer=tokenizer, language_model=language_model)
+        gloria_model.load_state_dict(torch.load(roberta_path_contrastive_pretraining))
         state_dict = gloria_model.text_encoder.state_dict()
         # create new OrderedDict that does not contain `model.`
         new_state_dict = OrderedDict()
@@ -116,8 +118,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             name = k[6:]  # remove `model.`
             new_state_dict[name] = v
 
-    language_model.load_state_dict(new_state_dict)
-    #language_model.load_state_dict(gloria_model.text_encoder.state_dict())
+        language_model.load_state_dict(new_state_dict)
+
+    #language_model.load_state_dict(new_state_dict)
 
 
     # takes just the last 512 tokens if there are more than 512 tokens in the text
