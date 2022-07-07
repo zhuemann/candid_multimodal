@@ -79,11 +79,14 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [98, 117, 295, 456, 915]
+    #seeds = [98, 117, 295, 456, 915]
+    seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
     # seeds = [915]
     accuracy_list = []
+
+    counter = 1
 
     for seed in seeds:
 
@@ -93,12 +96,14 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_baseline_stabalizedV2"
+        folder_name = "Unet_baseline_stabalizedV3"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/' + str(
-                                    folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
+                                    folder_name) + '/valid_150ep_' + "seed" + str(seed) + "V" + str(counter) + '.xlsx')
         df.to_excel(filepath, index=False)
+
+        counter = counter + 1
 
     """
     # loops through the segmentation training multiple times with different seeds
