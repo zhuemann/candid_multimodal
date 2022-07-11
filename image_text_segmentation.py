@@ -88,7 +88,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
 
     latient_layer = 768
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True
