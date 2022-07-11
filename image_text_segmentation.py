@@ -79,7 +79,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
     #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
 
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
     #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
@@ -92,18 +92,16 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
     #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
     #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
 
 
     # use t5 as text encoder
-    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    #language_model = T5Model.from_pretrained(t5_path)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
 
 
     #load in a language model used in the contrastive learning
-
-
     pretrained_model = False
     if pretrained_model:
         roberta_path_contrastive_pretraining = os.path.join(dir_base,
