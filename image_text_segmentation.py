@@ -141,18 +141,18 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     albu_augs = albu.Compose([
         # ToTensorV2(),
-        albu.HorizontalFlip(),
-        albu.OneOf([
-            albu.RandomContrast(),
-            albu.RandomGamma(),
-            albu.RandomBrightness(),
-        ], p=.3),  # p=0.3),
+        #albu.HorizontalFlip(),
+        #albu.OneOf([
+        #    albu.RandomContrast(),
+        #    albu.RandomGamma(),
+        #    albu.RandomBrightness(),
+        #], p=.3),  # p=0.3),
         #albu.OneOf([
         #    albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
         #    albu.GridDistortion(),
         #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
         #], p=.3),  # turned off all three to stabilize training
-        albu.ShiftScaleRotate(),
+        #albu.ShiftScaleRotate(),
         # albu.Resize(img_size, img_size, always_apply=True),
     ])
 
