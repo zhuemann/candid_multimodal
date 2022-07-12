@@ -36,6 +36,8 @@ class LangCrossAtt(nn.Module):
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+        print("attn_output weights")
+        print(attn_output_weights.shape())
 
         # visualize attention maps
         img = attn_output_weights[0].squeeze().cpu().detach().numpy()
