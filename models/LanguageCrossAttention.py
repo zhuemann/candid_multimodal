@@ -54,7 +54,7 @@ class LangCrossAtt(nn.Module):
         img = img.squeeze().cpu().detach().numpy()
         print(np.shape(img))
         dir_base = "/UserData/"
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
         cv2.imwrite(fullpath, img)
 
         # gets the attention weights and repeats them to have the same size as the total channels
