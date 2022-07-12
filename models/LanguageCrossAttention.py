@@ -73,9 +73,18 @@ class LangCrossAtt(nn.Module):
         #fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
         #cv2.imwrite(fullpath, img)
 
+        vision_rep = vision_rep * att_matrix
+        vision_rep = vision_rep.contiguous()
+
+        # rearanges the output matrix to be the dimensions of the input
+        out = vision_rep.view(input_width, input_height, input_batch, input_channel)
+        out = torch.swapaxes(out, 0, 2)
+        out = torch.swapaxes(out, 1, 3)
+        return out
+
+        """
         # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
-        #attn_output_weights = torch.swapaxes(attn_output_weights, 0, 2)
         attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
 
         # multiplies the attention to focus the vision rep based on the lang rep
@@ -87,3 +96,4 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
         return out
+        """
