@@ -50,7 +50,7 @@ class LangCrossAtt(nn.Module):
         # visualize attention maps
         #img = attn_output_weights[0].squeeze().cpu().detach().numpy()
         #img = img[0]
-        img = attn_output_weights[0].view(input_width, input_height, 1, input_channel)
+        img = attn_output_weights[0].view(input_width, input_height, 1, 1)
         img = img.squeeze().cpu().detach().numpy()
         print(np.shape(img))
         dir_base = "/UserData/"
