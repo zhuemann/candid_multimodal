@@ -38,11 +38,13 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
         print("attn_output weights")
         print(attn_output_weights.size())
+        print("vis_rep")
+        print(vision_rep.size())
 
         # visualize attention maps
         img = attn_output_weights[0].squeeze().cpu().detach().numpy()
         #img = img[0]
-        print(np.shape(img))
+        #print(np.shape(img))
         dir_base = "/UserData/"
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + '.png')
         cv2.imwrite(fullpath, img)
