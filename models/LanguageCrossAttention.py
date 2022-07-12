@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 import os
 import cv2
@@ -37,9 +38,9 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
         # visualize attention maps
-        img, test = attn_output_weights[0].squeeze().cpu().detach().numpy()
+        img = attn_output_weights[0].squeeze().cpu().detach().numpy()
         img = img[0]
-        print(img.shape())
+        print(np.shape(img)[0])
         dir_base = "/UserData/"
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + '.png')
         cv2.imwrite(fullpath, img)
