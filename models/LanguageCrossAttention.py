@@ -12,7 +12,7 @@ class LangCrossAtt(nn.Module):
     def __init__(self, emb_dim):
         super(LangCrossAtt, self).__init__()
 
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=8) #vdim=vdimension
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1) #vdim=vdimension
 
     def forward(self, lang_rep, vision_rep):
 
@@ -42,6 +42,10 @@ class LangCrossAtt(nn.Module):
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+
+
+        print(f"attension matrix max: {torch.max(att_matrix)}")
+        print(f"attension matrix min: {torch.min(att_matrix)}")
 
         print(f"max: {torch.max(attn_output_weights)}")
         print(f"min: {torch.min(attn_output_weights)}")
