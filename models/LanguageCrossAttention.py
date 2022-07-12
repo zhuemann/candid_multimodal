@@ -22,10 +22,10 @@ class LangCrossAtt(nn.Module):
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
 
-        #print(f"input batch {input_batch}")
-        #print(f"input channel {input_channel}")
-        #print(f"input width {input_width}")
-        #print(f"input height {input_height}")
+        print(f"input batch {input_batch}")
+        print(f"input channel {input_channel}")
+        print(f"input width {input_width}")
+        print(f"input height {input_height}")
 
 
         # puts the vision representation into the right shape for attention mechanism
@@ -45,12 +45,13 @@ class LangCrossAtt(nn.Module):
 
 
         print(att_matrix.size())
+        print(attn_output_weights.size())
 
         print(f"attension matrix max: {torch.max(att_matrix)}")
         print(f"attension matrix min: {torch.min(att_matrix)}")
 
-        print(f"max: {torch.max(attn_output_weights)}")
-        print(f"min: {torch.min(attn_output_weights)}")
+        #print(f"max: {torch.max(attn_output_weights)}")
+        #print(f"min: {torch.min(attn_output_weights)}")
 
         #print("attn_output weights")
         #print(attn_output_weights.size())
