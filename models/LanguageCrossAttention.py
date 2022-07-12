@@ -22,10 +22,10 @@ class LangCrossAtt(nn.Module):
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
 
-        print(f"input batch {input_batch}")
-        print(f"input channel {input_channel}")
-        print(f"input width {input_width}")
-        print(f"input height {input_height}")
+        #print(f"input batch {input_batch}")
+        #print(f"input channel {input_channel}")
+        #print(f"input width {input_width}")
+        #print(f"input height {input_height}")
 
 
         # puts the vision representation into the right shape for attention mechanism
