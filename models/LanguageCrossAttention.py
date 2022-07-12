@@ -38,9 +38,10 @@ class LangCrossAtt(nn.Module):
 
         # visualize attention maps
         img = attn_output_weights[0].squeeze().cpu().detach().numpy()
+        img = img[0]
         print(img.shape())
         dir_base = "/UserData/"
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + str(j) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/test_img' + '.png')
         cv2.imwrite(fullpath, img)
 
         # gets the attention weights and repeats them to have the same size as the total channels
