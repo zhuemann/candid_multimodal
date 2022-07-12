@@ -11,6 +11,7 @@ from image_text_segmentation import train_image_text_segmentation
 #from create_unet import load_img_segmentation_model
 #from test_model import load_best_model
 from siim_dataloader import siim_datasetup
+from make_visualizations import make_images_on_dgx
 
 def create_parser():
     parser = argparse.ArgumentParser(description="The main file to run multimodal setup. Consists of pre-training joint representation, masked language modeling and report generation.")
@@ -43,6 +44,9 @@ if __name__ == '__main__':
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
         report_generation(config)
+
+    acc, valid_log = make_images_on_dgx(config)
+
 
 
     """
