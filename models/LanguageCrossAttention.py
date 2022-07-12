@@ -37,7 +37,7 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
         # visualize attention maps
-        img = attn_output_weights[0].squeeze().cpu().detach().numpy()
+        img, test = attn_output_weights[0].squeeze().cpu().detach().numpy()
         img = img[0]
         print(img.shape())
         dir_base = "/UserData/"
