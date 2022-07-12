@@ -42,25 +42,28 @@ class LangCrossAtt(nn.Module):
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
-        print("attn_output weights")
-        print(attn_output_weights.size())
-        print("vis_rep")
-        print(vision_rep.size())
+
+        print(f"max: {torch.max(attn_output_weights)}")
+        print(f"min: {torch.min(attn_output_weights)}")
+
+        #print("attn_output weights")
+        #print(attn_output_weights.size())
+        #print("vis_rep")
+        #print(vision_rep.size())
 
         # visualize attention maps
         #img = attn_output_weights[0].squeeze().cpu().detach().numpy()
-        #img = img[0]
-        img = attn_output_weights[0].view(input_width, input_height, 1, 1)
-        img = img.squeeze().cpu().detach().numpy()
+        #img = attn_output_weights[0].view(input_width, input_height, 1, 1)
+        #img = img.squeeze().cpu().detach().numpy()
 
-        max = np.amax(img)
-        min = np.amin(img)
-        print(f"max: {max}")
-        print(f"min: {min}")
-        print(np.shape(img))
-        dir_base = "/UserData/"
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
-        cv2.imwrite(fullpath, img)
+        #max = np.amax(img)
+        #min = np.amin(img)
+        #print(f"max: {max}")
+        #print(f"min: {min}")
+        #print(np.shape(img))
+        #dir_base = "/UserData/"
+        #fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
+        #cv2.imwrite(fullpath, img)
 
         # gets the attention weights and repeats them to have the same size as the total channels
         attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
