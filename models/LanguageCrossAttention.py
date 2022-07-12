@@ -52,6 +52,11 @@ class LangCrossAtt(nn.Module):
         #img = img[0]
         img = attn_output_weights[0].view(input_width, input_height, 1, 1)
         img = img.squeeze().cpu().detach().numpy()
+
+        max = np.amax(img)
+        min = np.amin(img)
+        print(f"max: {max}")
+        print(f"min: {min}")
         print(np.shape(img))
         dir_base = "/UserData/"
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
