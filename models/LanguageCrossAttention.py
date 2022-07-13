@@ -67,7 +67,7 @@ class LangCrossAtt(nn.Module):
         print(f"all the elements for one batch {np.shape(img)}")
 
         #img = np.reshape(img, (input_width, input_height))
-        img = np.reshape(img, (input_batch, 1))
+        img = np.reshape(img, (input_channel, 1))
 
         max = np.amax(img)
         min = np.amin(img)
