@@ -37,7 +37,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 60, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 100, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True}
 
@@ -100,7 +100,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_baseline_no_aug_with_lang_attention_attention_matrix_v10_short"
+        folder_name = "Unet_baseline_no_aug_with_lang_attention_attention_matrix_v9"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/' + str(
