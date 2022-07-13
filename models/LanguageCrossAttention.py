@@ -64,7 +64,7 @@ class LangCrossAtt(nn.Module):
 
         img = img[:,0,0]
 
-        img_channel = np.reshape(img, (input_width, input_height))
+        img = np.reshape(img, (input_width, input_height))
 
         max = np.amax(img)
         min = np.amin(img)
@@ -74,7 +74,7 @@ class LangCrossAtt(nn.Module):
         img = (img * 255) / max
         dir_base = "/UserData/"
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
-        cv2.imwrite(fullpath, img_channel)
+        cv2.imwrite(fullpath, img)
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
