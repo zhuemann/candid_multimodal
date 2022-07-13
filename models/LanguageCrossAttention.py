@@ -62,7 +62,9 @@ class LangCrossAtt(nn.Module):
         # visualize attention maps
         img = att_matrix.cpu().detach().numpy()
 
-        img = img[:,0,:]
+        img = img[:,0,0]
+
+        img_channel = img.view(input_width, input_height)
 
         max = np.amax(img)
         min = np.amin(img)
@@ -72,7 +74,7 @@ class LangCrossAtt(nn.Module):
         img = (img * 255) / max
         dir_base = "/UserData/"
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
-        cv2.imwrite(fullpath, img)
+        cv2.imwrite(fullpath, img_channel)
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
