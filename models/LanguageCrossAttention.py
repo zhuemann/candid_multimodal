@@ -44,7 +44,7 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
 
-        #print(f"attention matrix: {att_matrix.size()}")
+        print(f"attention matrix: {att_matrix.size()}")
         #print(f"attention_output_weight {attn_output_weights.size()}")
         #print(f"vision rep: {vision_rep.size()}")
 
@@ -67,9 +67,10 @@ class LangCrossAtt(nn.Module):
         print(f"max: {max}")
         print(f"min: {min}")
         print(np.shape(img))
-        #dir_base = "/UserData/"
-        #fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
-        #cv2.imwrite(fullpath, img)
+        img = (img * 255) / max
+        dir_base = "/UserData/"
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
+        cv2.imwrite(fullpath, img)
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
