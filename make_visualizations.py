@@ -282,7 +282,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
 
 
-    print("about to start training loop")
+    print("visualization run")
     lowest_loss = 100
     best_acc = 0
     del train_df
