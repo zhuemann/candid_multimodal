@@ -293,7 +293,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     test_obj.eval()
     row_ids = []
 
-    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid_matrix_attention')
+    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid_2')
 
 
     test_obj.load_state_dict(torch.load(saved_path))
