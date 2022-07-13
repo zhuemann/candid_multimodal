@@ -64,7 +64,7 @@ class LangCrossAtt(nn.Module):
 
         img = img[:,0,0]
 
-        img_channel = img.view(input_width, input_height)
+        img_channel = np.reshape(img, (input_width, input_height))
 
         max = np.amax(img)
         min = np.amin(img)
