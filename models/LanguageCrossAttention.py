@@ -60,7 +60,9 @@ class LangCrossAtt(nn.Module):
         #print(vision_rep.size())
 
         # visualize attention maps
-        img = att_matrix[0].squeeze().cpu().detach().numpy()
+        img = att_matrix.cpu().detach().numpy()
+
+        img = img[:,0,:]
 
         max = np.amax(img)
         min = np.amin(img)
