@@ -45,7 +45,7 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    #acc, valid_log = make_images_on_dgx(config)
+    acc, valid_log = make_images_on_dgx(config)
 
 
 
@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
         config["seed"] = seed
 
-        acc, valid_log = train_image_text_segmentation(config)
+        #acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
