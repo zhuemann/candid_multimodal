@@ -81,6 +81,7 @@ class LangCrossAtt(nn.Module):
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
         cv2.imwrite(fullpath, img)
 
+        img = att_matrix.cpu().detach().numpy()
         for i in range(0,input_channel):
             img_ch = img[:,0,i]
             img_ch = np.reshape(img_ch, (input_width, input_height))
