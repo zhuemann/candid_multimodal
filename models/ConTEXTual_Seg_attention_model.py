@@ -67,7 +67,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
         pooled_sentence = encoder_output.last_hidden_state
         print(f"pooled_sentence before averageing size: {pooled_sentence.size()}")
-        pooled_sentence = torch.mean(pooled_sentence, dim=1)
+        #pooled_sentence = torch.mean(pooled_sentence, dim=1)
         lang_rep = pooled_sentence
 
         x1 = self.inc(img)
