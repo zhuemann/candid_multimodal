@@ -63,13 +63,13 @@ class LangCrossAtt(nn.Module):
         # visualize attention maps
         img = att_matrix.cpu().detach().numpy()
 
-        img = img[:,0,0]
+        img = img[0,0,:]
         #img2 = img[:,0,1]
 
         print(f"all the elements for one batch {np.shape(img)}")
 
-        img = np.reshape(img, (input_width, input_height))
-        #img = np.reshape(img, (input_channel, 1))
+        #img = np.reshape(img, (input_width, input_height))
+        img = np.reshape(img, (input_channel, 1))
 
         max = np.amax(img)
         min = np.amin(img)
