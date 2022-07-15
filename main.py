@@ -45,7 +45,7 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    config["seed"] = 915
+    config["seed"] = 117
     acc, valid_log = make_images_on_dgx(config)
 
 
