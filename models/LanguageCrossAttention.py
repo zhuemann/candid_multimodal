@@ -85,13 +85,13 @@ class LangCrossAtt(nn.Module):
         img = att_matrix.cpu().detach().numpy()
         for i in range(0,input_channel):
             img_ch = img[:,0,i]
-            img_ch = np.reshape(img_ch, (input_width, input_height))
-            max = np.amax(img_ch)
-            min = np.amin(img_ch)
-            print(f"max: {max}")
-            print(f"min: {min}")
+            img_ch = np.reshape(img_ch, (input_width//2, input_height//2))
+            #max = np.amax(img_ch)
+            #min = np.amin(img_ch)
+            #print(f"max: {max}")
+            #print(f"min: {min}")
             img_ch = (img_ch * 255) / max
-            fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/word_attention/test_img_ch:'+str(i) + '.png')
+            fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/word_attention/test_img_ch'+str(i) + '.png')
             cv2.imwrite(fullpath, img_ch)
 
         vision_rep = vision_rep * att_matrix
