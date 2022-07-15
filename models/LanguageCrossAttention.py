@@ -85,7 +85,7 @@ class LangCrossAtt(nn.Module):
         img = att_matrix.cpu().detach().numpy()
         for i in range(0,input_channel):
             img_ch = img[:,0,i]
-            img_ch = np.reshape(img_ch, (input_width//2, input_height//2))
+            img_ch = np.reshape(img_ch, (input_width, input_height))
             #max = np.amax(img_ch)
             #min = np.amin(img_ch)
             #print(f"max: {max}")
