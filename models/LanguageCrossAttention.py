@@ -13,6 +13,7 @@ class LangCrossAtt(nn.Module):
         super(LangCrossAtt, self).__init__()
 
         self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1) #vdim=vdimension
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, lang_rep, vision_rep):
 
@@ -61,7 +62,7 @@ class LangCrossAtt(nn.Module):
         #print(vision_rep.size())
 
         # visualize attention maps
-        img = att_matrix.cpu().detach().numpy()
+        #img = att_matrix.cpu().detach().numpy()
 
         #img = img[0,0,:]
         #img2 = img[:,0,1]
@@ -77,22 +78,33 @@ class LangCrossAtt(nn.Module):
         #print(f"min: {min}")
         #print(np.shape(img))
         #img = (img * 255) / max
-        dir_base = "/UserData/"
+        #dir_base = "/UserData/"
         #fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
         #cv2.imwrite(fullpath, img)
 
         # visualizes the attention matrices
-        img = att_matrix.cpu().detach().numpy()
-        for i in range(0,input_channel):
-            img_ch = img[:,0,i]
-            img_ch = np.reshape(img_ch, (input_width, input_height))
-            max = np.amax(img_ch)
+        #img = att_matrix.cpu().detach().numpy()
+        #for i in range(0,input_channel):
+        #    img_ch = img[:,0,i]
+        #    img_ch = np.reshape(img_ch, (input_width, input_height))
+        #    max = np.amax(img_ch)
             #min = np.amin(img_ch)
             #print(f"max: {max}")
             #print(f"min: {min}")
-            img_ch = (img_ch * 255) / max
-            fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/word_attention/test_img_ch'+str(i) + '.png')
-            cv2.imwrite(fullpath, img_ch)
+        #    img_ch = (img_ch * 255) / max
+        #    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/word_attention/test_img_ch'+str(i) + '.png')
+        #    cv2.imwrite(fullpath, img_ch)
+
+        max = torch.max(att_matrix)
+        min = torch.min(att_matrix)
+        print(f"before sigmoid max: {max}")
+        print(f"before sigmoid min: {min}")
+
+        att_matrix = self.sigmoid(att_matrix)
+        max = torch.max(att_matrix)
+        min = torch.min(att_matrix)
+        print(f"after sigmoid max: {max}")
+        print(f"after sigmoid min: {min}")
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
