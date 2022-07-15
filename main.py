@@ -46,7 +46,7 @@ if __name__ == '__main__':
         report_generation(config)
 
     config["seed"] = 915
-    # acc, valid_log = make_images_on_dgx(config)
+    acc, valid_log = make_images_on_dgx(config)
 
 
 
@@ -97,11 +97,12 @@ if __name__ == '__main__':
 
         config["seed"] = seed
 
-        acc, valid_log = train_image_text_segmentation(config)
+        #acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_no_aug_with_lang_attention_all_words_v13"
+        #folder_name = "Unet_no_aug_with_lang_attention_all_words_v13"
+        folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/' + str(
