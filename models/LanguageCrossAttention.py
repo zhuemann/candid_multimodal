@@ -46,8 +46,8 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
 
-        print(f"attention matrix: {att_matrix.size()}")
-        print(f"attention_output_weight {attn_output_weights.size()}")
+        #print(f"attention matrix: {att_matrix.size()}")
+        #print(f"attention_output_weight {attn_output_weights.size()}")
         #print(f"vision rep: {vision_rep.size()}")
 
         #print(f"attension matrix max: {torch.max(att_matrix)}")
