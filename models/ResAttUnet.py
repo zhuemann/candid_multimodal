@@ -78,7 +78,7 @@ class ResAttNetUNet(nn.Module):
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
 
         lang_dimension = 768
-        self.lang_proj1 = nn.Linear(lang_dimension, 1024)
+        self.lang_proj1 = nn.Linear(lang_dimension, 512)
         self.lang_attn1 = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
@@ -137,8 +137,9 @@ class ResAttNetUNet(nn.Module):
 
         # language attention
         # this one does not have a projection because it is already 1024
-        #lang_rep1 = self.lang_proj1(lang_rep)
-        lang_rep1 = lang_rep
+        lang_rep1 = self.lang_proj1(lang_rep)
+        #lang_rep1 = lang_rep
+
         layer3 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=layer3)
 
         x = concatenate_layers(decode1, layer3)
