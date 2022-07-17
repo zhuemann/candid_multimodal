@@ -114,14 +114,14 @@ class ResAttNetUNet(nn.Module):
 
         # language representations
         #for t5
-        #lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
-        #pooled_sentence = lang_output.last_hidden_state
+        lang_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
+        pooled_sentence = lang_output.last_hidden_state
         #pooled_sentence = torch.mean(pooled_sentence, dim=1)
-        #lang_rep = pooled_sentence
+        lang_rep = pooled_sentence
 
         #for roberta
-        lang_output = self.lang_encoder(ids, mask, token_type_ids)
-        lang_rep = lang_output[1]
+        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        #lang_rep = lang_output[1]
 
         # vision representations
         layer0 = self.layer0(input)
