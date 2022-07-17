@@ -78,8 +78,8 @@ class ResAttNetUNet(nn.Module):
         # self.multiplicativeAttention = DotProductAttention(hidden_dim=10)
         # self.multihead_attn = nn.MultiheadAttention(embed_dim=1024, num_heads=1)
 
-        lang_dimension = 768
-        self.lang_proj1 = nn.Linear(lang_dimension, 512)
+        lang_dimension = 1024
+        self.lang_proj1 = nn.Linear(lang_dimension, 1024)
         self.lang_attn1 = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(2048, 1024)
 
