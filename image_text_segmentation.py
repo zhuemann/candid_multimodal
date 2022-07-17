@@ -257,9 +257,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
 
-    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
-    test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
+    #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
     for param in language_model.parameters():
         param.requires_grad = False
@@ -390,7 +390,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 best_acc = avg_valid_dice
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
-                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid')
+                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid')
+                save_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
                 #save_path = os.path.join(dir_base,
                 #                         'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
@@ -402,7 +403,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
-    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid')
+    #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid')
+    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
     #saved_path = os.path.join(dir_base,
     #                          'Zach_Analysis/models/candid_finetuned_segmentation/weak_supervision_models/imagenet_labeling_functions/segmentation_candid' + str(
