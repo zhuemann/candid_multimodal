@@ -139,10 +139,6 @@ class ResAttNetUNet(nn.Module):
         # language attention
         # this one does not have a projection because it is already 1024
         lang_rep1 = self.lang_proj1(lang_rep)
-        #lang_rep1 = lang_rep
-        print(f"layer3: {layer3.size()}")
-        print(f"langrep1: {lang_rep1.size()}")
-
         layer3 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=layer3)
 
         x = concatenate_layers(decode1, layer3)
