@@ -5,6 +5,7 @@ import torch.nn.functional as F
 
 import os
 from collections import OrderedDict
+from .LanguageCrossAttention import LangCrossAtt
 
 
 def convrelu(in_channels, out_channels, kernel, padding):
@@ -273,6 +274,7 @@ def concatenate_layers(x1, x2):
     x = torch.cat([x2, x1], dim=1)
     return x
 
+"""
 class LangCrossAtt(nn.Module):
     "add documentaiton"
 
@@ -318,3 +320,4 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
         return out
+        """
