@@ -42,7 +42,7 @@ class TextImageDataset(Dataset):
         text = text.replace("[ADDRESS]", "")
         text = text.replace("[PERSONALNAME]", "")
         text = text.replace("\n", "")
-
+        text = ""
         inputs = self.tokenizer.encode_plus(
             text,
             None,
@@ -149,6 +149,8 @@ class TextImageDataset(Dataset):
         # ax[2].imshow(image.squeeze().cpu().detach().numpy(), cmap=plt.cm.bone, alpha = .5)
         # plt.show()
         # print("returing from dataloader")
+        print(f"text: {text}")
+        print(f"ids: {ids}")
         return {
             'ids': torch.tensor(ids, dtype=torch.long),
             'mask': torch.tensor(mask, dtype=torch.long),
