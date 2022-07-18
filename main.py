@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_with_lang_and_all_padding_tanh_no_aug_v18"
+        folder_name = "Unet_with_lang_and_all_padding_tanh_no_aug_v19"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/' + str(
