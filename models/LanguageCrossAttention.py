@@ -96,8 +96,8 @@ class LangCrossAtt(nn.Module):
         #    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/word_attention/test_img_ch'+str(i) + '.png')
         #    cv2.imwrite(fullpath, img_ch)
 
-        #att_matrix = self.sigmoid(att_matrix)
-        att_matrix = self.tanh(att_matrix)
+        att_matrix = self.sigmoid(att_matrix)
+        #att_matrix = self.tanh(att_matrix)
 
 
         vision_rep = vision_rep * att_matrix
