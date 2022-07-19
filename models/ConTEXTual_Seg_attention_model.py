@@ -88,7 +88,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep2 = self.lang_proj2(lang_rep)
         decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
-        #x3 = self.attention2(decode2, x3)
+        x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
@@ -96,7 +96,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep3 = self.lang_proj3(lang_rep)
         decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
 
-        #x2 = self.attention3(decode3, x2)
+        x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
@@ -104,7 +104,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep4 = self.lang_proj4(lang_rep)
         decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
-        #x1 = self.attention4(decode4, x1)
+        x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 
