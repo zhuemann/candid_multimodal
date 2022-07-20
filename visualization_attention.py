@@ -97,5 +97,5 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
     print(f"model_output: {np.shape(model_output)}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/model_output' + '.png')
-    cv2.imwrite(fullpath, model_output[:, :])
+    cv2.imwrite(fullpath, model_output[0,0, :, :])
 
