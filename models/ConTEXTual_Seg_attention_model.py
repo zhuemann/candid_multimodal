@@ -7,6 +7,8 @@ from typing import Tuple
 
 from .LanguageCrossAttention import LangCrossAtt
 
+from visualization_attention import visualization_attention
+
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
@@ -82,12 +84,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         decode1, att_matrix = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
 
         #plot lang_rep, decode1, att_matrix, img, targets
-        print(f"lang_rep size: {lang_rep1.size()}")
-        print(f"decode1 size: {decode1.size()}")
-        print(f"att_matix size: {att_matrix.size()}")
-        print(f"img size: {img.size()}")
-        print(f"targets size: {target_batch.size()}")
 
+        visualization_attention(img, decode1, lang_rep1, att_matrix, target_batch)
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
