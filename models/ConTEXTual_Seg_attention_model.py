@@ -57,7 +57,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
 
-    def forward(self, img, ids, mask, token_type_ids):
+    def forward(self, img, ids, mask, token_type_ids, targets):
 
         # for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)
@@ -79,14 +79,22 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         decode1 = self.up1(x5)
 
         lang_rep1 = self.lang_proj1(lang_rep)
-        decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
+        decode1, att_matrix = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
+
+        #plot lang_rep, decode1, att_matrix, img, targets
+        print(f"lang_rep size: {lang_rep1.size()}")
+        print(f"decode1 size: {decode1.size()}")
+        print(f"att_matix size: {att_matrix.size()}")
+        print(f"img size: {img.size()}")
+        print(f"targets size: {targets.size()}")
+
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
         lang_rep2 = self.lang_proj2(lang_rep)
-        decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
+        decode2, _ = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
         x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
@@ -94,7 +102,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode3 = self.up3(x)
         lang_rep3 = self.lang_proj3(lang_rep)
-        decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
+        decode3, _ = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
 
         x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
@@ -102,7 +110,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode4 = self.up4(x)
         lang_rep4 = self.lang_proj4(lang_rep)
-        decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
+        decode4, _ = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
