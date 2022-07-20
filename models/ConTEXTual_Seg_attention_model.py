@@ -57,7 +57,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
 
-    def forward(self, img, ids, mask, token_type_ids, targets):
+    def forward(self, img, ids, mask, token_type_ids, target_batch):
 
         # for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)
@@ -86,7 +86,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         print(f"decode1 size: {decode1.size()}")
         print(f"att_matix size: {att_matrix.size()}")
         print(f"img size: {img.size()}")
-        print(f"targets size: {targets.size()}")
+        print(f"targets size: {target_batch.size()}")
 
 
         x = concatenate_layers(decode1, x4)
