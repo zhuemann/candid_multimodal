@@ -30,7 +30,7 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
     # print(vision_rep.size())
 
     # visualize attention maps
-    img = att_matrix.cpu().detach().numpy()
+    # img = att_matrix.cpu().detach().numpy()
 
     # img = img[0,0,:]
     # img2 = img[:,0,1]
