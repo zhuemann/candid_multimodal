@@ -4,7 +4,7 @@ import numpy as np
 import os
 import cv2
 
-def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch):
+def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch, model_output):
 
     print("hi")
 
@@ -91,4 +91,10 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0,:,:])
+
+    model_output = model_output.cpu().detach().numpy()
+    model_output = (model_output * 255) / np.amax(model_output)
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/GE meeting/model_output' + '.png')
+    cv2.imwrite(fullpath, model_output[0, :, :])
 
