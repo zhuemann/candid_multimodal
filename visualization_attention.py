@@ -52,6 +52,7 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
 
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
+    vis_mat = vision_rep.cpu().detach().numpy()
     for i in range(0,input_channel):
         img_ch = att_img[:,0,i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
@@ -60,8 +61,15 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
         #print(f"max: {max}")
         #print(f"min: {min}")
         img_ch = (img_ch * 255) / max
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/word_attention/img_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/word_attention/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
+
+        vis_ch = vis_mat[0,i,:,:]
+        vis_ch = (vis_ch*255)/np.amax(vis_ch)
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/vis_ch/vis_ch' + str(i) + '.png')
+        cv2.imwrite(fullpath, vis_ch)
+
+
 
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/input' + '.png')
@@ -83,3 +91,4 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0,:,:])
+
