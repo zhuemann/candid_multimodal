@@ -110,7 +110,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep4 = self.lang_proj4(lang_rep)
         decode4, att_matrix = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
-        visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch)
+        #visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
