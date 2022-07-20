@@ -57,8 +57,20 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
         img_ch = np.reshape(img_ch, (input_width, input_height))
         max = np.amax(img_ch)
         min = np.amin(img_ch)
-        print(f"max: {max}")
-        print(f"min: {min}")
+        #print(f"max: {max}")
+        #print(f"min: {min}")
         img_ch = (img_ch * 255) / max
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/word_attention/test_img_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/word_attention/img_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
+
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/GE meeting/input' + '.png')
+    cv2.imwrite(fullpath, img[0])
+
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/GE meeting/target' + '.png')
+    cv2.imwrite(fullpath, target_batch[0])
+
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/GE meeting/lang_rep' + '.png')
+    cv2.imwrite(fullpath, lang_rep[0])
