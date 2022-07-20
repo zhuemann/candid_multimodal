@@ -65,12 +65,16 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch)
 
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/input' + '.png')
+    img = img.cpu().detach().numpy()
+    print(f"img shape: {np.shape(img)}")
     cv2.imwrite(fullpath, img[0])
 
+    target_batch = target_batch.cpu().detach().numpy()
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/target' + '.png')
     cv2.imwrite(fullpath, target_batch[0])
 
+    lang_rep = lang_rep.cpu().detach().numpy()
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/GE meeting/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0])
