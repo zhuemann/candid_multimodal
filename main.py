@@ -45,8 +45,8 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    #config["seed"] = 117
-    #acc, valid_log = make_images_on_dgx(config)
+    config["seed"] = 915
+    acc, valid_log = make_images_on_dgx(config)
 
 
 
@@ -84,11 +84,11 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [98, 117, 295, 456, 915]
+    #seeds = [98, 117, 295, 456, 915]
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
-    # seeds = [98]
+    seeds = [915]
     accuracy_list = []
 
     counter = 1
@@ -101,12 +101,13 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_no_aug_with_lang_vision_attention_all_words_tanh_v20"
+        #folder_name = "Unet_no_aug_with_lang_vision_attention_all_words_tanh_v20"
+        folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/' + str(
                                     folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        #df.to_excel(filepath, index=False)
 
         counter = counter + 1
 
