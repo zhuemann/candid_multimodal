@@ -59,7 +59,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
 
-    def forward(self, img, ids, mask, token_type_ids, target_batch):
+    def forward(self, img, ids, mask, token_type_ids):
 
         # for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)

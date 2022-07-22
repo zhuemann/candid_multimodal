@@ -341,11 +341,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #outputs = model_obj(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
-            #print("output size:")
-            #print(outputs.size())
             optimizer.zero_grad()
-            #print(f"output size {outputs.size()}")
-            #print(f"target size{targets.size()}")
 
             loss = criterion(outputs, targets)
 
