@@ -151,9 +151,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             albu.GaussianBlur(),
         ], p=.3),
 
-        albu.OneOf([
-            albu.GaussNoise(),
-        ], p=.3)
+        #albu.OneOf([
+        #    albu.GaussNoise(),
+        #], p=.3)
 
         ])
 
