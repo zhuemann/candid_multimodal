@@ -137,7 +137,27 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_df.to_excel(test_dataframe_location, index=True)
 
 
+    # report invariant augmentaitons
+
     albu_augs = albu.Compose([
+        albu.OneOf([
+            albu.RandomContrast(),
+            albu.RandomGamma(),
+            albu.RandomBrightness(),
+                   ], p=.3),
+        albu.OneOf([
+            albu.MedianBlur(),
+            albu.Blur(),
+            albu.GaussianBlur(),
+        ], p=.3),
+
+        albu.OneOf([
+            albu.GaussNoise(),
+        ], p=.3)
+
+        ])
+
+ #   albu_augs = albu.Compose([
  #       # ToTensorV2(),
  #       albu.HorizontalFlip(),
  #       albu.OneOf([
@@ -152,7 +172,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
  #       ], p=.3),  # turned off all three to stabilize training
  #       albu.ShiftScaleRotate(),
         # albu.Resize(img_size, img_size, always_apply=True),
-    ])
+ #   ])
 
 
 
