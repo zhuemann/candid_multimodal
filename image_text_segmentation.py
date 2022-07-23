@@ -140,16 +140,16 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # report invariant augmentaitons
 
     albu_augs = albu.Compose([
-        albu.OneOf([
-            albu.RandomContrast(),
-            albu.RandomGamma(),
-            albu.RandomBrightness(),
-                   ], p=.3),
-        albu.OneOf([
-            albu.MedianBlur(),
-            albu.Blur(),
+        #albu.OneOf([
+        #    albu.RandomContrast(),
+        #    albu.RandomGamma(),
+        #    albu.RandomBrightness(),
+        #           ], p=.3),
+        #albu.OneOf([
+        #    albu.MedianBlur(),
+        #    albu.Blur(),
             #albu.GaussianBlur(),
-        ], p=.3),
+        #], p=.3),
 
         #albu.OneOf([
         #    albu.GaussNoise(),
