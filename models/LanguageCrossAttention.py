@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
-import numpy as np
+#import numpy as np
 
-import os
-import cv2
+#import os
+#import cv2
 
 class LangCrossAtt(nn.Module):
     "add documentaiton"
@@ -51,7 +51,7 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 1, 3)
 
         #print(f"out size: {out.size()}")
-        return out #, att_matrix
+        return out
 
 
 

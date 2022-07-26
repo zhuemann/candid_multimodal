@@ -7,7 +7,7 @@ from typing import Tuple
 
 from .LanguageCrossAttention import LangCrossAtt
 
-from visualization_attention import visualization_attention
+#from visualization_attention import visualization_attention
 
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):

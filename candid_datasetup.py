@@ -4,14 +4,14 @@ from os import listdir
 import pandas as pd
 
 
-def get_candid_labels(dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"):
-    xray_dir = os.path.join(dir_base, "dataset/candid_data/dataset1/dataset/")
-    fracture_dir = os.path.join(dir_base, "dataset/candid_data/acute_rib_fracture.csv")  # TODO remove extras
+def get_candid_labels(dir_base="Z:/"):
+    xray_dir = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
+    fracture_dir = os.path.join(dir_base, "public_datasets/candid_ptx/acute_rib_fracture.csv")
     fracture_df = pd.read_csv(fracture_dir)
     print("fracture_df")
-    chest_tube_dir = os.path.join(dir_base, "dataset/candid_data/chest_tube.csv")
+    chest_tube_dir = os.path.join(dir_base, "public_datasets/candid_ptx/chest_tube.csv")
     chest_tube_df = pd.read_csv(chest_tube_dir)
-    pneumothorax_dir = os.path.join(dir_base, "dataset/candid_data/Pneumothorax_reports.csv")  # TODO remove extras
+    pneumothorax_dir = os.path.join(dir_base, "public_datasets/candid_ptx/Pneumothorax_reports.csv")
     pneumothorax_df = pd.read_csv(pneumothorax_dir)
 
     # gets all the file names in and puts them in a list
@@ -58,6 +58,45 @@ def get_candid_labels(dir_base="/Users/kritigoyal/Documents/CS_769_NLP/"):
             else:
                 data_with_labels.loc[i] = [image, image, "", mask_str]
                 num_tubes += 1
+                i = i + 1
+        else:
+            total += 1
+
+    data_with_labels.set_index("id", inplace=True)
+    return data_with_labels
+
+# get images of pneumothorax which includes cases of double pneumothorax
+def get_pneumothorax_image(dir_base="Z:/"):
+    xray_dir = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
+    fracture_dir = os.path.join(dir_base, "public_datasets/candid_ptx/acute_rib_fracture.csv")
+    fracture_df = pd.read_csv(fracture_dir)
+    print("pnuemo images")
+    chest_tube_dir = os.path.join(dir_base, "public_datasets/candid_ptx/chest_tube.csv")
+    chest_tube_df = pd.read_csv(chest_tube_dir)
+    pneumothorax_dir = os.path.join(dir_base, "public_datasets/candid_ptx/Pneumothorax_reports.csv")
+    pneumothorax_df = pd.read_csv(pneumothorax_dir)
+
+    # gets all the file names in and puts them in a list
+    xray_files = listdir(xray_dir)
+    print(f"length of xrays: {len(xray_files)}")
+    print("xray_files")
+
+    data_with_labels = pd.DataFrame(columns=['id', 'image_id', 'text', 'label'])
+    i = 0
+    num_pneumothorax = 0
+    total = 0
+    for image in xray_files:
+
+        if pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
+            # continue
+            text = get_text(pneumothorax_df, image)
+            mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
+            mask_str = mask.iloc[0]['EncodedPixels']
+            if mask_str == "-1":
+                continue
+            else:
+                data_with_labels.loc[i] = [image, image, text, mask_str]
+                num_pneumothorax += 1
                 i = i + 1
         else:
             total += 1

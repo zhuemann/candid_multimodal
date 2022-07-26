@@ -12,6 +12,9 @@ from image_text_segmentation import train_image_text_segmentation
 #from test_model import load_best_model
 from siim_dataloader import siim_datasetup
 from make_visualizations import make_images_on_dgx
+from candid_datasetup import get_pneumothorax_image
+
+from make_plots import make_plots
 
 def create_parser():
     parser = argparse.ArgumentParser(description="The main file to run multimodal setup. Consists of pre-training joint representation, masked language modeling and report generation.")
@@ -27,7 +30,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = False
+    local = True
 
     if local:
         directory_base = "Z:/"
@@ -47,6 +50,10 @@ if __name__ == '__main__':
 
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
+
+    #df = get_pneumothorax_image(dir_base=directory_base)
+    #print(df)
+    #make_plots()
 
 
 
@@ -102,6 +109,7 @@ if __name__ == '__main__':
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
         folder_name = "Unet_with_lang_vision_attention_all_words_tanh_v21"
+        #folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(

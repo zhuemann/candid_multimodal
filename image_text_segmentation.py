@@ -60,6 +60,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
     N_EPOCHS = config["epochs"]
+    #LR = config["LR"]
 
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -227,7 +228,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 1
+                'num_workers': 4
                 }
     test_params = {'batch_size': BATCH_SIZE,
                    'shuffle': True,
