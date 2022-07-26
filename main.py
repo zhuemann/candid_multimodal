@@ -108,7 +108,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_with_lang_vision_attention_all_words_tanh_v21"
+        folder_name = "Unet_with_lang_vision_attention_all_words_tanh_more_aug_v22"
         #folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
