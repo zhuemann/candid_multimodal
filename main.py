@@ -114,7 +114,7 @@ if __name__ == '__main__':
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
                                     folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
-        #df.to_excel(filepath, index=False)
+        df.to_excel(filepath, index=False)
 
         counter = counter + 1
 
