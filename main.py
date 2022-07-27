@@ -10,8 +10,8 @@ from segmentation_training import segmentation_training
 from image_text_segmentation import train_image_text_segmentation
 #from create_unet import load_img_segmentation_model
 #from test_model import load_best_model
-from siim_dataloader import siim_datasetup
-from make_visualizations import make_images_on_dgx
+#from siim_dataloader import siim_datasetup
+#from make_visualizations import make_images_on_dgx
 from candid_datasetup import get_pneumothorax_image
 
 from make_plots import make_plots
@@ -51,9 +51,11 @@ if __name__ == '__main__':
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
 
+    #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
     #df = get_pneumothorax_image(dir_base=directory_base)
     #print(df)
     #make_plots()
+    #df.to_excel(dataframe_location, index=False)
 
 
 
@@ -108,13 +110,13 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_with_lang_vision_attention_all_words_tanh_more_aug_v22"
+        folder_name = "Unet_baseline_more_aug_v24"
         #folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
                                     folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        #df.to_excel(filepath, index=False)
 
         counter = counter + 1
 

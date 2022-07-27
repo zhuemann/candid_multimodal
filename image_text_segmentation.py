@@ -62,7 +62,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     N_EPOCHS = config["epochs"]
     #LR = config["LR"]
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
@@ -153,6 +154,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         #], p=.3),
 
         albu.OneOf([
+            albu.GridDistortion(),
+            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
             albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
         ], p=.3)
 
@@ -228,7 +231,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 4
+                'num_workers': 2
                 }
     test_params = {'batch_size': BATCH_SIZE,
                    'shuffle': True,
