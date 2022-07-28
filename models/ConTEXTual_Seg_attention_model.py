@@ -80,39 +80,33 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1 = self.up1(x5)
 
-        #lang_rep1 = self.lang_proj1(lang_rep)
-        #decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
-
-        #plot lang_rep, decode1, att_matrix, img, targets
-
-        #visualization_attention(img, decode1, lang_rep1, att_matrix, target_batch)
+        lang_rep1 = self.lang_proj1(lang_rep)
+        decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        #lang_rep2 = self.lang_proj2(lang_rep)
-        #decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
+        lang_rep2 = self.lang_proj2(lang_rep)
+        decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
-        #x3 = self.attention2(decode2, x3)
+        x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
-        #lang_rep3 = self.lang_proj3(lang_rep)
-        #decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
+        lang_rep3 = self.lang_proj3(lang_rep)
+        decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
 
-        #x2 = self.attention3(decode3, x2)
+        x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
-        #lang_rep4 = self.lang_proj4(lang_rep)
-        #decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
+        lang_rep4 = self.lang_proj4(lang_rep)
+        decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
-        #visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch)
-
-        #x1 = self.attention4(decode4, x1)
+        x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 
