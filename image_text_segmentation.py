@@ -62,7 +62,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     N_EPOCHS = config["epochs"]
     #LR = config["LR"]
 
-    dataframe_location = os.path.join(dir_base, "pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
+    dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
