@@ -62,7 +62,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     N_EPOCHS = config["epochs"]
     #LR = config["LR"]
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
+    dataframe_location = os.path.join(dir_base, "pneumothorax_with_multisegmentation_text_negatives_balanced_df")
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
     # gets the candid labels and saves it off to the location
@@ -364,6 +365,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             for i in range(0, outputs.shape[0]):
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
+                # gives a dice score of 1 if correctly predicts negative
+                if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
+                    dice = 1
+                    print("correctly predicted negative")
+
                 training_dice.append(dice)
 
         avg_training_dice = np.average(training_dice)
@@ -399,6 +405,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 for i in range(0, outputs.shape[0]):
                     dice = dice_coeff(outputs[i], targets[i])
                     dice = dice.item()
+                    if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
+                        dice = 1
+                        print("correctly predicted negative")
                     valid_dice.append(dice)
 
             #scheduler.step()
@@ -409,8 +418,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
-                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
+                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
                 #save_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
                 #save_path = os.path.join(dir_base,
@@ -422,8 +431,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     test_obj.eval()
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-    #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
-    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
+    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+    #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
     #saved_path = os.path.join(dir_base,
@@ -456,6 +465,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             for i in range(0, outputs.shape[0]):
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
+                if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
+                    dice = 1
+                    print("correctly predicted negative")
                 test_dice.append(dice)
 
         avg_test_dice = np.average(test_dice)

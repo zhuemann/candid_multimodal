@@ -126,7 +126,7 @@ def get_pneumothorax_image(dir_base="Z:/"):
                 rle = pneumothorax_df.iloc[i+j]['EncodedPixels']
                 #if rle == "-1":
                 #    continue
-                print(f"rle: {rle}")
+                #print(f"rle: {rle}")
                 composit_target += rle_decode_modified(rle, (1024, 1024))
 
             # if the values is above 1 for any reason then set it to 1
@@ -140,13 +140,13 @@ def get_pneumothorax_image(dir_base="Z:/"):
                 pneumothorax_df.iloc[i + j]['EncodedPixels'] = composit_rle
             #print(f"id: {pneumothorax_df.iloc[i]['SOPInstanceUID']}")
 
-            print(counter)
+            #print(counter)
             counter_list.append(counter)
             same_index += 1
 
-    print(pneumothorax_df)
-    print(f"same indexes: {same_index}")
-    print(f"sum of counter list: {np.sum(counter_list)}")
+    #print(pneumothorax_df)
+    #print(f"same indexes: {same_index}")
+    #print(f"sum of counter list: {np.sum(counter_list)}")
     # gets all the file names in and puts them in a list
     xray_files = listdir(xray_dir)
     print(f"length of xrays: {len(xray_files)}")
@@ -156,6 +156,7 @@ def get_pneumothorax_image(dir_base="Z:/"):
     i = 0
     num_pneumothorax = 0
     total = 0
+    negative_cases = 0
     for image in xray_files:
 
         if pneumothorax_df['SOPInstanceUID'].str.contains(image).any():
@@ -163,12 +164,19 @@ def get_pneumothorax_image(dir_base="Z:/"):
             text = get_text(pneumothorax_df, image)
             mask = pneumothorax_df.loc[pneumothorax_df['SOPInstanceUID'] == image]
             mask_str = mask.iloc[0]['EncodedPixels']
+            # only positive cases
             if mask_str == "-1":
-                continue
-            else:
-                data_with_labels.loc[i] = [image, image, text, mask_str]
-                num_pneumothorax += 1
-                i = i + 1
+                negative_cases += 1
+                if negative_cases > 3196:
+                    continue
+            #else:
+            #    data_with_labels.loc[i] = [image, image, text, mask_str]
+            #    num_pneumothorax += 1
+            #    i = i + 1
+            data_with_labels.loc[i] = [image, image, text, mask_str]
+            num_pneumothorax += 1
+            i = i + 1
+
         else:
             total += 1
     print(f"num_pneumo found: {num_pneumothorax}")

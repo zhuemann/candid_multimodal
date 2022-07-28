@@ -30,7 +30,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = False
+    local = True
 
     if local:
         directory_base = "Z:/"
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 30, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True}
 
@@ -51,11 +51,11 @@ if __name__ == '__main__':
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
 
-    #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
-    #df = get_pneumothorax_image(dir_base=directory_base)
-    #print(df)
+    dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
+    df = get_pneumothorax_image(dir_base=directory_base)
+    print(df)
     #make_plots()
-    #df.to_excel(dataframe_location, index=False)
+    df.to_excel(dataframe_location, index=False)
 
 
 
@@ -110,13 +110,13 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_baseline_more_aug_v24"
+        folder_name = "Unet_negative_cases_balanced_v1"
         #folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
                                 '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
                                     folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
-        #df.to_excel(filepath, index=False)
+        df.to_excel(filepath, index=False)
 
         counter = counter + 1
 
