@@ -368,7 +368,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 # gives a dice score of 1 if correctly predicts negative
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
-                    print("correctly predicted negative")
 
                 training_dice.append(dice)
 
@@ -407,7 +406,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                     dice = dice.item()
                     if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                         dice = 1
-                        print("correctly predicted negative")
                     valid_dice.append(dice)
 
             #scheduler.step()
@@ -467,7 +465,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 dice = dice.item()
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
-                    print("correctly predicted negative")
                 test_dice.append(dice)
 
         avg_test_dice = np.average(test_dice)
