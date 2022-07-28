@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_negative_cases_balanced_long_v2"
+        folder_name = "Unet_basic_negative_cases_balanced_long_v3"
         #folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
