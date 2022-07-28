@@ -30,7 +30,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = True
+    local = False
 
     if local:
         directory_base = "Z:/"
