@@ -330,20 +330,21 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 target = targets.cpu().detach().numpy()
                 target = target[0, :, :]
+                max = np.amax(target)
+                target = (target * 255) / max
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/targets/' + str(i) + '.png')
                 cv2.imwrite(fullpath, target)
 
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
+                max = np.amax(output)
+                output = (output * 255) / max
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/outputs/' + str(i) + '.png')
                 cv2.imwrite(fullpath, output)
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
-                print(np.shape(image))
-                print(type(image))
                 image = image.cpu().detach().numpy()
-                print(type(image))
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/images/' + str(i) + '.png')
                 cv2.imwrite(fullpath, image)
