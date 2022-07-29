@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
         config["seed"] = seed
 
-        acc, valid_log = train_image_text_segmentation(config)
+        #acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
