@@ -324,6 +324,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             for i in range(0, outputs.shape[0]):
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
+                if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
+                    dice = 1
                 test_dice.append(dice)
 
         avg_test_dice = np.average(test_dice)
