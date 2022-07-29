@@ -328,11 +328,21 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
 
-                #targets = targets.cpu().detach().numpy()
-                #targets = targets[0, :, :]
-                #print(np.shape(targets))
-                #fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/targets/' + str(1) + '.png')
-                #cv2.imwrite(fullpath, targets)
+                targets = targets.cpu().detach().numpy()
+                targets = targets[0, :, :]
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/targets/' + str(i) + '.png')
+                cv2.imwrite(fullpath, targets)
+
+                outputs = outputs.cpu().detach().numpy()
+                outputs = outputs[0, :, :]
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/outputs/' + str(i) + '.png')
+                cv2.imwrite(fullpath, outputs)
+
+                images = images.cpu().detach().numpy()
+                images = images[0, :, :]
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/images/' + str(i) + '.png')
+                cv2.imwrite(fullpath, images)
+
 
                 test_dice.append(dice)
         print(test_dice)
