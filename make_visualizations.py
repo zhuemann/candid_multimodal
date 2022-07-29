@@ -17,6 +17,7 @@ import segmentation_models_pytorch as smp
 import albumentations as albu
 
 from models.Gloria import GLoRIA
+import cv2
 
 
 from torch.optim.lr_scheduler import MultiStepLR
@@ -327,6 +328,10 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
                 test_dice.append(dice)
+
+            targets = targets.cpu().detach().numpy()
+            fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/targets/' + str(1) + '.png')
+            cv2.imwrite(fullpath, targets)
 
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
