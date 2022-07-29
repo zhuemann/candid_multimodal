@@ -335,6 +335,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 #cv2.imwrite(fullpath, targets)
 
                 test_dice.append(dice)
+        print(test_dice)
         print(len(test_dice))
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
