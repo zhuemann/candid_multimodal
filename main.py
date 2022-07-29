@@ -57,7 +57,7 @@ if __name__ == '__main__':
     #make_plots()
     #df.to_excel(dataframe_location, index=False)
     config["seed"] = 98
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
 
 
@@ -109,11 +109,11 @@ if __name__ == '__main__':
 
         config["seed"] = seed
 
-        #acc, valid_log = train_image_text_segmentation(config)
+        acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        folder_name = "Unet_basic_negative_cases_balanced_long_v3"
+        #folder_name = "Unet_basic_negative_cases_balanced_long_v3"
         folder_name = "error"
         # save to xlsx file
         filepath = os.path.join(directory_base,
