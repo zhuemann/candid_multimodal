@@ -61,7 +61,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     BATCH_SIZE = config["batch_size"]
     N_EPOCHS = config["epochs"]
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
+    dataframe_location = os.path.join(dir_base, 'pneumothorax_with_multisegmentation_text_negatives_balanced_df')
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
     # gets the candid labels and saves it off to the location
     #df = get_candid_labels(dir_base=dir_base)
@@ -295,7 +296,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid_vis_and_word_attention_seed117')
     saved_path = os.path.join(dir_base,
-                              'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid_meeting_visualizations915')
+                              'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid_negatives_seed98')
 
     test_obj.load_state_dict(torch.load(saved_path))
 
