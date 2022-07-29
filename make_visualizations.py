@@ -340,7 +340,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
-                print(np.shape(images))
+                print(np.shape(image))
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/images/' + str(i) + '.png')
                 cv2.imwrite(fullpath, image)
