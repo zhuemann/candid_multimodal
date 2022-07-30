@@ -59,9 +59,6 @@ if __name__ == '__main__':
     #config["seed"] = 98
     #make_images_on_dgx(config)
 
-
-
-
     """
     acc, valid_log = train_image_text_segmentation(config)
 
