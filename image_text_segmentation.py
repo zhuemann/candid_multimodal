@@ -123,8 +123,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # report invariant augmentaitons
-    using_text = False
-    if using_text:
+    using_t5 = False
+    if using_t5:
         albu_augs = albu.Compose([
             albu.OneOf([
                 albu.RandomContrast(),

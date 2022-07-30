@@ -40,7 +40,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 16, "dir_base": directory_base, "epochs": 1, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True, "save_location": ""}
 
@@ -96,11 +96,11 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [98, 117, 295, 456, 915]
+    #seeds = [98, 117, 295, 456, 915]
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
-    #seeds = [915]
+    seeds = [98]
     accuracy_list = []
 
     for seed in seeds:
