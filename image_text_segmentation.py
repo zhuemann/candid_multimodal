@@ -140,7 +140,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # emprically the good augmentations, taken from kaggle winner
-    vision_only = True
+    vision_only = False
     if vision_only:
         albu_augs = albu.Compose([
             albu.HorizontalFlip(),
@@ -156,6 +156,12 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             ], p=.3),
             albu.ShiftScaleRotate(),
     ])
+
+    # used for empty augmentation tests
+    if not vision_only and not using_t5:
+        albu_augs = albu.Compose([
+
+        ])
 
 
     transforms_valid = transforms.Compose(
