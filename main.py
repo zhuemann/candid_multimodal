@@ -40,9 +40,9 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 16, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 16, "dir_base": directory_base, "epochs": 1, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
-              "report_gen": False, "mlm_pretraining": False, "contrastive_training": True}
+              "report_gen": False, "mlm_pretraining": False, "contrastive_training": True, "save_location": ""}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
     if train_report_generation:
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     #print(df)
     #make_plots()
     #df.to_excel(dataframe_location, index=False)
-    config["seed"] = 98
+    #config["seed"] = 98
     #make_images_on_dgx(config)
 
 
@@ -103,25 +103,27 @@ if __name__ == '__main__':
     #seeds = [915]
     accuracy_list = []
 
-    counter = 1
-
     for seed in seeds:
 
+        folder_name = "with_augmentation/baseline_unet_positive_cases/seed" + str(seed) + "/"
+        save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
+        save_location = os.path.join(directory_base, save_string)
+
         config["seed"] = seed
+        config["save_location"] = save_location
 
         acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
         #folder_name = "Unet_basic_negative_cases_balanced_long_v3"
-        folder_name = "error"
+        #folder_name = "error"
         # save to xlsx file
-        filepath = os.path.join(directory_base,
-                                '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
-                                    folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
-        #df.to_excel(filepath, index=False)
-
-        counter = counter + 1
+        #filepath = os.path.join(directory_base,
+        #                        '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
+        #                            folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
+        filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
+        df.to_excel(filepath, index=False)
 
     """
     # loops through the segmentation training multiple times with different seeds

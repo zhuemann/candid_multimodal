@@ -62,8 +62,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     N_EPOCHS = config["epochs"]
     #LR = config["LR"]
 
-    dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
-    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_df_test1.xlsx')
+    # the folder in which the test dataframe, model, results log will all be saved to
+    save_location = config["save_location"]
+
+    #dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
     # gets the candid labels and saves it off to the location
@@ -78,31 +81,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #print(df)
     df.set_index("image_id", inplace=True)
 
-
-
-    # creates the path to the roberta model used from the bradshaw drive and loads the tokenizer and roberta model
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
-
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bio_clinical_bert/')
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bert_mlm/')
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/bio_clinical_bert_candid/')
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_mlm/roberta_candid_v2/')
-
-    latient_layer = 768
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
-    #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True)
-    #language_model = BERTClass(language_model, n_class=N_CLASS, n_nodes=latient_layer)
-    #language_model = BertModel.from_pretrained(language_path, output_hidden_states=True
-    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=False)
-
-
     # use t5 as text encoder
     t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
     tokenizer = T5Tokenizer.from_pretrained(t5_path)
     language_model = T5Model.from_pretrained(t5_path)
-
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -136,76 +118,45 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
-    #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
-    #test_df.to_excel(test_dataframe_location, index=True)
+    test_dataframe_location = os.path.join(save_location, 'pneumothorax_testset_df_seed' + str(config[seed]) + '.xlsx')
+    test_df.to_excel(test_dataframe_location, index=True)
 
 
     # report invariant augmentaitons
-
-    albu_augs = albu.Compose([
-        albu.OneOf([
-            albu.RandomContrast(),
-            albu.RandomGamma(),
-            albu.RandomBrightness(),
-                   ], p=.3),
-        #albu.OneOf([
-        #    albu.MedianBlur(),
-        #    albu.Blur(),
-        #    #albu.GaussianBlur(),
-        #], p=.3),
-
-        albu.OneOf([
-            albu.GridDistortion(),
-            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-            albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
-        ], p=.3)
-
+    using_text = False
+    if using_text:
+        albu_augs = albu.Compose([
+            albu.OneOf([
+                albu.RandomContrast(),
+                albu.RandomGamma(),
+                albu.RandomBrightness(),
+                       ], p=.3),
+            albu.OneOf([
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
+            ], p=.3)
         ])
 
- #   albu_augs = albu.Compose([
- #       # ToTensorV2(),
- #       albu.HorizontalFlip(),
- #       albu.OneOf([
- #           albu.RandomContrast(),
- #           albu.RandomGamma(),
- #           albu.RandomBrightness(),
- #       ], p=.3),  # p=0.3),
- #       albu.OneOf([
- #           albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-            #albu.GridDistortion(),
-        #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
- #       ], p=.3),  # turned off all three to stabilize training
- #       albu.ShiftScaleRotate(),
-        # albu.Resize(img_size, img_size, always_apply=True),
- #   ])
 
+    # emprically the good augmentations, taken from kaggle winner
+    vision_only = True
+    if vision_only:
+        albu_augs = albu.Compose([
+            albu.HorizontalFlip(),
+            albu.OneOf([
+                albu.RandomContrast(),
+                albu.RandomGamma(),
+                albu.RandomBrightness(),
+            ], p=.3),
+            albu.OneOf([
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+            ], p=.3),
+            albu.ShiftScaleRotate(),
+    ])
 
-
-#    albu_augs = albu.Compose([
-#        #ToTensorV2(),
-#        albu.HorizontalFlip(),
-#        albu.OneOf([
-#            albu.RandomContrast(),
-#            albu.RandomGamma(),
-#            albu.RandomBrightness(),
-#        ], p=.3),  #p=0.3),
-#        albu.OneOf([
-#            #albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-#            #albu.GridDistortion(),
-#            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-#        ], p=.3),#p=0.3),
-#        albu.ShiftScaleRotate(),
-#        #albu.Resize(img_size, img_size, always_apply=True),
-#    ])
-    #albu_augs = albu.Compose([
-        #ToTensorV2(),
-    #    albu.HorizontalFlip(),
-    #    albu.RandomCrop(height=224, width=224),
-    #    albu.ColorJitter(),
-        #albu.RandomAfine
-
-        #albu.ShiftScaleRotate(),
-    #])
 
     transforms_valid = transforms.Compose(
         [
@@ -245,9 +196,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    #model_obj = ViTBase16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
-    #model_obj = VGG16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
-
     load_model = False
     if load_model:
         # model is orginally from here which was saved and reloaded to get around SSL
@@ -258,16 +206,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
-
-    #text_encoder = BertEncoder(tokenizer=tokenizer, language_model=language_model)
-    #img_encoder = ImageEncoder()
-
-    #save_path = os.path.join(dir_base, 'Zach_Analysis/models/resnet34/default_from_smp/resnet152')
-    #torch.save(model_obj.state_dict(), save_path)
-    #vision_model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-
-    #vision_model, feature_dim, nums = resnet_50(pretrained=True, dir_base = dir_base)
-    #gloria_model = GLoRIA(cfg = None, tokenizer=tokenizer, language_model=language_model)
 
     run_from_checkpoint = False
     if run_from_checkpoint:
@@ -294,14 +232,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     test_obj.to(device)
 
-
-    #    param.requires_grad = True
-    # criterion = nn.CrossEntropyLoss()
-    # criterion = nn.MSELoss()
     criterion = nn.BCEWithLogitsLoss()
-    # criterion = ContrastiveLoss(temperature=CFG.temperature).to
-    # criterion = ContrastiveLoss(temperature=.1).to(device)
-    # criterion = global_loss()
 
     # defines which optimizer is being used
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
@@ -416,7 +347,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-                save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+                save_path = os.path.join(config["save_location"], "best_segmentation_model")
+                #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
                 #save_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
@@ -429,7 +361,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     test_obj.eval()
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-    saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
+    saved_path = os.path.join(config["save_location"], "best_segmentation_model")
+    #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
 
