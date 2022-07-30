@@ -102,9 +102,9 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        #folder_name = "with_augmentation/baseline_unet_positive_cases/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/attention_unet_positive_cases/seed" + str(seed) + "/"
 
-        folder_name = "no_augmentation/attention_unet_pos/seed" + str(seed) + "/"
+        #folder_name = "no_augmentation/attention_unet_pos/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
 

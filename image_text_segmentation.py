@@ -123,7 +123,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # report invariant augmentaitons
-    using_t5 = False
+    using_t5 = True
     if using_t5:
         albu_augs = albu.Compose([
             albu.OneOf([
@@ -158,10 +158,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     ])
 
     # used for empty augmentation tests
-    if not vision_only and not using_t5:
-        albu_augs = albu.Compose([
-
-        ])
+    #if not vision_only and not using_t5:
+    #    albu_augs = albu.Compose([
+    #
+    #    ])
 
 
     transforms_valid = transforms.Compose(
