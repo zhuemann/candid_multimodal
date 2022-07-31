@@ -40,7 +40,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 7, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True, "save_location": ""}
 
@@ -97,14 +97,14 @@ if __name__ == '__main__':
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
-    seeds = [98]
+    seeds = [98, 117]
     accuracy_list = []
 
     for seed in seeds:
 
-        folder_name = "with_augmentation/attention_unet_positive_cases/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/attention_unet_frozen_t5_blank_text_negative_cases/seed" + str(seed) + "/"
 
-        #folder_name = "no_augmentation/attention_unet_pos/seed" + str(seed) + "/"
+        #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
 

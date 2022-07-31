@@ -65,8 +65,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # the folder in which the test dataframe, model, results log will all be saved to
     save_location = config["save_location"]
 
-    #dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
+    dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
     # gets the candid labels and saves it off to the location
@@ -159,9 +159,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     # used for empty augmentation tests
     #if not vision_only and not using_t5:
-    #    albu_augs = albu.Compose([
-    #
-    #    ])
+        #albu_augs = albu.Compose([
+#
+#        ])
 
 
     transforms_valid = transforms.Compose(
@@ -231,7 +231,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
     for param in language_model.parameters():
-        param.requires_grad = True
+        param.requires_grad = False
 
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
