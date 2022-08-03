@@ -14,7 +14,7 @@ class T5_classifier(torch.nn.Module):
     def forward(self, ids, mask, token_type_ids):
         encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
         pooled_sentence = encoder_output.last_hidden_state
-        lang_rep = pooled_sentence
+        lang_rep = torch.mean(pooled_sentence, 1)
         print(lang_rep.size())
 
 
