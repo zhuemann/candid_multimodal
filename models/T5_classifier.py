@@ -1,8 +1,9 @@
 import torch
 
-class T5_classifier(torch.nn.Module):
+
+class T5Classifier(torch.nn.Module):
     def __init__(self, model, n_class = 2):
-        super(T5_classifier, self).__init__()
+        super(T5Classifier, self).__init__()
         self.lang_encoder = model
         self.classifier = torch.nn.Linear(1024, n_class)
 

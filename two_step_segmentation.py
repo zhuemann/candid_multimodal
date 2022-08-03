@@ -16,7 +16,7 @@ import gc
 import segmentation_models_pytorch as smp
 import albumentations as albu
 
-from models.T5_classifier import T5_classifier
+from models.T5_classifier import T5Classifier
 
 from models.Gloria import GLoRIA
 
@@ -195,7 +195,7 @@ def train_text_classification_then_image_segmentation(config, batch_size=8, epoc
     for param in language_model.parameters():
         param.requires_grad = False
 
-    test_obj = T5_classifier(language_model, n_class=2)
+    test_obj = T5Classifier(language_model, n_class=2)
     test_obj.to(device)
 
     criterion = nn.BCEWithLogitsLoss()
