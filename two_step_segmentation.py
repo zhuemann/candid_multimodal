@@ -237,7 +237,8 @@ def train_text_classification_then_image_segmentation(config, batch_size=8, epoc
             images = data['images'].to(device, dtype=torch.float)
 
 
-            outputs = test_obj(images, ids, mask, token_type_ids)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(ids, mask, token_type_ids)
             #outputs = test_obj(images)
             #outputs = model_obj(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
