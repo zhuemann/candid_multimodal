@@ -239,10 +239,25 @@ def train_text_classification_then_image_segmentation(config, batch_size=8, epoc
 
             #outputs = test_obj(images, ids, mask, token_type_ids)
             outputs = test_obj(ids, mask, token_type_ids)
-            #outputs = test_obj(images)
-            #outputs = model_obj(images)
+
+            for target in targets:
+                if torch.max(target) == 0:
+                    target = 0
+                if torch.max(target) == 1:
+                    target = 1
+
+            print(targets)
+
+
+
+
+
+            """
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
+            
+            
+            
             optimizer.zero_grad()
 
             loss = criterion(outputs, targets)
@@ -368,6 +383,7 @@ def train_text_classification_then_image_segmentation(config, batch_size=8, epoc
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
         return avg_test_dice, valid_log
+        """
 
 
 
