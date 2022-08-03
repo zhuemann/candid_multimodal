@@ -3,7 +3,7 @@ import torch
 class T5_classifier(torch.nn.Module):
     def __init__(self, model, n_class = 2):
         super(T5_classifier, self).__init__()
-        self.language = model
+        self.lang_encoder = model
         self.classifier = torch.nn.Linear(1024, 512)
 
 
