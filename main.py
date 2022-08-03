@@ -15,7 +15,7 @@ from make_visualizations import make_images_on_dgx
 from candid_datasetup import get_pneumothorax_image
 
 from make_plots import make_plots
-from test_model import load_best_model
+#from test_model import load_best_model
 from two_step_segmentation import train_text_classification_then_image_segmentation
 
 def create_parser():
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         report_generation(config)
 
     train_text_classification_then_image_segmentation(config)
-    load_best_model(directory_base)
+    #load_best_model(directory_base)
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
 
