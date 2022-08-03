@@ -24,7 +24,6 @@ from torch.optim.lr_scheduler import MultiStepLR
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
-from models.ConTEXTual_Segmentation_model import ConTEXTual_seg_model
 from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet
@@ -189,8 +188,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 2
+                'num_workers': 1
                 }
+
     test_params = {'batch_size': BATCH_SIZE,
                    'shuffle': True,
                    'num_workers': 4
@@ -269,7 +269,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
         for _, data in tqdm(enumerate(training_loader, 0)):
 
-            x = {}
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)

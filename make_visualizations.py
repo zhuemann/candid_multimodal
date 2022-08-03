@@ -25,7 +25,6 @@ from torch.optim.lr_scheduler import MultiStepLR
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
-from models.ConTEXTual_Segmentation_model import ConTEXTual_seg_model
 from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet

@@ -24,7 +24,6 @@ from torch.optim.lr_scheduler import MultiStepLR
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
-from models.ConTEXTual_Segmentation_model import ConTEXTual_seg_model
 from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet
@@ -47,7 +46,7 @@ import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
-def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
+def train_text_classification_then_image_segmentation(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
 
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
@@ -99,66 +98,44 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_df.to_excel(test_dataframe_location, index=True)
 
     # report invariant augmentaitons
-
-    albu_augs = albu.Compose([
-        albu.OneOf([
-            albu.RandomContrast(),
-            albu.RandomGamma(),
-            albu.RandomBrightness(),
-                   ], p=.3),
-
-        albu.OneOf([
-            albu.GridDistortion(),
-            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-            albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
-        ], p=.3)
-
+    using_t5 = True
+    if using_t5:
+        albu_augs = albu.Compose([
+            albu.OneOf([
+                albu.RandomContrast(),
+                albu.RandomGamma(),
+                albu.RandomBrightness(),
+            ], p=.3),
+            albu.OneOf([
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
+            ], p=.3)
         ])
 
- #   albu_augs = albu.Compose([
- #       # ToTensorV2(),
- #       albu.HorizontalFlip(),
- #       albu.OneOf([
- #           albu.RandomContrast(),
- #           albu.RandomGamma(),
- #           albu.RandomBrightness(),
- #       ], p=.3),  # p=0.3),
- #       albu.OneOf([
- #           albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-            #albu.GridDistortion(),
-        #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
- #       ], p=.3),  # turned off all three to stabilize training
- #       albu.ShiftScaleRotate(),
-        # albu.Resize(img_size, img_size, always_apply=True),
- #   ])
+    # emprically the good augmentations, taken from kaggle winner
+    vision_only = False
+    if vision_only:
+        albu_augs = albu.Compose([
+            albu.HorizontalFlip(),
+            albu.OneOf([
+                albu.RandomContrast(),
+                albu.RandomGamma(),
+                albu.RandomBrightness(),
+            ], p=.3),
+            albu.OneOf([
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+            ], p=.3),
+            albu.ShiftScaleRotate(),
+        ])
 
-
-
-#    albu_augs = albu.Compose([
-#        #ToTensorV2(),
-#        albu.HorizontalFlip(),
-#        albu.OneOf([
-#            albu.RandomContrast(),
-#            albu.RandomGamma(),
-#            albu.RandomBrightness(),
-#        ], p=.3),  #p=0.3),
-#        albu.OneOf([
-#            #albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-#            #albu.GridDistortion(),
-#            albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-#        ], p=.3),#p=0.3),
-#        albu.ShiftScaleRotate(),
-#        #albu.Resize(img_size, img_size, always_apply=True),
-#    ])
-    #albu_augs = albu.Compose([
-        #ToTensorV2(),
-    #    albu.HorizontalFlip(),
-    #    albu.RandomCrop(height=224, width=224),
-    #    albu.ColorJitter(),
-        #albu.RandomAfine
-
-        #albu.ShiftScaleRotate(),
-    #])
+    # used for empty augmentation tests
+    # if not vision_only and not using_t5:
+    # albu_augs = albu.Compose([
+    #
+    #        ])
 
     transforms_valid = transforms.Compose(
         [
@@ -198,9 +175,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    #model_obj = ViTBase16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
-    #model_obj = VGG16(n_classes=N_CLASS, pretrained=True, dir_base=dir_base)
-
     load_model = False
     if load_model:
         # model is orginally from here which was saved and reloaded to get around SSL
@@ -212,11 +186,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
         model_obj.load_state_dict(torch.load(save_path))
 
-    #language_model.to(device)
-    #model_obj.to(device)
-
-    #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
-
     test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
@@ -224,19 +193,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     for param in language_model.parameters():
         param.requires_grad = False
 
-
-    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
-
     test_obj.to(device)
 
-
-    #    param.requires_grad = True
-    # criterion = nn.CrossEntropyLoss()
-    # criterion = nn.MSELoss()
     criterion = nn.BCEWithLogitsLoss()
-    # criterion = ContrastiveLoss(temperature=CFG.temperature).to
-    # criterion = ContrastiveLoss(temperature=.1).to(device)
-    # criterion = global_loss()
 
     # defines which optimizer is being used
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
@@ -267,7 +226,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
         for _, data in tqdm(enumerate(training_loader, 0)):
 
-            x = {}
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)

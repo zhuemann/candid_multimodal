@@ -15,6 +15,8 @@ from make_visualizations import make_images_on_dgx
 from candid_datasetup import get_pneumothorax_image
 
 from make_plots import make_plots
+from test_model import load_best_model
+from two_step_segmentation import train_text_classification_then_image_segmentation
 
 def create_parser():
     parser = argparse.ArgumentParser(description="The main file to run multimodal setup. Consists of pre-training joint representation, masked language modeling and report generation.")
@@ -30,7 +32,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = False
+    local = True
 
     if local:
         directory_base = "Z:/"
@@ -48,6 +50,8 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
+    train_text_classification_then_image_segmentation(config)
+    load_best_model(directory_base)
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
 
@@ -102,8 +106,8 @@ if __name__ == '__main__':
 
     for seed in seeds:
 
-        folder_name = "with_augmentation/attention_unet_frozen_positive_cases/seed" + str(seed) + "/"
-
+        #folder_name = "with_augmentation/attention_unet_frozen_positive_cases/seed" + str(seed) + "/"
+        folder_name = "two_step_seg/dev_test"
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
