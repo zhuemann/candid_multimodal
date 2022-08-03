@@ -62,11 +62,11 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
     def forward(self, img, ids, mask, token_type_ids):
 
         # for roberta
-        lang_output, test = self.lang_encoder(ids, mask, token_type_ids)
+        lang_output= self.lang_encoder(ids, mask, token_type_ids)
         print(lang_output.size())
         lang_rep = lang_output[1]
         print(lang_output.size())
-        print(test.size())
+
 
         # for t5
         #encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
