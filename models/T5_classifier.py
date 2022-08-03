@@ -12,7 +12,7 @@ class T5Classifier(torch.nn.Module):
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
         print(lang_output.size())
         lang_rep = lang_output[1]
-        print(lang_rep.size())
+        print(lang_output.size())
         output = lang_rep
 
         # feed text through t5 then average across encoding dimension and then do two class classification
