@@ -49,7 +49,7 @@ if __name__ == '__main__':
     if train_report_generation:
         report_generation(config)
 
-    train_text_classification_then_image_segmentation(config)
+    #train_text_classification_then_image_segmentation(config)
     #load_best_model(directory_base)
     #config["seed"] = 915
     #acc, valid_log = make_images_on_dgx(config)
