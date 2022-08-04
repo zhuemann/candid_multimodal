@@ -147,7 +147,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            albu.HorizontalFlip(p=1),
+            #albu.HorizontalFlip(p=1),
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
@@ -170,7 +170,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     transforms_valid = transforms.Compose(
         [
-            transforms.RandomHorizontalFlip(p=1),
+            #transforms.RandomHorizontalFlip(p=1),
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             transforms.PILToTensor(),
             # transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
