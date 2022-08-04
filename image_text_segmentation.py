@@ -126,7 +126,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # report invariant augmentaitons
-    using_t5 = True
+    using_t5 = False
     if using_t5:
         albu_augs = albu.Compose([
             albu.OneOf([
@@ -144,10 +144,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # emprically the good augmentations, taken from kaggle winner
-    vision_only = False
+    vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            #albu.HorizontalFlip(always_apply=True, p=1),
+            albu.HorizontalFlip(p=1),
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
