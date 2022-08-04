@@ -85,9 +85,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     tokenizer = T5Tokenizer.from_pretrained(t5_path)
     language_model = T5Model.from_pretrained(t5_path)
 
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -126,7 +126,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # report invariant augmentaitons
-    using_t5 = True
+    using_t5 = False
     if using_t5:
         albu_augs = albu.Compose([
             albu.OneOf([
@@ -138,15 +138,16 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 albu.GridDistortion(),
                 albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
                 albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
-            ], p=.3)
+            ], p=.3),
+            albu.ShiftScaleRotate()
         ])
 
 
     # emprically the good augmentations, taken from kaggle winner
-    vision_only = False
+    vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            albu.HorizontalFlip(),
+            albu.HorizontalFlip(always_apply=True, p=1),
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
