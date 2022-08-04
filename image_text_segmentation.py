@@ -170,6 +170,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     transforms_valid = transforms.Compose(
         [
+            transforms.RandomHorizontalFlip(p=1),
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             transforms.PILToTensor(),
             # transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
@@ -179,7 +180,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         ]
     )
 
-    transforms_resize = transforms.Compose([transforms.RandomHorizontalFlip(p=1), transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
+    transforms_resize = transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.PILToTensor()])
     output_resize = transforms.Compose([transforms.Resize((1024, 1024))])
 
 

@@ -123,10 +123,13 @@ class TextImageDataset(Dataset):
             else:
 
                 if RGB:
-                    img = Image.fromarray(img).convert("RGB")
+                    img = Image.fromarray(img).convert("RGB")  # makes the image into a PIL image
+                    #image = self.transforms(img)
 
-                    # image = Image.fromarray(img)  # makes the image into a PIL image
-                    image = self.transforms(img)
+                    #trying to do flipping
+                    transformed = self.transforms(image=img, mask=segmentation_mask_org)
+                    image = transformed['image']
+                    segmentation_mask_org = transformed['mask']
                 else:
                     img = Image.fromarray(img)
                     image = self.transforms(img)
