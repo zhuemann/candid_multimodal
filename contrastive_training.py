@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 #import cv2
 
-ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
+#ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
 def contrastive_pretraining(config):
