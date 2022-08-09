@@ -178,18 +178,12 @@ class TextImageDataset(Dataset):
 
     def textAugmentation(text):
 
-        print(text)
+        #print(text)
         sentences = sent_tokenize(text)
-        for sentence in sentences:
-            print(sentence)
-
         random.shuffle(sentences)
-
         shuffledText = sentences[0]
         for i in range(1, len(sentences)):
             shuffledText += " " + sentences[i]
-
-        print(shuffledText)
         return shuffledText
         #randValue = random.uniform(0, 1)
 
