@@ -53,7 +53,7 @@ class TextImageDataset(Dataset):
         text = text.replace("\n", "")
 
         #nltk.download('punkt')
-        TextImageDataset.textAugmentation(text)
+        text = TextImageDataset.textAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
             text,

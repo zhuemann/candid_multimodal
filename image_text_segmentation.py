@@ -84,20 +84,20 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     word_synonom_path = os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/ngrams_and_their_synonyms')
     ngram_synonom_path= os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/words_and_their_synonyms')
 
-    word_synonom = pd.read_excel(word_synonom_path, engine='openpyxl')
-    ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
+    #word_synonom = pd.read_excel(word_synonom_path, engine='openpyxl')
+    #ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
 
 
 
 
     # use t5 as text encoder
- #   t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
- #   tokenizer = T5Tokenizer.from_pretrained(t5_path)
- #   language_model = T5Model.from_pretrained(t5_path)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
 
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -132,7 +132,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     )
 
     test_dataframe_location = os.path.join(save_location, 'pneumothorax_testset_df_seed' + str(config["seed"]) + '.xlsx')
-    #test_df.to_excel(test_dataframe_location, index=True)
+    test_df.to_excel(test_dataframe_location, index=True)
 
 
     # report invariant augmentaitons
