@@ -190,8 +190,8 @@ class TextImageDataset(Dataset):
             shuffledText += " " + sentences[i]
 
         print(shuffledText)
+        return shuffledText
+        #randValue = random.uniform(0, 1)
 
-        randValue = random.uniform(0, 1)
-
-        if randValue <= .15:
-            print("aug work")
+        #if randValue <= .15:
+            #print("aug work")
