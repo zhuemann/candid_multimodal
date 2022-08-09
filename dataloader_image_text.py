@@ -5,6 +5,9 @@ import pydicom as pdcm
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
+from nltk import word_tokenize, sent_tokenize
+import nltk
+import random
 
 from utility import rle_decode_modified, rle_decode
 
@@ -12,7 +15,9 @@ from utility import rle_decode_modified, rle_decode
 class TextImageDataset(Dataset):
     def __init__(self, dataframe, tokenizer, max_len, truncation=True,
                  dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms=None, resize=None,
-                 img_size=256):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
+                 img_size=256,
+                 word_synonom = [],
+                 ngram_synonom = []):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text
@@ -39,9 +44,16 @@ class TextImageDataset(Dataset):
 
         text = text.replace("[ALPHANUMERICID]", "")
         text = text.replace("[date]", "")
+        text = text.replace("[DATE]", "")
+        text = text.replace("[AGE]", "")
+
+
         text = text.replace("[ADDRESS]", "")
         text = text.replace("[PERSONALNAME]", "")
         text = text.replace("\n", "")
+
+        #nltk.download('punkt')
+        TextImageDataset.textAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
             text,
@@ -162,3 +174,24 @@ class TextImageDataset(Dataset):
             'row_ids': self.row_ids[index],
             'images': image
         }
+
+
+    def textAugmentation(text):
+
+        print(text)
+        sentences = sent_tokenize(text)
+        for sentence in sentences:
+            print(sentence)
+
+        random.shuffle(sentences)
+
+        shuffledText = sentences[0]
+        for i in range(1, len(sentences)):
+            shuffledText += " " + sentences[i]
+
+        print(shuffledText)
+
+        randValue = random.uniform(0, 1)
+
+        if randValue <= .15:
+            print("aug work")

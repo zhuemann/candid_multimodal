@@ -32,7 +32,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = False
+    local = True
     if local:
         directory_base = "Z:/"
     else:
@@ -112,7 +112,7 @@ if __name__ == '__main__':
         save_location = os.path.join(directory_base, save_string)
 
         config["seed"] = seed
-        config["save_location"] = save_location
+        #config["save_location"] = save_location
 
         acc, valid_log = train_image_text_segmentation(config)
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
         #                        '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
         #                            folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
         filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        #df.to_excel(filepath, index=False)
 
     """
     # loops through the segmentation training multiple times with different seeds

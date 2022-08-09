@@ -80,14 +80,23 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #print(df)
     df.set_index("image_id", inplace=True)
 
-    # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    word_synonom_path = os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/ngrams_and_their_synonyms')
+    ngram_synonom_path= os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/words_and_their_synonyms')
 
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
-    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    word_synonom = pd.read_excel(word_synonom_path, engine='openpyxl')
+    ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
+
+
+
+
+    # use t5 as text encoder
+ #   t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+ #   tokenizer = T5Tokenizer.from_pretrained(t5_path)
+ #   language_model = T5Model.from_pretrained(t5_path)
+
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -122,7 +131,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     )
 
     test_dataframe_location = os.path.join(save_location, 'pneumothorax_testset_df_seed' + str(config["seed"]) + '.xlsx')
-    test_df.to_excel(test_dataframe_location, index=True)
+    #test_df.to_excel(test_dataframe_location, index=True)
 
 
     # report invariant augmentaitons
@@ -188,7 +197,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print(train_df)
     print("valid df")
     print(valid_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, word_synonom=word_synonom, ngram_synonom=ngram_synonom)
     valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
     test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
