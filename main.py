@@ -111,6 +111,7 @@ if __name__ == '__main__':
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
 
+
         config["seed"] = seed
         #config["save_location"] = save_location
 
