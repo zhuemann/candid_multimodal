@@ -268,7 +268,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     #scheduler = MultiStepLR(optimizer, milestones=[5, 10, 25, 37, 50, 75], gamma=0.50)
 
-    print(test_dataframe_location)
+    #print(test_dataframe_location)
     print("about to start training loop")
     lowest_loss = 100
     best_acc = 0
@@ -371,7 +371,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
 
-                print(f"save location: {config['save_location']}")
+                #print(f"save location: {config['save_location']}")
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
                 save_path = os.path.join(config["save_location"], "best_segmentation_model_seed" + str(seed))
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
