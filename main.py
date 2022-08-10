@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
 
         config["seed"] = seed
-        #config["save_location"] = save_location
+        config["save_location"] = save_location
 
         acc, valid_log = train_image_text_segmentation(config)
 
