@@ -370,6 +370,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             if avg_valid_dice >= best_acc:
                 best_acc = avg_valid_dice
+
+                print(f"save location: {config['save_location']}")
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
                 save_path = os.path.join(config["save_location"], "best_segmentation_model_seed" + str(seed))
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
