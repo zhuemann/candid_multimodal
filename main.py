@@ -127,7 +127,7 @@ if __name__ == '__main__':
         #                        '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
         #                            folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
         filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
-        #df.to_excel(filepath, index=False)
+        df.to_excel(filepath, index=False)
 
     """
     # loops through the segmentation training multiple times with different seeds
