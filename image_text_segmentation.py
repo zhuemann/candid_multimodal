@@ -96,7 +96,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
     #language_model = T5Model.from_pretrained(t5_path)
 
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
