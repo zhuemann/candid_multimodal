@@ -48,7 +48,7 @@ ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
 
 
 def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
-    nltk.download('punkt')
+    #nltk.download('punkt')
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
@@ -92,13 +92,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
 
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
-    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta/')
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
