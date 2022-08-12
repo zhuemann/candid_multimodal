@@ -132,10 +132,12 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
+
     test_dataframe_location = os.path.join(save_location, 'pneumothorax_testset_df_seed' + str(config["seed"]) + '.xlsx')
+    print(test_dataframe_location)
     test_df.to_excel(test_dataframe_location, index=True)
 
-    print(test_dataframe_location)
+    #print(test_dataframe_location)
 
     # report invariant augmentaitons
     using_t5 = False
