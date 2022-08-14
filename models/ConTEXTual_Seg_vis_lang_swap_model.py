@@ -13,7 +13,7 @@ from .LanguageCrossAttention import LangCrossAtt
 
 class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
-        super(Attention_ConTEXTual_Seg_Model, self).__init__()
+        super(Attention_ConTEXTual_Seg_Model_swap, self).__init__()
 
         self.lang_encoder = lang_model
 
@@ -58,17 +58,15 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
 
     def forward(self, img, ids, mask, token_type_ids):
         # for roberta
-        lang_output = self.lang_encoder(ids, mask, token_type_ids)
-
-        # test = lang_output.cross_attentions()
-        word_rep = lang_output[0]
-        report_rep = lang_output[1]
-        lang_rep = word_rep
+        #lang_output = self.lang_encoder(ids, mask, token_type_ids)
+        #word_rep = lang_output[0]
+        #report_rep = lang_output[1]
+        #lang_rep = word_rep
 
         # for t5
-        # encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
-        # pooled_sentence = encoder_output.last_hidden_state
-        # lang_rep = pooled_sentence
+        encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
+        pooled_sentence = encoder_output.last_hidden_state
+        lang_rep = pooled_sentence
 
         x1 = self.inc(img)
         x2 = self.down1(x1)
