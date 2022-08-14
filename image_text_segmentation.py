@@ -24,7 +24,9 @@ from torch.optim.lr_scheduler import MultiStepLR
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
-from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
+#from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
+from models.ConTEXTual_Seg_vis_lang_swap_model import Attention_ConTEXTual_Seg_Model_swap
+
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet
 
@@ -246,7 +248,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = ConTEXTual_seg_model(lang_model=language_model, n_channels=1, n_classes=1, bilinear=False)
 
-    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Seg_Model_swap(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 

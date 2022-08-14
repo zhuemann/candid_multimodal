@@ -7,12 +7,12 @@ from typing import Tuple
 
 from .LanguageCrossAttention import LangCrossAtt
 
-#from visualization_attention import visualization_attention
+
+# from visualization_attention import visualization_attention
 
 
-class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
+class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
     def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
-
         super(Attention_ConTEXTual_Seg_Model, self).__init__()
 
         self.lang_encoder = lang_model
@@ -56,24 +56,19 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.lang_proj4 = nn.Linear(1024, 64)
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
-
     def forward(self, img, ids, mask, token_type_ids):
-
         # for roberta
         lang_output = self.lang_encoder(ids, mask, token_type_ids)
 
-        #test = lang_output.cross_attentions()
+        # test = lang_output.cross_attentions()
         word_rep = lang_output[0]
         report_rep = lang_output[1]
         lang_rep = word_rep
 
-
-
-
         # for t5
-        #encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
-        #pooled_sentence = encoder_output.last_hidden_state
-        #lang_rep = pooled_sentence
+        # encoder_output = self.lang_encoder.encoder(input_ids=ids, attention_mask=mask, return_dict=True)
+        # pooled_sentence = encoder_output.last_hidden_state
+        # lang_rep = pooled_sentence
 
         x1 = self.inc(img)
         x2 = self.down1(x1)
@@ -83,44 +78,46 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1 = self.up1(x5)
 
-        #decode1 = self.attention1(decode1, x4)
-
-        lang_rep1 = self.lang_proj1(lang_rep)
-        decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
-
-        #How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
+        lang_rep1 = self.lang_proj1(lang_rep)
+        x4 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=x4)
+
+        # How is used to be done, swapping for testing
+        #x4 = self.attention1(decode1, x4)
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        lang_rep2 = self.lang_proj2(lang_rep)
-        decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
         x3 = self.attention2(decode2, x3)
+        lang_rep2 = self.lang_proj2(lang_rep)
+        x3 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=x3)
+
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
-        lang_rep3 = self.lang_proj3(lang_rep)
-        decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
 
         x2 = self.attention3(decode3, x2)
+        lang_rep3 = self.lang_proj3(lang_rep)
+        x2 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=x2)
+
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
-        lang_rep4 = self.lang_proj4(lang_rep)
-        decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
         x1 = self.attention4(decode4, x1)
+        lang_rep4 = self.lang_proj4(lang_rep)
+        x1 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=x1)
+
         x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 
         logits = self.outc(x)
 
-        #visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch, logits)
+        # visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch, logits)
 
         return logits
 
@@ -145,7 +142,6 @@ class Up(nn.Module):
 
 
 def concatenate_layers(x1, x2):
-
     # input is CHW
     diffY = x2.size()[2] - x1.size()[2]
     diffX = x2.size()[3] - x1.size()[3]
@@ -201,8 +197,8 @@ class OutConv(nn.Module):
 
 
 class Attention_block(nn.Module):
-
     """https://github.com/LeeJunHyun/Image_Segmentation"""
+
     def __init__(self, F_g, F_l, F_int):
         super(Attention_block, self).__init__()
         self.gate = nn.Sequential(
@@ -236,10 +232,9 @@ class DotProductAttention(nn.Module):
     """
     Compute the dot products of the query with all values and apply a softmax function to obtain the weights on the values
     """
+
     def __init__(self, hidden_dim):
         super(DotProductAttention, self).__init__()
-
-
 
     def forward(self, query: Tensor, value: Tensor) -> Tuple[Tensor, Tensor]:
         batch_size, hidden_dim, input_size = query.size(0), query.size(2), value.size(1)
@@ -298,5 +293,5 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
         return out
-        
+
 """
