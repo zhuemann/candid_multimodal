@@ -87,9 +87,11 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
 
         lang_rep1 = self.lang_proj1d(lang_rep)
         print(f"decode1 size: {decode1.size()}")
+        print(f"lang_rep1 size: {lang_rep1.size()}")
         decode1 = self.lang_attn1d(lang_rep=lang_rep1, vision_rep=decode1)
         print(f"x4 size: {x4.size()}")
         lang_rep1x = self.lang_proj1x(lang_rep)
+        print(f"lang_rep1x: {lang_rep1x.size()}")
         x4 = self.lang_attn1x(lang_rep=lang_rep1x, vision_rep=x4)
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
