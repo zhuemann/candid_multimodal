@@ -47,14 +47,23 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
 
         self.outc = OutConv(64, n_classes)
 
-        self.lang_proj1 = nn.Linear(1024, 512)
-        self.lang_attn1 = LangCrossAtt(emb_dim=512)
-        self.lang_proj2 = nn.Linear(1024, 256)
-        self.lang_attn2 = LangCrossAtt(emb_dim=256)
-        self.lang_proj3 = nn.Linear(1024, 128)
-        self.lang_attn3 = LangCrossAtt(emb_dim=128)
-        self.lang_proj4 = nn.Linear(1024, 64)
-        self.lang_attn4 = LangCrossAtt(emb_dim=64)
+        self.lang_proj1d = nn.Linear(1024, 512)
+        self.lang_attn1d = LangCrossAtt(emb_dim=512)
+        self.lang_proj2d = nn.Linear(1024, 256)
+        self.lang_attn2d = LangCrossAtt(emb_dim=256)
+        self.lang_proj3d = nn.Linear(1024, 128)
+        self.lang_attn3d = LangCrossAtt(emb_dim=128)
+        self.lang_proj4d = nn.Linear(1024, 64)
+        self.lang_attn4d = LangCrossAtt(emb_dim=64)
+
+        self.lang_proj1x = nn.Linear(1024, 512)
+        self.lang_attn1x = LangCrossAtt(emb_dim=512)
+        self.lang_proj2x = nn.Linear(1024, 256)
+        self.lang_attn2x = LangCrossAtt(emb_dim=256)
+        self.lang_proj3x = nn.Linear(1024, 128)
+        self.lang_attn3x = LangCrossAtt(emb_dim=128)
+        self.lang_proj4x = nn.Linear(1024, 64)
+        self.lang_attn4x = LangCrossAtt(emb_dim=64)
 
     def forward(self, img, ids, mask, token_type_ids):
         # for roberta
@@ -76,40 +85,47 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
 
         decode1 = self.up1(x5)
 
-        x4 = self.attention1(decode1, x4)
-        lang_rep1 = self.lang_proj1(lang_rep)
-        x4 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=x4)
+        lang_rep1 = self.lang_proj1d(lang_rep)
+        decode1 = self.lang_attn1d(lang_rep=lang_rep1, vision_rep=decode1)
 
+        lang_rep1x = self.lang_proj1x(lang_rep)
+        x4 = self.lang_attn1dx(lang_rep=lang_rep1x, vision_rep=x4)
         # How is used to be done, swapping for testing
-        #x4 = self.attention1(decode1, x4)
+        x4 = self.attention1(decode1, x4)
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
+        lang_rep2 = self.lang_proj2d(lang_rep)
+        decode2 = self.lang_attn2d(lang_rep=lang_rep2, vision_rep=decode2)
+
+        lang_rep2x = self.lang_proj2x(lang_rep)
+        x3 = self.lang_attn1dx(lang_rep=lang_rep2x, vision_rep=x3)
 
         x3 = self.attention2(decode2, x3)
-        lang_rep2 = self.lang_proj2(lang_rep)
-        x3 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=x3)
-
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
+        lang_rep3 = self.lang_proj3d(lang_rep)
+        decode3 = self.lang_attn3d(lang_rep=lang_rep3, vision_rep=decode3)
+
+        lang_rep3x = self.lang_proj3x(lang_rep)
+        x2 = self.lang_attn1dx(lang_rep=lang_rep3x, vision_rep=x2)
 
         x2 = self.attention3(decode3, x2)
-        lang_rep3 = self.lang_proj3(lang_rep)
-        x2 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=x2)
-
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
+        lang_rep4 = self.lang_proj4d(lang_rep)
+        decode4 = self.lang_attn4d(lang_rep=lang_rep4, vision_rep=decode4)
+
+        lang_rep4x = self.lang_proj1x(lang_rep)
+        x1 = self.lang_attn1dx(lang_rep=lang_rep4x, vision_rep=x1)
 
         x1 = self.attention4(decode4, x1)
-        lang_rep4 = self.lang_proj4(lang_rep)
-        x1 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=x1)
-
         x = concatenate_layers(decode4, x1)
         x = self.up_conv4(x)
 
