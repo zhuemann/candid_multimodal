@@ -89,7 +89,7 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
         decode1 = self.lang_attn1d(lang_rep=lang_rep1, vision_rep=decode1)
 
         lang_rep1x = self.lang_proj1x(lang_rep)
-        x4 = self.lang_attn1dx(lang_rep=lang_rep1x, vision_rep=x4)
+        x4 = self.lang_attn1x(lang_rep=lang_rep1x, vision_rep=x4)
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
 
@@ -101,7 +101,7 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
         decode2 = self.lang_attn2d(lang_rep=lang_rep2, vision_rep=decode2)
 
         lang_rep2x = self.lang_proj2x(lang_rep)
-        x3 = self.lang_attn1dx(lang_rep=lang_rep2x, vision_rep=x3)
+        x3 = self.lang_attn2x(lang_rep=lang_rep2x, vision_rep=x3)
 
         x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
@@ -112,7 +112,7 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
         decode3 = self.lang_attn3d(lang_rep=lang_rep3, vision_rep=decode3)
 
         lang_rep3x = self.lang_proj3x(lang_rep)
-        x2 = self.lang_attn1dx(lang_rep=lang_rep3x, vision_rep=x2)
+        x2 = self.lang_attn3x(lang_rep=lang_rep3x, vision_rep=x2)
 
         x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
@@ -123,7 +123,7 @@ class Attention_ConTEXTual_Seg_Model_swap(torch.nn.Module):
         decode4 = self.lang_attn4d(lang_rep=lang_rep4, vision_rep=decode4)
 
         lang_rep4x = self.lang_proj1x(lang_rep)
-        x1 = self.lang_attn1dx(lang_rep=lang_rep4x, vision_rep=x1)
+        x1 = self.lang_attn4x(lang_rep=lang_rep4x, vision_rep=x1)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
