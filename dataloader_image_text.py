@@ -207,11 +207,10 @@ class TextImageDataset(Dataset):
         for key in list(wordDict["synonyms"].keys()):
 
             string = wordDict["synonyms"][key][2:-2]
-            print(string)
             wordList = string.split("', '")
-            print(wordList)
+            wordDict["synonyms"][key] = wordList
 
-        print(fail)
+
         for word in list(wordDict["synonyms"].keys()):
             if word in text:
                 randValue = random.uniform(0, 1)
