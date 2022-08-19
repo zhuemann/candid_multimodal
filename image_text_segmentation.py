@@ -84,8 +84,16 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #print(df)
     df.set_index("image_id", inplace=True)
 
-    word_synonom_path = os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/ngrams_and_their_synonyms')
-    ngram_synonom_path= os.path.join(dir_base, 'Zach_Analysis/candid_text_augmentations/words_and_their_synonyms')
+    wordReplacementPath = os.path.join(dir_base, 'Zach_Analysis/lymphoma_data/words_and_their_synonyms.xlsx')
+
+    dfWord = pd.read_excel(wordReplacementPath, engine='openpyxl')
+    dfWord.set_index("word", inplace=True)
+
+    wordDict = dfWord.to_dict()
+    for key in list(wordDict["synonyms"].keys()):
+        string = wordDict["synonyms"][key][2:-2]
+        wordList = string.split("', '")
+        wordDict["synonyms"][key] = wordList
 
     #word_synonom = pd.read_excel(word_synonom_path, engine='openpyxl')
     #ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
@@ -204,7 +212,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print(train_df)
     print("valid df")
     print(valid_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = wordDict)
     valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
     test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE)
 
