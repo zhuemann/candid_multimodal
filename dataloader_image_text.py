@@ -54,8 +54,8 @@ class TextImageDataset(Dataset):
         text = text.replace("[PERSONALNAME]", "")
         text = text.replace("\n", "")
 
-
-        text = TextImageDataset.shuffledTAugmentation(text)
+        text = TextImageDataset.synonymsReplacement(text)
+        text = TextImageDataset.shuffledTextAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
             text,
