@@ -201,10 +201,10 @@ class TextImageDataset(Dataset):
         dfWord.set_index("word", inplace=True)
 
         wordDict = dfWord.to_dict()
-        print(wordDict)
-        print(wordDict.keys())
+        print(wordDict["synonyms"])
+        print(wordDict["synonyms"].keys())
 
-        for word in list(wordDict.keys()):
+        for word in list(wordDict["synonyms"].keys()):
             print(word)
             print(wordDict.keys())
             if word in text:
