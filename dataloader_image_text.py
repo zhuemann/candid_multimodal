@@ -203,7 +203,7 @@ class TextImageDataset(Dataset):
         wordDict = dfWord.to_dict()
         #print(wordDict)
 
-        for word in wordDict.keys():
+        for word in list(wordDict.keys()):
             print(word)
             print(wordDict.keys())
             if word in text:
