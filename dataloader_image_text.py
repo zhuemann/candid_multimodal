@@ -198,6 +198,7 @@ class TextImageDataset(Dataset):
         ngramReplacementPath = os.path.join(self.dir_base, 'Zach_Analysis/lymphoma_data/ngrams_and_their_synonyms.xlsx')
 
         dfWord = pd.read_excel(wordReplacementPath, engine='openpyxl')
+        dfWord.set_index("word", inplace=True)
 
         wordDict = dfWord.to_dict()
         print(wordDict)
