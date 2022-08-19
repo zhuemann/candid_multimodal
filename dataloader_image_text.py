@@ -204,6 +204,8 @@ class TextImageDataset(Dataset):
         #print(wordDict)
 
         for word in wordDict.keys():
+            print(word)
+            print(wordDict.keys())
             if word in text:
                 print(word)
                 print("roll dice")
