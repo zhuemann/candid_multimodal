@@ -206,12 +206,11 @@ class TextImageDataset(Dataset):
 
         for word in list(wordDict["synonyms"].keys()):
             if word in text:
-                print(word)
-                print("roll dice")
-                print(wordDict["synonyms"][word])
                 randValue = random.uniform(0, 1)
                 if randValue <= .15:
-                    print("aug work")
+                    print(word)
+                    print(wordDict["synonyms"][word])
+                    print("aug replacement")
                     print(text)
                     text = text.replace(word, wordDict["synonyms"][word][0])
                     print(text)
