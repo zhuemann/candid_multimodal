@@ -8,6 +8,7 @@ from torch.utils.data import Dataset
 from nltk import word_tokenize, sent_tokenize
 import nltk
 import random
+import pandas as pd
 
 from utility import rle_decode_modified, rle_decode
 
@@ -30,6 +31,7 @@ class TextImageDataset(Dataset):
         self.transforms = transforms
         self.mode = mode
         self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
+        self.dir_base = dir_base
         self.resize = resize
 
     def __len__(self):
@@ -53,7 +55,7 @@ class TextImageDataset(Dataset):
         text = text.replace("\n", "")
 
 
-        text = TextImageDataset.textAugmentation(text)
+        text = TextImageDataset.shuffledTAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
             text,
@@ -176,7 +178,7 @@ class TextImageDataset(Dataset):
         }
 
 
-    def textAugmentation(text):
+    def shuffledTextAugmentation(text):
 
         #print(text)
         sentences = sent_tokenize(text)
@@ -189,3 +191,14 @@ class TextImageDataset(Dataset):
 
         #if randValue <= .15:
             #print("aug work")
+
+    def synonymsReplacement(self, text):
+
+        wordReplacementPath = os.path.join(self.dir_base, 'Zach_Analysis/lymphoma_data/words_and_their_synonyms.xlsx')
+        ngramReplacementPath = os.path.join(self.dir_base, 'Zach_Analysis/lymphoma_data/ngrams_and_their_synonyms.xlsx')
+
+        dfWord = pd.read_excel(wordReplacementPath, engine='openpyxl')
+
+        wordDict = dfWord.to_dict()
+        print(wordDict)
+
