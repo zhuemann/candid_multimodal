@@ -213,7 +213,7 @@ class TextImageDataset(Dataset):
                 if randValue <= .15:
                     print("aug work")
                     print(text)
-                    text = text.replace(word, wordDict["synonyms"][word])
+                    text = text.replace(word, wordDict["synonyms"][word][0])
                     print(text)
 
         return text
