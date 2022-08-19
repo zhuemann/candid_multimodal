@@ -220,7 +220,8 @@ class TextImageDataset(Dataset):
                     print("aug replacement")
                     print(f"possible replacements: {wordDict['synonyms'][word]}")
                     print(text)
-                    text = text.replace(word, wordDict["synonyms"][word][0])
+                    randomSample = np.random.randint(low = 0, high = len(wordDict['synonyms'][word]))
+                    text = text.replace(word, wordDict["synonyms"][word][randomSample])
                     print(text)
 
         return text
