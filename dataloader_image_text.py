@@ -55,7 +55,7 @@ class TextImageDataset(Dataset):
         text = text.replace("\n", "")
 
         text = TextImageDataset.synonymsReplacement(self, text)
-        text = TextImageDataset.shuffledTextAugmentation(text)
+        #text = TextImageDataset.shuffledTextAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
             text,
@@ -195,33 +195,23 @@ class TextImageDataset(Dataset):
     def synonymsReplacement(self, text):
 
         wordReplacementPath = os.path.join(self.dir_base, 'Zach_Analysis/lymphoma_data/words_and_their_synonyms.xlsx')
-        ngramReplacementPath = os.path.join(self.dir_base, 'Zach_Analysis/lymphoma_data/ngrams_and_their_synonyms.xlsx')
 
         dfWord = pd.read_excel(wordReplacementPath, engine='openpyxl')
         dfWord.set_index("word", inplace=True)
 
         wordDict = dfWord.to_dict()
-        #print(wordDict["synonyms"])
-        #print(wordDict["synonyms"].keys())
-
         for key in list(wordDict["synonyms"].keys()):
-
             string = wordDict["synonyms"][key][2:-2]
             wordList = string.split("', '")
             wordDict["synonyms"][key] = wordList
 
-
+        newText = text
         for word in list(wordDict["synonyms"].keys()):
             if word in text:
                 randValue = random.uniform(0, 1)
                 if randValue <= .15:
-                    print(word)
-                    print(wordDict["synonyms"][word])
-                    print("aug replacement")
-                    print(f"possible replacements: {wordDict['synonyms'][word]}")
-                    print(text)
                     randomSample = np.random.randint(low = 0, high = len(wordDict['synonyms'][word]))
-                    text = text.replace(word, wordDict["synonyms"][word][randomSample])
-                    print(text)
+                    newText = text.replace(word, wordDict["synonyms"][word][randomSample])
 
-        return text
+
+        return newText
