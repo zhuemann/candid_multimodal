@@ -201,21 +201,19 @@ class TextImageDataset(Dataset):
         dfWord.set_index("word", inplace=True)
 
         wordDict = dfWord.to_dict()
-        print(wordDict["synonyms"])
-        print(wordDict["synonyms"].keys())
+        #print(wordDict["synonyms"])
+        #print(wordDict["synonyms"].keys())
 
         for word in list(wordDict["synonyms"].keys()):
-            print(word)
-            print(wordDict.keys())
             if word in text:
                 print(word)
                 print("roll dice")
-                print(wordDict[word])
+                print(wordDict["synonyms"][word])
                 randValue = random.uniform(0, 1)
                 if randValue <= .15:
                     print("aug work")
                     print(text)
-                    text = text.replace(word, wordDict[word])
+                    text = text.replace(word, wordDict["synonyms"][word])
                     print(text)
 
         return text
