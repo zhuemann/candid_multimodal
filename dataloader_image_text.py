@@ -201,7 +201,8 @@ class TextImageDataset(Dataset):
         dfWord.set_index("word", inplace=True)
 
         wordDict = dfWord.to_dict()
-        #print(wordDict)
+        print(wordDict)
+        print(wordDict.keys())
 
         for word in list(wordDict.keys()):
             print(word)
