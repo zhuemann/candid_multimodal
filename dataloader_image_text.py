@@ -203,3 +203,15 @@ class TextImageDataset(Dataset):
         wordDict = dfWord.to_dict()
         print(wordDict)
 
+        for word in wordDict.keys():
+            if word in text:
+                print(word)
+                print("roll dice")
+                print(wordDict[word])
+                randValue = random.uniform(0, 1)
+                if randValue <= .15:
+                    print("aug work")
+                    text = text.replace(word, wordDict[word])
+
+        print(text)
+        #return text
