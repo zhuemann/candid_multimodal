@@ -17,7 +17,7 @@ class TextImageDataset(Dataset):
     def __init__(self, dataframe, tokenizer, max_len, truncation=True,
                  dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms=None, resize=None,
                  img_size=256,
-                 wordDict = [],
+                 wordDict = None,
                  ngram_synonom = []):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
@@ -56,7 +56,7 @@ class TextImageDataset(Dataset):
         text = text.replace("\n", "")
 
         if self.wordDict != None:
-            text = TextImageDataset.synonymsReplacement(self, text)
+            #text = TextImageDataset.synonymsReplacement(self, text)
             text = TextImageDataset.shuffledTextAugmentation(text)
         #text = ""
         inputs = self.tokenizer.encode_plus(
@@ -182,17 +182,13 @@ class TextImageDataset(Dataset):
 
     def shuffledTextAugmentation(text):
 
-        #print(text)
         sentences = sent_tokenize(text)
         random.shuffle(sentences)
         shuffledText = sentences[0]
         for i in range(1, len(sentences)):
             shuffledText += " " + sentences[i]
         return shuffledText
-        #randValue = random.uniform(0, 1)
 
-        #if randValue <= .15:
-            #print("aug work")
 
     def synonymsReplacement(self, text):
 
@@ -205,6 +201,5 @@ class TextImageDataset(Dataset):
                 if randValue <= .15:
                     randomSample = np.random.randint(low = 0, high = len(wordDict['synonyms'][word]))
                     newText = text.replace(word, wordDict["synonyms"][word][randomSample])
-
 
         return newText
