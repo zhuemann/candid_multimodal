@@ -105,7 +105,7 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_v6/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/t5_attention_unet_positive_cases_vision_aug_no_lang_aug_v7/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
