@@ -12,7 +12,7 @@ class LangCrossAtt(nn.Module):
     def __init__(self, emb_dim):
         super(LangCrossAtt, self).__init__()
 
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=3) #vdim=vdimension
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim*3, num_heads=3) #vdim=vdimension
         #self.sigmoid = nn.Sigmoid()
         self.tanh = nn.Tanh()
 
