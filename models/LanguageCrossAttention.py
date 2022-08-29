@@ -12,7 +12,7 @@ class LangCrossAtt(nn.Module):
     def __init__(self, emb_dim):
         super(LangCrossAtt, self).__init__()
 
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=8) #vdim=vdimension
+        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1) #vdim=vdimension
         #self.sigmoid = nn.Sigmoid()
         self.tanh = nn.Tanh()
 
@@ -37,6 +37,8 @@ class LangCrossAtt(nn.Module):
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
+
+        print(att_matrix.size())
 
         #att_matrix = self.sigmoid(att_matrix)
         att_matrix = self.tanh(att_matrix)
