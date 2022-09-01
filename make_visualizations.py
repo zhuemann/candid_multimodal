@@ -137,6 +137,10 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     #test_df.to_excel(test_dataframe_location, index=True)
 
+    test_frame_locaction = os.path.join(dir_base,
+    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    "t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_synonom_replacement_v5/seed295/pneumothorax_testset_df_seed295")
+    test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
 
     albu_augs = albu.Compose([
         # ToTensorV2(),
@@ -295,8 +299,12 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     row_ids = []
 
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid_vis_and_word_attention_seed117')
+    #saved_path = os.path.join(dir_base,
+    #                          'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid_negatives_seed98')
+
     saved_path = os.path.join(dir_base,
-                              'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid_negatives_seed98')
+    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    "t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_synonom_replacement_v5/seed295/best_segmentation_model_seed295")
 
     test_obj.load_state_dict(torch.load(saved_path))
 
@@ -312,7 +320,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             images = data['images'].to(device, dtype=torch.float)
 
             #outputs = model_obj(images)
-            outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images, ids, mask, token_type_ids, targets)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)

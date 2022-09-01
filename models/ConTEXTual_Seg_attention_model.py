@@ -7,7 +7,7 @@ from typing import Tuple
 
 from .LanguageCrossAttention import LangCrossAtt
 
-#from visualization_attention import visualization_attention
+from visualization_attention import visualization_attention
 
 
 class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
@@ -57,7 +57,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
 
-    def forward(self, img, ids, mask, token_type_ids):
+    def forward(self, img, ids, mask, token_type_ids, target_batch):
 
         # for roberta
         #lang_output = self.lang_encoder(ids, mask, token_type_ids)
@@ -108,7 +108,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode4 = self.up4(x)
         lang_rep4 = self.lang_proj4(lang_rep)
-        decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
+        decode4, att_matrix = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
@@ -116,7 +116,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        #visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch, logits)
+        visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch, logits)
 
         return logits
 

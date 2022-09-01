@@ -61,18 +61,18 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
         #print(f"max: {max}")
         #print(f"min: {min}")
         img_ch = (img_ch * 255) / max
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/word_attention/attention_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_for_paper/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
         vis_ch = vis_mat[0,i,:,:]
         vis_ch = (vis_ch*255)/np.amax(vis_ch)
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/GE meeting/vis_ch/vis_ch' + str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch)
 
 
 
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/GE meeting/input' + '.png')
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/input' + '.png')
     img = img.cpu().detach().numpy()
     img = img[0,0,:,:]
     img = (img*255)/np.amax(img)
@@ -83,19 +83,19 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
     target_batch = (target_batch*255)/np.amax(target_batch)
     print(f"target_batch: {np.shape(target_batch)}")
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/GE meeting/target' + '.png')
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/target' + '.png')
     cv2.imwrite(fullpath, target_batch[0,:,:])
 
     lang_rep = lang_rep.cpu().detach().numpy()
     lang_rep = (lang_rep*255)/np.amax(lang_rep)
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/GE meeting/lang_rep' + '.png')
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0,:,:])
 
     model_output = model_output.cpu().detach().numpy()
     model_output = (model_output * 255) / np.amax(model_output)
     print(f"model_output: {np.shape(model_output)}")
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/GE meeting/model_output' + '.png')
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0,0, :, :])
 
