@@ -98,7 +98,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     lang_rep = (lang_rep*255)/np.amax(lang_rep)
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
-    cv2.imwrite(fullpath, lang_rep[0,:,:])
+    cv2.imwrite(fullpath, lang_rep[0, 0,:,:])
 
     sigmoid = torch.sigmoid(model_output)
     model_output = torch.round(sigmoid)
