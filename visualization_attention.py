@@ -83,6 +83,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
                             'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
 
+
+
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
@@ -96,7 +98,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         #print(f"min: {min}")
         img_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
-        img_ch = (img_ch_scale*255)/np.amax(img_ch_scale)
+        img_ch = (img_ch*255)/np.amax(img_ch)
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
