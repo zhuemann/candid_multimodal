@@ -134,9 +134,9 @@ def colorize_img(img):
     colorized_img_neg = np.expand_dims(colorized_img_neg, axis=2)
     third_dimension = np.expand_dims(third_dimension, axis=2)
 
-    colorized_img = np.concatenate((colorized_img_pos, third_dimension), axis=2)
-    colorized_img = np.concatenate((colorized_img,  colorized_img_neg), axis = 2)
-    #colorized_img = np.concatenate((colorized_img, third_dimension), axis=2)
+    colorized_img = np.concatenate((colorized_img_pos, colorized_img_neg), axis=2)
+    #colorized_img = np.concatenate((colorized_img,  colorized_img_neg), axis = 2)
+    colorized_img = np.concatenate((colorized_img, third_dimension), axis=2)
     print(f"coloriaed_img size: {colorized_img.shape}")
 
     return colorized_img
