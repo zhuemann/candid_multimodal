@@ -62,7 +62,7 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
         #print(f"max: {max}")
         #print(f"min: {min}")
         img_ch = (img_ch * 255) / max
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_for_paper/attention_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
         vis_ch = vis_mat[0,i,:,:]
