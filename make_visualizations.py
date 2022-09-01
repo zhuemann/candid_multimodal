@@ -59,6 +59,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     dir_base = config["dir_base"]
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
+    BATCH_SIZE = 1
     N_EPOCHS = config["epochs"]
 
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
