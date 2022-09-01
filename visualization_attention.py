@@ -99,7 +99,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         print(f"min: {min}")
         img_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
-        #img_ch = (img_ch*255)/np.amax(img_ch)
+        img_ch = (img_ch*255)/np.amax(img_ch)
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
@@ -134,9 +134,9 @@ def colorize_img(img):
     colorized_img_neg = np.expand_dims(colorized_img_neg, axis=2)
     third_dimension = np.expand_dims(third_dimension, axis=2)
 
-    colorized_img = np.concatenate((colorized_img_pos, colorized_img_neg), axis=2)
-    #colorized_img = np.concatenate((colorized_img,  colorized_img_neg), axis = 2)
-    colorized_img = np.concatenate((colorized_img, third_dimension), axis=2)
+    colorized_img = np.concatenate((colorized_img_pos, third_dimension), axis=2)
+    colorized_img = np.concatenate((colorized_img,  colorized_img_neg), axis = 2)
+    #colorized_img = np.concatenate((colorized_img, third_dimension), axis=2)
     print(f"coloriaed_img size: {colorized_img.shape}")
 
     return colorized_img
