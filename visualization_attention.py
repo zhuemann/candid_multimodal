@@ -3,6 +3,7 @@ import numpy as np
 
 import os
 import cv2
+import torch
 
 def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch, model_output):
 
@@ -92,6 +93,8 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
                             'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0,:,:])
 
+    sigmoid = torch.sigmoid(model_output)
+    model_output = torch.round(sigmoid)
     model_output = model_output.cpu().detach().numpy()
     model_output = (model_output * 255) / np.amax(model_output)
     print(f"model_output: {np.shape(model_output)}")
