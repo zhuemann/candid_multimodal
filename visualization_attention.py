@@ -14,6 +14,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     print(f"att_matix size: {att_matrix.size()}")
     print(f"img size: {img.size()}")
     print(f"targets size: {target_batch.size()}")
+    print(f"vis rep_before size: {vision_rep_before.size()}")
 
     input_channel = vision_rep.size()[1]
     input_width = vision_rep.size()[2]
