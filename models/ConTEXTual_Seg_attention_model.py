@@ -106,9 +106,9 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
-        decode4 = self.up4(x)
+        decode4_before = self.up4(x)
         lang_rep4 = self.lang_proj4(lang_rep)
-        decode4, att_matrix = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
+        decode4, att_matrix = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4_before)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
@@ -116,7 +116,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        visualization_attention(img, decode4, lang_rep4, att_matrix, target_batch, logits)
+        visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix, target_batch, logits)
 
         return logits
 

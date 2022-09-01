@@ -5,7 +5,7 @@ import os
 import cv2
 import torch
 
-def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch, model_output):
+def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_matrix, target_batch, model_output):
 
     print("hi")
 
@@ -54,6 +54,7 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
+    vis_before = vision_rep_before.cpu().detach().numpy()
     for i in range(0,input_channel):
         img_ch = att_img[:,0,i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
@@ -62,7 +63,7 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
         #print(f"max: {max}")
         #print(f"min: {min}")
         img_ch = (img_ch * 255) / max
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
         vis_ch = vis_mat[0,i,:,:]
@@ -70,6 +71,11 @@ def visualization_attention(img, vision_rep, lang_rep, att_matrix, target_batch,
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch)
 
+        vis_before = vis_before[0,i,:,:]
+        vis_ch_before = (vis_before * 255) / np.amax(vis_before)
+        fullpath = os.path.join(dir_base,
+                                'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch' + str(i) + '.png')
+        cv2.imwrite(fullpath, vis_ch_before)
 
 
     fullpath = os.path.join(dir_base,
