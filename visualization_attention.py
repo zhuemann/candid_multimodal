@@ -125,8 +125,9 @@ def colorize_img(img):
     colorized_img_pos[colorized_img_pos < 0] = 0
     colorized_img_neg[colorized_img_neg > 0] = 0
     colorized_img_neg = colorized_img_neg * -1
-
-    colorized_img = np.concatenate((colorized_img_pos,  colorized_img_neg), axis = 1)
+    colorized_img_pos = np.expand_dims(colorized_img_pos, axis=0)
+    colorized_img_neg = np.expand_dims(colorized_img_neg, axis=0)
+    colorized_img = np.concatenate((colorized_img_pos,  colorized_img_neg), axis = 0)
     print(f"coloriaed_img size: {colorized_img.shape}")
 
     return colorized_img
