@@ -92,7 +92,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     print(f"target_batch: {np.shape(target_batch)}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/visualizations_for_paper/target' + '.png')
-    cv2.imwrite(fullpath, target_batch[:,:])
+    cv2.imwrite(fullpath, target_batch[0,:,:])
 
     lang_rep = lang_rep.cpu().detach().numpy()
     lang_rep = (lang_rep*255)/np.amax(lang_rep)
