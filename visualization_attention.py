@@ -55,7 +55,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
-    vis_before = vision_rep_before.cpu().detach().numpy()
+    vis_before_mat = vision_rep_before.cpu().detach().numpy()
     for i in range(0,input_channel):
         img_ch = att_img[:,0,i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
@@ -72,7 +72,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch)
 
-        vis_before = vis_before[0,i,:,:]
+        vis_before = vis_before_mat[0,i,:,:]
         vis_ch_before = (vis_before * 255) / np.amax(vis_before)
         fullpath = os.path.join(dir_base,
                                 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch' + str(i) + '.png')
