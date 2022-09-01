@@ -30,7 +30,7 @@ from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet
-
+from models.Base_UNet import Unet_Baseline
 
 #from PIL import Image
 
@@ -172,8 +172,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            #albu.HorizontalFlip(p=.5),
-            albu.CLAHE(),
+            albu.HorizontalFlip(p=.5),
+            #albu.CLAHE(),
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
@@ -260,8 +260,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model_swap_v3(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
-    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) <----- this one
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
     for param in language_model.parameters():
