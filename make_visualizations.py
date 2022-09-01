@@ -141,7 +141,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     "t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_synonom_replacement_v5/seed295/pneumothorax_testset_df_seed295.xlsx")
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
-    df.set_index("image_id", inplace=True)
+    test_df.set_index("image_id", inplace=True)
 
     albu_augs = albu.Compose([
     ])
