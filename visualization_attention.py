@@ -52,6 +52,36 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     # fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
     # cv2.imwrite(fullpath, img)
 
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/input' + '.png')
+    img = img.cpu().detach().numpy()
+    img = img[0, 0, :, :]
+    img = (img * 255) / np.amax(img)
+    print(f"img shape: {np.shape(img)}")
+    cv2.imwrite(fullpath, img)
+
+    target_batch = target_batch.cpu().detach().numpy()
+    target_batch = (target_batch * 255) / np.amax(target_batch)
+    print(f"target_batch: {np.shape(target_batch)}")
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/target' + '.png')
+    cv2.imwrite(fullpath, target_batch[0, 0, :, :])
+
+    lang_rep = lang_rep.cpu().detach().numpy()
+    lang_rep = (lang_rep * 255) / np.amax(lang_rep)
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
+    cv2.imwrite(fullpath, lang_rep[0, :, :])
+
+    sigmoid = torch.sigmoid(model_output)
+    model_output = torch.round(sigmoid)
+    model_output = model_output.cpu().detach().numpy()
+    model_output = (model_output * 255) / np.amax(model_output)
+    print(f"model_output: {np.shape(model_output)}")
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
+    cv2.imwrite(fullpath, model_output[0, 0, :, :])
+
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
@@ -80,37 +110,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         vis_before_scale = vis_before + abs(np.amin(vis_before))
         vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
         fullpath = os.path.join(dir_base,
-                                'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch' + str(i) + '.png')
+                                'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch_before' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_before)
 
-
-    fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/input' + '.png')
-    img = img.cpu().detach().numpy()
-    img = img[0,0,:,:]
-    img = (img*255)/np.amax(img)
-    print(f"img shape: {np.shape(img)}")
-    cv2.imwrite(fullpath, img)
-
-    target_batch = target_batch.cpu().detach().numpy()
-    target_batch = (target_batch*255)/np.amax(target_batch)
-    print(f"target_batch: {np.shape(target_batch)}")
-    fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/target' + '.png')
-    cv2.imwrite(fullpath, target_batch[0, 0,:,:])
-
-    lang_rep = lang_rep.cpu().detach().numpy()
-    lang_rep = (lang_rep*255)/np.amax(lang_rep)
-    fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
-    cv2.imwrite(fullpath, lang_rep[0,:,:])
-
-    sigmoid = torch.sigmoid(model_output)
-    model_output = torch.round(sigmoid)
-    model_output = model_output.cpu().detach().numpy()
-    model_output = (model_output * 255) / np.amax(model_output)
-    print(f"model_output: {np.shape(model_output)}")
-    fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
-    cv2.imwrite(fullpath, model_output[0, 0, :, :])
 
