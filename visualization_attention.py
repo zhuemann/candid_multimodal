@@ -61,8 +61,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         img_ch = np.reshape(img_ch, (input_width, input_height))
         max = np.amax(img_ch)
         min = np.amin(img_ch)
-        #print(f"max: {max}")
-        #print(f"min: {min}")
+        print(f"max: {max}")
+        print(f"min: {min}")
         img_ch = (img_ch * 255) / max
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
@@ -107,5 +107,5 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     print(f"model_output: {np.shape(model_output)}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
-    cv2.imwrite(fullpath, model_output[0,0, :, :])
+    cv2.imwrite(fullpath, model_output[0, 0, :, :])
 
