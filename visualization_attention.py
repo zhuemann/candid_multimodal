@@ -4,6 +4,7 @@ import numpy as np
 import os
 import cv2
 import torch
+import copy
 
 def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_matrix, target_batch, model_output):
 
@@ -93,6 +94,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         min = np.amin(img_ch)
         #print(f"max: {max}")
         #print(f"min: {min}")
+        colorize_img(img_ch)
         img_ch_scale = img_ch+abs(min)
         img_ch = (img_ch_scale*255)/np.amax(img_ch_scale)
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
@@ -114,3 +116,17 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         cv2.imwrite(fullpath, vis_ch_before)
 
 
+
+def colorize_img(img):
+
+    colorized_img_pos = copy.deepcopy(img)
+    colorized_img_neg = copy.deepcopy(img)
+
+    colorized_img_pos[colorized_img_pos < 0] = 0
+    colorized_img_neg[colorized_img_neg > 0] = 0
+    colorized_img_neg = colorized_img_neg * -1
+
+    colorized_img = np.concatenate((colorized_img_pos,  colorized_img_neg), axis = 1)
+    print(f"coloriaed_img size: {colorized_img.shape()}")
+
+    return colorized_img
