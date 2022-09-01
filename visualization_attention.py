@@ -94,9 +94,9 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         min = np.amin(img_ch)
         #print(f"max: {max}")
         #print(f"min: {min}")
-        colorize_img(img_ch)
-        img_ch_scale = img_ch+abs(min)
-        img_ch = (img_ch_scale*255)/np.amax(img_ch_scale)
+        img_ch = colorize_img(img_ch)
+        #img_ch_scale = img_ch+abs(min)
+        #img_ch = (img_ch_scale*255)/np.amax(img_ch_scale)
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
