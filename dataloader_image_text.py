@@ -43,7 +43,7 @@ class TextImageDataset(Dataset):
         global img, image
         text = str(self.text[index])
 
-        text = "No other abnormality is seen. Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
+        text = "Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
         text = " ".join(text.split())
         # print(text)
 
