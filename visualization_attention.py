@@ -118,7 +118,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
                                 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch_before' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_before)
 
-        vis_dif = (vis_before - vis_ch)
+        vis_dif = abs(vis_before - vis_ch)
         vis_dif = (vis_dif*255)/np.amax(vis_dif)
         fullpath = os.path.join(dir_base,
                                 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_dif/vis_dif' + str(
