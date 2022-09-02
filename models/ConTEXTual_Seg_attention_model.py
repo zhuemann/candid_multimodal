@@ -30,7 +30,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.down4 = Down(512// factor, 1024 // factor)
 
         self.up1 = Up(1024// factor, bilinear)
-        self.attention1 = Attention_block(512, 512, 256)
+        self.attention1 = Attention_block(512// factor, 512// factor, 256// factor)
         self.lang_attn = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(1024, 512)
 
