@@ -23,9 +23,6 @@ class LangCrossAtt(nn.Module):
         input_channel =  vision_rep.size()[1]
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
-        print(f"image_channel {input_channel}")
-        print(f"width {input_width}")
-        print(f"height {input_height}")
 
 
 
