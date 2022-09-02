@@ -141,7 +141,7 @@ class Up(nn.Module):
 
     def forward(self, x1):
         x1 = self.up(x1)
-        x1 = self.channelReduce(x1)
+        x1 = self.channelReduce(x1) #remove this when I got back to non bilinear
 
         return x1
 
