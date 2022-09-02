@@ -100,6 +100,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
+        print(f"decode3 size: {decode3.size()}")
+
         lang_rep3 = self.lang_proj3(lang_rep)
         decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
 
@@ -108,6 +110,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
+        print(f"decode4 size: {decode4.size()}")
+
         lang_rep4 = self.lang_proj4(lang_rep)
         decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
 
