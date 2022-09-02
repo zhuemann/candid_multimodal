@@ -140,7 +140,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     test_frame_locaction = os.path.join(dir_base,
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_synonom_replacement_v5/seed295/pneumothorax_testset_df_seed295.xlsx")
+    "t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/pneumothorax_testset_df_seed98.xlsx")
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
 
@@ -172,7 +172,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
 
     test_obj.to(device)
 
@@ -188,7 +188,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     saved_path = os.path.join(dir_base,
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "t5_attention_unet_positive_cases_vision_aug_and_text_shuffle_synonom_replacement_v5/seed295/best_segmentation_model_seed295")
+    "t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/best_segmentation_model_seed98")
 
     test_obj.load_state_dict(torch.load(saved_path))
 

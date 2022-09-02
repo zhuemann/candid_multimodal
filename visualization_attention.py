@@ -49,12 +49,13 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     # print(f"min: {min}")
     # print(np.shape(img))
     # img = (img * 255) / max
+    save_folder = "bilinear_attention"
     dir_base = "/UserData/"
     # fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
     # cv2.imwrite(fullpath, img)
 
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/input' + '.png')
+                            'Zach_Analysis/dgx_images/' + save_folder + '/input' + '.png')
     img = img.cpu().detach().numpy()
     img = img[0, 0, :, :]
     img = (img * 255) / np.amax(img)
@@ -65,13 +66,13 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     target_batch = (target_batch * 255) / np.amax(target_batch)
     print(f"target_batch: {np.shape(target_batch)}")
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/target' + '.png')
+                            'Zach_Analysis/dgx_images/' + save_folder + '/target' + '.png')
     cv2.imwrite(fullpath, target_batch[0, 0, :, :])
 
     lang_rep = lang_rep.cpu().detach().numpy()
     lang_rep = (lang_rep * 255) / np.amax(lang_rep)
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/lang_rep' + '.png')
+                            'Zach_Analysis/dgx_images/' + save_folder + '/lang_rep' + '.png')
     cv2.imwrite(fullpath, lang_rep[0, :, :])
 
     sigmoid = torch.sigmoid(model_output)
@@ -80,7 +81,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     model_output = (model_output * 255) / np.amax(model_output)
     print(f"model_output: {np.shape(model_output)}")
     fullpath = os.path.join(dir_base,
-                            'Zach_Analysis/dgx_images/visualizations_for_paper/model_output' + '.png')
+                            'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
 
 
@@ -100,14 +101,14 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         img_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
         img_ch = (img_ch*255)/np.amax(img_ch)
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/attention_ch/attention_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
         vis_ch = vis_mat[0,i,:,:]
         #vis_ch = (vis_ch*255)/np.amax(vis_ch)
         vis_ch_scale = vis_ch + abs(np.amin(vis_ch))
         vis_ch_scale = (vis_ch_scale * 255) / np.amax(vis_ch_scale)
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch/vis_ch' + str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_scale)
 
         vis_before = vis_before_mat[0,i,:,:]
@@ -115,13 +116,13 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         vis_before_scale = vis_before + abs(np.amin(vis_before))
         vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
         fullpath = os.path.join(dir_base,
-                                'Zach_Analysis/dgx_images/visualizations_for_paper/vis_ch_before/vis_ch_before' + str(i) + '.png')
+                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch_before/vis_ch_before' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_before)
 
         vis_dif = abs(vis_before - vis_ch)
         vis_dif = (vis_dif*255)/np.amax(vis_dif)
         fullpath = os.path.join(dir_base,
-                                'Zach_Analysis/dgx_images/visualizations_for_paper/vis_dif/vis_dif' + str(
+                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_dif/vis_dif' + str(
                                     i) + '.png')
         cv2.imwrite(fullpath, vis_dif)
 

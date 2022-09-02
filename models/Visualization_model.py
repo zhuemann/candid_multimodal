@@ -25,7 +25,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.down1 = Down(64, 128)
         self.down2 = Down(128, 256)
         self.down3 = Down(256, 512)
-        self.down4 = Down(512, 1024 // factor)
+        self.down4 = Down(512, 1024)
 
         self.up1 = Up(1024, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
@@ -99,9 +99,9 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = concatenate_layers(decode3, x2)
         x = self.up_conv3(x)
 
-        decode4 = self.up4(x)
+        decode4_before = self.up4(x)
         lang_rep4 = self.lang_proj4(lang_rep)
-        decode4, _ = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
+        decode4, att_matrix4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4_before)
 
         x1 = self.attention4(decode4, x1)
         x = concatenate_layers(decode4, x1)
@@ -109,7 +109,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits)
+        visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits)
 
         return logits
 
@@ -124,11 +124,13 @@ class Up(nn.Module):
 
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+            self.channelReduce = nn.Conv2d(in_channels, in_channels // 2, kernel_size=1, stride=1)
         else:
             self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
 
     def forward(self, x1):
         x1 = self.up(x1)
+        x1 = self.channelReduce(x1)  # remove this when I got back to non bilinear
 
         return x1
 

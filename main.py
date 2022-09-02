@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #load_best_model(directory_base)
     #config["seed"] = 915
 
-    #make_images_on_dgx(config)
+    make_images_on_dgx(config)
 
     #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
     #df = get_pneumothorax_image(dir_base=directory_base)
@@ -106,9 +106,9 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed" + str(seed) + "/"
+        #folder_name = "with_augmentation/t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
-        #folder_name = "two_step_seg/dev_test"
+        folder_name = "two_step_seg/dev_test"
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         config["seed"] = seed
         config["save_location"] = save_location
 
-        acc, valid_log = train_image_text_segmentation(config)
+        #acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
