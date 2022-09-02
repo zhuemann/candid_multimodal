@@ -106,9 +106,9 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/unet_positive_cases_vision_aug_V10/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
-        folder_name = "two_step_seg/dev_test"
+        #folder_name = "two_step_seg/dev_test"
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
@@ -121,12 +121,7 @@ if __name__ == '__main__':
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
-        #folder_name = "Unet_basic_negative_cases_balanced_long_v3"
-        #folder_name = "error"
-        # save to xlsx file
-        #filepath = os.path.join(directory_base,
-        #                        '/UserData/Zach_Analysis/result_logs/candid_result/text_segmentation/stabalized_tests/with_augmentation/' + str(
-        #                            folder_name) + '/valid_150ep_' + "seed" + str(seed) + '.xlsx')
+
         filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
         df.to_excel(filepath, index=False)
 
