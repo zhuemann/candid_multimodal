@@ -43,7 +43,7 @@ class TextImageDataset(Dataset):
         global img, image
         text = str(self.text[index])
 
-        text = "There is a large left-sided pneumothorax.The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen. Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
+        text = "There is a large pneumothorax.The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen. Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
         text = " ".join(text.split())
         # print(text)
 
