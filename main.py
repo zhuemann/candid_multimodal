@@ -52,7 +52,8 @@ if __name__ == '__main__':
     #train_text_classification_then_image_segmentation(config)
     #load_best_model(directory_base)
     #config["seed"] = 915
-    make_images_on_dgx(config)
+
+    #make_images_on_dgx(config)
 
     #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
     #df = get_pneumothorax_image(dir_base=directory_base)
@@ -116,7 +117,7 @@ if __name__ == '__main__':
         config["seed"] = seed
         config["save_location"] = save_location
 
-        #acc, valid_log = train_image_text_segmentation(config)
+        acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc

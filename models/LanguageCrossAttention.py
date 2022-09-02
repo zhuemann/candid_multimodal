@@ -50,8 +50,8 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
 
-        #print(f"out size: {out.size()}")
-        return out, att_matrix
+        return out
+        #return out, att_matrix
 
 
 
