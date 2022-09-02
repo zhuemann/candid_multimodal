@@ -81,13 +81,11 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x4 = self.down3(x3)
         x5 = self.down4(x4)
 
-        print(f"x5: {x5.size()}")
+
         decode1 = self.up1(x5)
-        print(f"decode1 size: {decode1.size()}")
+
         lang_rep1 = self.lang_proj1(lang_rep)
         decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
-        print(f"decode1 after size: {decode1.size()}")
-        print(f"x4 size: {x4.size()}")
 
         #How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
@@ -96,7 +94,6 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        print(f"decode2 size: {decode2.size()}")
         lang_rep2 = self.lang_proj2(lang_rep)
         decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
@@ -105,7 +102,6 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv2(x)
 
         decode3 = self.up3(x)
-        print(f"decode3 size: {decode3.size()}")
 
         lang_rep3 = self.lang_proj3(lang_rep)
         decode3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
@@ -115,7 +111,6 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv3(x)
 
         decode4 = self.up4(x)
-        print(f"decode4 size: {decode4.size()}")
 
         lang_rep4 = self.lang_proj4(lang_rep)
         decode4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4)
@@ -140,7 +135,7 @@ class Up(nn.Module):
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
             #self.up = nn.UpsamplingBilinear2d(scale_factor=2)
-            self.channelReduce = nn.Conv2d(in_channels,in_channels // 2,kernel_size=1,stride=1)
+            self.channelReduce = nn.Conv2d(in_channels, in_channels // 2,kernel_size=1,stride=1)
         else:
             self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
 
