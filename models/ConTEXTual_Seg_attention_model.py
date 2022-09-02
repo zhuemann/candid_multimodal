@@ -23,26 +23,26 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         factor = 2 if bilinear else 1
 
 
-        self.inc = DoubleConv(n_channels, 64)
-        self.down1 = Down(64, 128 // factor)
-        self.down2 = Down(128, 256 // factor)
-        self.down3 = Down(256, 512 // factor)
-        self.down4 = Down(512, 1024 // factor)
+        self.inc = DoubleConv(n_channels, 64// factor)
+        self.down1 = Down(64// factor, 128 // factor)
+        self.down2 = Down(128// factor, 256 // factor)
+        self.down3 = Down(256// factor, 512 // factor)
+        self.down4 = Down(512// factor, 1024 // factor)
 
-        self.up1 = Up(1024, bilinear)
+        self.up1 = Up(1024// factor, bilinear)
         self.attention1 = Attention_block(512, 512, 256)
         self.lang_attn = LangCrossAtt(emb_dim=1024)
         self.up_conv1 = DoubleConv(1024, 512)
 
-        self.up2 = Up(512, bilinear)
+        self.up2 = Up(512// factor, bilinear)
         self.attention2 = Attention_block(256, 256, 128)
         self.up_conv2 = DoubleConv(512, 256)
 
-        self.up3 = Up(256, bilinear)
+        self.up3 = Up(256// factor, bilinear)
         self.attention3 = Attention_block(128, 128, 64)
         self.up_conv3 = DoubleConv(256, 128)
 
-        self.up4 = Up(128, bilinear)
+        self.up4 = Up(128// factor, bilinear)
         self.attention4 = Attention_block(64, 64, 32)
         self.up_conv4 = DoubleConv(128, 64)
 
