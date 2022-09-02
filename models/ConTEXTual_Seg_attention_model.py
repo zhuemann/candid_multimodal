@@ -81,7 +81,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode1_before = self.up1(x5)
         lang_rep1 = self.lang_proj1(lang_rep)
-        decode1, att_matrix = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1_before)
+        decode1, att_matrix1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1_before)
 
         #How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
@@ -89,17 +89,17 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
-        decode2 = self.up2(x)
+        decode2_before = self.up2(x)
         lang_rep2 = self.lang_proj2(lang_rep)
-        decode2,_ = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
+        decode2, att_matrix2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2_before)
 
         x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
         x = self.up_conv2(x)
 
-        decode3 = self.up3(x)
+        decode3_before = self.up3(x)
         lang_rep3 = self.lang_proj3(lang_rep)
-        decode3,_ = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3)
+        decode3,att_matrix3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3_before)
 
         x2 = self.attention3(decode3, x2)
         x = concatenate_layers(decode3, x2)
@@ -115,7 +115,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        visualization_attention(img, decode1_before, decode1, lang_rep1, att_matrix, target_batch, logits)
+        visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits)
 
         return logits
 
