@@ -140,11 +140,13 @@ class Up(nn.Module):
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
             #self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+            self.channelReduce = nn.Conv2d(in_channels,in_channels // 2,kernel_size=1,stride=1)
         else:
             self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
 
     def forward(self, x1):
         x1 = self.up(x1)
+        x1 = self.channelReduce(x1)
 
         return x1
 
