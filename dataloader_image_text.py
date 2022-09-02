@@ -59,6 +59,7 @@ class TextImageDataset(Dataset):
             text = TextImageDataset.synonymsReplacement(self, text)
             text = TextImageDataset.shuffledTextAugmentation(text)
         #text = "bilateral pleural effusions"
+        text = ""
         inputs = self.tokenizer.encode_plus(
             text,
             None,
