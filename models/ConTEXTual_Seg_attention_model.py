@@ -85,6 +85,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep1 = self.lang_proj1(lang_rep)
         decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
         print(f"decode1 after size: {decode1.size()}")
+        print(f"x4 size: {x4.size()}")
 
         #How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
