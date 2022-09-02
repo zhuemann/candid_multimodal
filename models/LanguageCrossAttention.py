@@ -24,7 +24,7 @@ class LangCrossAtt(nn.Module):
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
 
-
+        vision_rep = torch.ones(vision_rep.size())
 
         # puts the vision representation into the right shape for attention mechanism
         vision_rep = torch.swapaxes(vision_rep, 0, 1)
