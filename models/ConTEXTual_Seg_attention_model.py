@@ -20,7 +20,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         self.n_channels = n_channels
         self.n_classes = n_classes
         self.bilinear = bilinear
-        factor = 2 if bilinear else 1
+        #factor = 2 if bilinear else 1
+        factor = 1
 
         self.inc = DoubleConv(n_channels, 64)
         self.down1 = Down(64, 128)
