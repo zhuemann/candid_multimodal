@@ -24,9 +24,9 @@ class LangCrossAtt(nn.Module):
         input_width = vision_rep.size()[2]
         input_height =  vision_rep.size()[3]
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"vision rep siz: {vision_rep.size()}")
-        vision_rep = torch.ones(vision_rep.size()).to(device, dtype=torch.float)
+        #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        #print(f"vision rep siz: {vision_rep.size()}")
+        #vision_rep = torch.ones(vision_rep.size()).to(device, dtype=torch.float)
 
         # puts the vision representation into the right shape for attention mechanism
         vision_rep = torch.swapaxes(vision_rep, 0, 1)
