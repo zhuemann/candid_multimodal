@@ -109,7 +109,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits)
+        visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits)
 
         return logits
 
