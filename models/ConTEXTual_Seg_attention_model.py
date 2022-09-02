@@ -24,9 +24,9 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
 
         self.inc = DoubleConv(n_channels, 64)
-        self.down1 = Down(64, 128)
-        self.down2 = Down(128, 256)
-        self.down3 = Down(256, 512)
+        self.down1 = Down(64, 128 // factor)
+        self.down2 = Down(128, 256 // factor)
+        self.down3 = Down(256, 512 // factor)
         self.down4 = Down(512, 1024 // factor)
 
         self.up1 = Up(1024, bilinear)
