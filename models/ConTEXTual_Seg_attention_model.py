@@ -81,6 +81,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x4 = self.down3(x3)
         x5 = self.down4(x4)
 
+        print(f"x5: {x5.size()}")
         decode1 = self.up1(x5)
         print(f"decode1 size: {decode1.size()}")
         lang_rep1 = self.lang_proj1(lang_rep)
@@ -137,7 +138,7 @@ class Up(nn.Module):
         # if bilinear, use the normal convolutions to reduce the number of channels
 
         if bilinear:
-            self.up = nn.Upsample(scale_factor=4, mode='bilinear', align_corners=True)
+            self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
         else:
             self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
 
