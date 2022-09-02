@@ -44,7 +44,8 @@ class TextImageDataset(Dataset):
         text = str(self.text[index])
 
         #text = " Clinical data: [PERSONALNAME] pain, reduced air entry left side, no trauma.; Medical question: ? spontaneous pneumothorax.;  [PERSONALNAME] There is a large left-sided pneumothorax.The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen. Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
-        text = "There is a large left-sided pneumothorax.The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen."
+        #text = "There is a large left-sided pneumothorax. The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen."
+        text = "There is a large left-sided pneumothorax."
         text = " ".join(text.split())
         # print(text)
 
