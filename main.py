@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #load_best_model(directory_base)
     #config["seed"] = 915
 
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
     #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
     #df = get_pneumothorax_image(dir_base=directory_base)
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [98, 117, 295, 456, 915]
+    seeds = [117, 295, 456, 915]
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
