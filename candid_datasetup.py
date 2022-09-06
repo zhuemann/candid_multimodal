@@ -122,6 +122,7 @@ def get_pneumothorax_image(dir_base="Z:/"):
 
             # adds all the individual segmentations as masks to an empty target
             composit_target = np.zeros((1024, 1024))
+            print(pneumothorax_df.iloc[i])
             for j in range(0,counter):
                 rle = pneumothorax_df.iloc[i+j]['EncodedPixels']
                 #if rle == "-1":
