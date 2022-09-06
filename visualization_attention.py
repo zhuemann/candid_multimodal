@@ -6,7 +6,7 @@ import cv2
 import torch
 import copy
 
-def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_matrix, target_batch, model_output):
+def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_matrix, target_batch, model_output, folderName):
 
     print("hi")
 
@@ -102,14 +102,14 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         img_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
         img_ch = (img_ch*255)/np.amax(img_ch)
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch/attention_ch'+str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch' + folderName + '/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
         vis_ch = vis_mat[0,i,:,:]
         #vis_ch = (vis_ch*255)/np.amax(vis_ch)
         vis_ch_scale = vis_ch + abs(np.amin(vis_ch))
         vis_ch_scale = (vis_ch_scale * 255) / np.amax(vis_ch_scale)
-        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch/vis_ch' + str(i) + '.png')
+        fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch' + folderName + '/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_scale)
 
         vis_before = vis_before_mat[0,i,:,:]
@@ -117,13 +117,13 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         vis_before_scale = vis_before + abs(np.amin(vis_before))
         vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
         fullpath = os.path.join(dir_base,
-                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch_before/vis_ch_before' + str(i) + '.png')
+                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch_before' + folderName + '/vis_ch_before' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_before)
 
         vis_dif = abs(vis_before - vis_ch)
         vis_dif = (vis_dif*255)/np.amax(vis_dif)
         fullpath = os.path.join(dir_base,
-                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_dif/vis_dif' + str(
+                                'Zach_Analysis/dgx_images/' + save_folder + '/vis_dif' + folderName + '/vis_dif' + str(
                                     i) + '.png')
         cv2.imwrite(fullpath, vis_dif)
 
