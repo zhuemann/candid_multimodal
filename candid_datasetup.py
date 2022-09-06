@@ -85,8 +85,8 @@ def get_pneumothorax_image(dir_base="Z:/"):
     for i in range(0,len(pneumothorax_df) - 1):
         #print(pneumothorax_df.iloc[i]['SOPInstanceUID'])
         # if the row is unique continue looping through
-        print(f"i: {i}")
-        print(f"id: {pneumothorax_df.iloc[i]['SOPInstanceUID']}")
+        #print(f"i: {i}")
+        #print(f"id: {pneumothorax_df.iloc[i]['SOPInstanceUID']}")
 
         if pneumothorax_df.iloc[i]['SOPInstanceUID'] == "8.5.323.562604.1.588.4.7008319959.7387629250.60820":
             continue
@@ -119,10 +119,13 @@ def get_pneumothorax_image(dir_base="Z:/"):
             counter = 0
             while pneumothorax_df.iloc[i]['SOPInstanceUID'] == pneumothorax_df.iloc[i + counter + 1]['SOPInstanceUID']:
                 counter += 1
+                if counter > 1:
+                    print(f"counter: {counter}")
+                    print(pneumothorax_df.iloc[i])
 
             # adds all the individual segmentations as masks to an empty target
             composit_target = np.zeros((1024, 1024))
-            print(pneumothorax_df.iloc[i])
+            #print(pneumothorax_df.iloc[i])
             for j in range(0,counter):
                 rle = pneumothorax_df.iloc[i+j]['EncodedPixels']
                 #if rle == "-1":
