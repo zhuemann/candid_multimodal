@@ -116,7 +116,10 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
 
         vis_before = vis_before_mat[0,i,:,:]
         #vis_ch_before = (vis_before * 255) / np.amax(vis_before)
-        vis_before_scale = vis_before + abs(np.amin(vis_before))
+        #vis_before_scale = vis_before + abs(np.amin(vis_before))
+        #vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
+
+        vis_before_scale = colorize_img((vis_before))
         vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
         fullpath = os.path.join(dir_base,
                                 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch_before' + folderName + '/vis_ch_before' + str(i) + '.png')
