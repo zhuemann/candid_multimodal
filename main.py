@@ -56,12 +56,12 @@ if __name__ == '__main__':
 
     #dataframe_location = os.path.join(directory_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
 
-    #df = get_pneumothorax_image(dir_base=directory_base)
+    df = get_pneumothorax_image(dir_base=directory_base)
     #make_plots()
     #print(fail)
     #df.to_excel(dataframe_location, index=False)
     #config["seed"] = 98
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
     print(fail)
 

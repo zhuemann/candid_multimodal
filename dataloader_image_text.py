@@ -47,7 +47,8 @@ class TextImageDataset(Dataset):
         #text = "There is a large left-sided pneumothorax. The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen."
         #text = "There is a large left-sided pneumothorax."
 
-        text = "There is generalised opacification of the right hemithorax."
+        #text = "There is generalised opacification of the right hemithorax."
+
         text = " ".join(text.split())
         print(text)
         #text = ""

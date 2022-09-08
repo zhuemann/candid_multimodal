@@ -61,7 +61,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     BATCH_SIZE = config["batch_size"]
     BATCH_SIZE = 1
     N_EPOCHS = config["epochs"]
-    seed = 915
+    seed = 98
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -135,14 +135,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
-    #valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
-    #'t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(seed) +'/pneumothorax_df_validseed' + str(seed) + '.xlsx')
-    #valid_df.to_excel(valid_dataframe_location, index=True)
+    valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
+    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(seed) +'/pneumothorax_df_validseed' + str(seed) + '.xlsx')
+    valid_df.to_excel(valid_dataframe_location, index=True)
 
-    #train_dataframe_location = os.path.join(dir_base,'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
-    #                    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(
-    #                    seed) + '/pneumothorax_df_trainseed' + str(seed) + '.xlsx')
-    #train_df.to_excel(train_dataframe_location, index=True)
+    train_dataframe_location = os.path.join(dir_base,'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
+                        't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(
+                        seed) + '/pneumothorax_df_trainseed' + str(seed) + '.xlsx')
+    train_df.to_excel(train_dataframe_location, index=True)
 
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
