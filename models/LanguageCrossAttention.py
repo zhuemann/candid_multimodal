@@ -19,10 +19,10 @@ class LangCrossAtt(nn.Module):
     def forward(self, lang_rep, vision_rep):
 
         # gets all of the dimensions to be used in the attention
-        input_batch = vision_rep.size()[0]
-        input_channel =  vision_rep.size()[1]
-        input_width = vision_rep.size()[2]
-        input_height =  vision_rep.size()[3]
+        input_batch   = vision_rep.size()[0]
+        input_channel = vision_rep.size()[1]
+        input_width   = vision_rep.size()[2]
+        input_height  = vision_rep.size()[3]
 
         #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         #print(f"vision rep siz: {vision_rep.size()}")
@@ -54,8 +54,8 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
 
-        return out
-        #return out, att_matrix
+        #return out
+        return out, att_matrix
 
 
 
