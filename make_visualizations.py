@@ -61,7 +61,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     BATCH_SIZE = config["batch_size"]
     BATCH_SIZE = 1
     N_EPOCHS = config["epochs"]
-
+    seed = 98
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -135,8 +135,9 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
-    #test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
-    #test_df.to_excel(test_dataframe_location, index=True)
+    test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
+    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/pneumothorax_df_valid.xlsx')
+    valid_df.to_excel(test_dataframe_location, index=True)
 
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
