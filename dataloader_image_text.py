@@ -46,6 +46,8 @@ class TextImageDataset(Dataset):
         #text = " Clinical data: [PERSONALNAME] pain, reduced air entry left side, no trauma.; Medical question: ? spontaneous pneumothorax.;  [PERSONALNAME] There is a large left-sided pneumothorax.The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen. Reported in consultation with Dr [PERSONALNAME]. Transcribed by:  wk Dr [PERSONALNAME]  Dr. [PERSONALNAME] [PERSONALNAME] "
         #text = "There is a large left-sided pneumothorax. The mediastinum is shifted mildly to the right.The right lung appears normal.The heart size is within normal limits. No other abnormality is seen."
         #text = "There is a large left-sided pneumothorax."
+
+        text = "Clinical data: Follow-up.;  Medical question:  ChestCompared to radiographs [DATE] at 0151 hours, the bilateral intercostal drainage tubes have now been removed and there is a small residual left pleural fluid collection and on the right a loculated hydropneumothorax with an air fluid level in the peripheral right basal region.  There is generalised opacification of the right hemithorax.  The left-sided central venous line tip is situated in the superior vena cava.  Transverse cardiomegaly with cardiothoracic ratio of approximately 15:27.  There is an air fluid level situated medial to the left sternoclavicular joint due to further hydropneumothorax.  (Inspiration and expiration chest radiographs available.) Transcribed by: dh Dr. [PERSONALNAME] [PERSONALNAME]"
         text = " ".join(text.split())
         print(text)
         #text = ""
