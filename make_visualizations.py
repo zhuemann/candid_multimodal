@@ -136,7 +136,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     )
 
     test_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
-    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + seed +'/pneumothorax_df_valid.xlsx')
+    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(seed) +'/pneumothorax_df_valid.xlsx')
     valid_df.to_excel(test_dataframe_location, index=True)
 
     #test_frame_locaction = os.path.join(dir_base,
