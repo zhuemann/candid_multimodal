@@ -49,7 +49,7 @@ class TextImageDataset(Dataset):
 
         #text = "There is generalised opacification of the right hemithorax."
         #text = "Clinical data: Follow-up.;  Medical question:  Chest ([ADDRESS] and Lateral) Transverse cardiomegaly with cardiothoracic ratio of approximately 16:28.  The portacath is again detected.  There is a right basal intercostal drainage tube and the large loculated hydropneumothorax along the periphery of the right middle and lower zones is again seen.  There is also a predominant left subpulmonary pleural fluid collection.  Remainder of lung fields clear of active disease.  (Slight pectus carinatum.)  Note that there are 3 air fluid levels relating to the loculated right basal pleural fluid collection. Transcribed by: dh Dr. [PERSONALNAME] [PERSONALNAME]"
-        text = "There is a right basal intercostal drainage tube and the large loculated hydropneumothorax along the periphery of the right middle and lower zones is again seen.  There is also a predominant left subpulmonary pleural fluid collection.  Remainder of lung fields clear of active disease."
+        text = "There is a right basal intercostal drainage tube and the large loculated hydropneumothorax along the periphery of the right middle and lower zones is again seen."
 
         text = " ".join(text.split())
         print(text)
