@@ -61,7 +61,7 @@ if __name__ == '__main__':
     #print(fail)
     #df.to_excel(dataframe_location, index=False)
     #config["seed"] = 98
-    #make_images_on_dgx(config)
+    make_images_on_dgx(config)
 
     print(fail)
 
