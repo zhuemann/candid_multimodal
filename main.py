@@ -32,7 +32,7 @@ if __name__ == '__main__':
     args = create_parser()
     #local = args.local
 
-    local = False
+    local = True
     if local:
         directory_base = "Z:/"
     else:
@@ -59,7 +59,6 @@ if __name__ == '__main__':
     #df = get_pneumothorax_image(dir_base=directory_base)
     #make_plots()
     #print(fail)
-    #df.to_excel(dataframe_location, index=False)
     #config["seed"] = 98
     make_images_on_dgx(config)
 
