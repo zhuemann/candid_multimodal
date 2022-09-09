@@ -12,10 +12,9 @@ from .LanguageCrossAttention import LangCrossAtt
 
 
 class Vision_Attention_UNet_Model(torch.nn.Module):
-    def __init__(self, lang_model, n_channels, n_classes, bilinear=False):
+    def __init__(self, n_channels, n_classes, bilinear=False):
         super(Vision_Attention_UNet_Model, self).__init__()
 
-        self.lang_encoder = lang_model
 
         self.n_channels = n_channels
         self.n_classes = n_classes
