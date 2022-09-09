@@ -52,9 +52,9 @@ class TextImageDataset(Dataset):
         #text = "There is a large loculated hydropneumothorax along the periphery of the right middle."
         #text = "Clinical data: History of carcinoma of the lung.  Recent pleural fluid drainage.; Medical question: ? appearance.;[PERSONALNAME] There is a moderately-sized right lower zone pneumothorax persisting after the drainage.  There is extensive consolidation in the right lower lobe. Transcribed by: dh [PERSONALNAME] [PERSONALNAME]"
         #text = "There is extensive consolidation in the right lower lobe."
-        text = "Clinical data: Pacemaker insertion, bilateral pneumothoraces post procedure.;  Medical question:Chest There are bilateral pneumothoraces, unchanged in size from the previous film yesterday.  The pacemaker and heart valve replacement are also unchanged. Transcribed by: rr Dr. [PERSONALNAME] [PERSONALNAME]   "
+        #text = "Clinical data: Pacemaker insertion, bilateral pneumothoraces post procedure.;  Medical question:Chest There are bilateral pneumothoraces, unchanged in size from the previous film yesterday.  The pacemaker and heart valve replacement are also unchanged. Transcribed by: rr Dr. [PERSONALNAME] [PERSONALNAME]   "
         text = " ".join(text.split())
-        print(text)
+        #print(text)
         #text = ""
 
         text = text.replace("[ALPHANUMERICID]", "")
