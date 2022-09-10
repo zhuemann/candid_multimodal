@@ -53,6 +53,11 @@ class TextImageDataset(Dataset):
         #text = "Clinical data: History of carcinoma of the lung.  Recent pleural fluid drainage.; Medical question: ? appearance.;[PERSONALNAME] There is a moderately-sized right lower zone pneumothorax persisting after the drainage.  There is extensive consolidation in the right lower lobe. Transcribed by: dh [PERSONALNAME] [PERSONALNAME]"
         #text = "There is extensive consolidation in the right lower lobe."
         #text = "Clinical data: Pacemaker insertion, bilateral pneumothoraces post procedure.;  Medical question:Chest There are bilateral pneumothoraces, unchanged in size from the previous film yesterday.  The pacemaker and heart valve replacement are also unchanged. Transcribed by: rr Dr. [PERSONALNAME] [PERSONALNAME]   "
+
+        #text = " Clinical data: Chest drain inserted, right pleural effusion.; Medical question:  CHEST  ([ADDRESS]) Comparison is made to the previous [PERSONALNAME] dated [DATE].The heart size is within normal limits. There is a moderate sized apical left pneumothorax. A chest drain is seen in situ with the tip in the left mid zone. There is left basal atelectasis. There is bilateral costophrenic angle blunting with coarsening throughout both lungs and apical fibrosis, all consistent with chronic lung disease but no further focal pulmonary abnormality is seen. Transcribed by:  wk Dr [PERSONALNAME] [PERSONALNAME]"
+        text = " Clinical data: Chest drain inserted, right pleural effusion.; Medical question:  CHEST  ([ADDRESS]) Comparison is made to the previous [PERSONALNAME] dated [DATE].The heart size is within normal limits. There is a moderate sized apical left pneumothorax. A chest drain is seen in situ with the tip in the left mid zone. There is left basal atelectasis. There is bilateral costophrenic angle blunting with coarsening throughout both lungs and apical fibrosis, all consistent with chronic lung disease but no further focal pulmonary abnormality is seen. Transcribed by:  wk Dr [PERSONALNAME] [PERSONALNAME]"
+
+
         text = " ".join(text.split())
         #print(text)
         #text = ""
