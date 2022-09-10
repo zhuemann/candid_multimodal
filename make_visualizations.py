@@ -197,7 +197,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     saved_path = os.path.join(dir_base,
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/best_segmentation_model_seed915")
+    "t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/best_segmentation_model_seed98")
 
     test_obj.load_state_dict(torch.load(saved_path))
 
