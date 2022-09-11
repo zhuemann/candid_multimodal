@@ -10,12 +10,12 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
 
     print("hi")
 
-    print(f"lang_rep size: {lang_rep.size()}")
-    print(f"vision_rep size: {vision_rep.size()}")
-    print(f"att_matix size: {att_matrix.size()}")
-    print(f"img size: {img.size()}")
-    print(f"targets size: {target_batch.size()}")
-    print(f"vis rep_before size: {vision_rep_before.size()}")
+    #print(f"lang_rep size: {lang_rep.size()}")
+    #print(f"vision_rep size: {vision_rep.size()}")
+    #print(f"att_matix size: {att_matrix.size()}")
+    #print(f"img size: {img.size()}")
+    #print(f"targets size: {target_batch.size()}")
+    #print(f"vis rep_before size: {vision_rep_before.size()}")
 
     input_channel = vision_rep.size()[1]
     input_width = vision_rep.size()[2]
@@ -60,12 +60,12 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     img = img.cpu().detach().numpy()
     img = img[0, 0, :, :]
     img = (img * 255) / np.amax(img)
-    print(f"img shape: {np.shape(img)}")
+    #print(f"img shape: {np.shape(img)}")
     cv2.imwrite(fullpath, img)
 
     target_batch = target_batch.cpu().detach().numpy()
     target_batch = (target_batch * 255) / np.amax(target_batch)
-    print(f"target_batch: {np.shape(target_batch)}")
+    #print(f"target_batch: {np.shape(target_batch)}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/target' + '.png')
     cv2.imwrite(fullpath, target_batch[0, 0, :, :])
@@ -80,7 +80,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     model_output = torch.round(sigmoid)
     model_output = model_output.cpu().detach().numpy()
     model_output = (model_output * 255) / np.amax(model_output)
-    print(f"model_output: {np.shape(model_output)}")
+    #print(f"model_output: {np.shape(model_output)}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])

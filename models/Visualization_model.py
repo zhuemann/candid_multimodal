@@ -80,17 +80,22 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
 
         decode1_before = self.up1(x5)
+        print(f"decode1_before: {decode1_before.size()}")
         lang_rep1 = self.lang_proj1(lang_rep)
+        print(f"lang_rep1 size: {lang_rep1.size()}")
         decode1, att_matrix1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1_before)
 
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
+        print(f"x4 after vision attention: {x4}")
 
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
         decode2_before = self.up2(x)
+        print(f"after up2 is applied: {decode2_before.size()}")
         lang_rep2 = self.lang_proj2(lang_rep)
+        print(f"lang_rep1 size: {lang_rep1.size()}")
         decode2, att_matrix2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2_before)
 
         x3 = self.attention2(decode2, x3)
