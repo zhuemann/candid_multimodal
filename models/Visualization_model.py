@@ -68,10 +68,16 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = pooled_sentence
 
         x1 = self.inc(img)
+        print(f"x1 size: {x1.size()}")
         x2 = self.down1(x1)
+        print(f"x2 size: {x2.size()}")
         x3 = self.down2(x2)
+        print(f"x3 size: {x3.size()}")
         x4 = self.down3(x3)
+        print(f"x4 size: {x4.size()}")
         x5 = self.down4(x4)
+        print(f"x5 size: {x5.size()}")
+
 
         decode1_before = self.up1(x5)
         lang_rep1 = self.lang_proj1(lang_rep)
