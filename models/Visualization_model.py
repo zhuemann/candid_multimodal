@@ -127,6 +127,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         visualization_attention(img, decode3_before, decode3, lang_rep3, att_matrix3, target_batch, logits, "3")
         visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits, "4")
 
+
+        print(f"logits shape: {logits.size()}")
         return logits
 
 
