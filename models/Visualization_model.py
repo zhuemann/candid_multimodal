@@ -90,6 +90,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         print(f"x4 after vision attention: {x4.size()}")
 
         x = concatenate_layers(decode1, x4)
+        print(f"after first concatentation: {x.size()}")
         x = self.up_conv1(x)
 
         print(f"before up2 is applied: {x.size()}")
