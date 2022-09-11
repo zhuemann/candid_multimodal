@@ -92,6 +92,8 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = concatenate_layers(decode1, x4)
         x = self.up_conv1(x)
 
+        print(f"before up2 is applied: {x.size()}")
+
         decode2_before = self.up2(x)
         print(f"after up2 is applied: {decode2_before.size()}")
         lang_rep2 = self.lang_proj2(lang_rep.size())
