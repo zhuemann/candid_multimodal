@@ -156,7 +156,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                                         "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
                                         "multisegmentation_model_train_v13/seed98/pneumothorax_df_trainseed98_edited.xlsx")
     train_df = pd.read_excel(train_frame_locaction, engine='openpyxl')
+
+    train_df['image_id'].replace('', np.nan, inplace=True)
+    df.dropna(subset=['Tenant'], inplace=True)
     train_df.set_index("image_id", inplace=True)
+
 
     valid_frame_locaction = os.path.join(dir_base,
                                         "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
