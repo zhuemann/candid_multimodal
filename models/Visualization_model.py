@@ -131,7 +131,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         decode4_before = self.up4(x)
 
-        print(f"after fourth decoder double up sample: {decode3_before.size()}")
+        print(f"after fourth decoder double up sample: {decode4_before.size()}")
         lang_rep4 = self.lang_proj4(lang_rep)
         print(f"lang_rep4 size: {lang_rep4.size()}")
         decode4, att_matrix4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4_before)
