@@ -158,7 +158,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     train_df = pd.read_excel(train_frame_locaction, engine='openpyxl')
 
     train_df['image_id'].replace('', np.nan, inplace=True)
-    df.dropna(subset=['Tenant'], inplace=True)
+    df.dropna(subset=['image_id'], inplace=True)
     train_df.set_index("image_id", inplace=True)
 
 
