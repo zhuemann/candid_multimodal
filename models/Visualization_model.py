@@ -112,11 +112,21 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         x = self.up_conv2(x)
 
         decode3_before = self.up3(x)
+
+        print(f"after third decoder double up sample: {decode3_before.size()}")
+
         lang_rep3 = self.lang_proj3(lang_rep)
+        print(f"lang_rep3 size: {lang_rep3.size()}")
         decode3, att_matrix3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3_before)
+        print(f"output of lang_attn3: {decode3.size()}")
 
         x2 = self.attention3(decode3, x2)
+        print(f"output of vision attention 3: {x2.size()}")
+
         x = concatenate_layers(decode3, x2)
+
+        print(f"after third concatentation: {x.size()}")
+
         x = self.up_conv3(x)
 
         decode4_before = self.up4(x)
