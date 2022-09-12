@@ -149,6 +149,30 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print(test_dataframe_location)
     test_df.to_excel(test_dataframe_location, index=True)
 
+
+
+    # delete this block later
+    train_frame_locaction = os.path.join(dir_base,
+                                        "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+                                        "multisegmentation_model_train_v13/seed98/pneumothorax_df_trainseed98_edited.xlsx")
+    train_df = pd.read_excel(train_frame_locaction, engine='openpyxl')
+    train_df.set_index("image_id", inplace=True)
+
+    valid_frame_locaction = os.path.join(dir_base,
+                                        "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+                                        "multisegmentation_model_train_v13/seed98/pneumothorax_df_validseed98_copied.xlsx")
+    valid_df = pd.read_excel(valid_frame_locaction, engine='openpyxl')
+    valid_df.set_index("image_id", inplace=True)
+
+    test_frame_locaction = os.path.join(dir_base,
+                                        "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+                                        "multisegmentation_model_train_v13/seed98/pneumothorax_testset_df_seed98_copied.xlsx")
+    test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
+    test_df.set_index("image_id", inplace=True)
+
+
+
+
     #print(test_dataframe_location)
 
     # report invariant augmentaitons
@@ -261,9 +285,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model_swap_v3(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
-    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
+    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True) #<----- this one
 
-    test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
