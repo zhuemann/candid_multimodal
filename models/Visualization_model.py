@@ -88,7 +88,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
         print(f"x4 after vision attention: {x4.size()}")
-
+        print(f"decode1 size: {decode1.size()}")
         x = concatenate_layers(decode1, x4)
         print(f"after first concatentation: {x.size()}")
         x = self.up_conv1(x)
@@ -104,7 +104,11 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         print(f"output of lang_attn2: {decode2.size()}")
 
         x3 = self.attention2(decode2, x3)
+
+        print(f"output of vision attention 2: {x3.size()}")
+
         x = concatenate_layers(decode2, x3)
+        print(f"after second concatentation: {x.size()}")
         x = self.up_conv2(x)
 
         decode3_before = self.up3(x)
