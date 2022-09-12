@@ -60,9 +60,9 @@ if __name__ == '__main__':
     #make_plots()
     #print(fail)
     #config["seed"] = 98
-    #make_images_on_dgx(config)
+    make_images_on_dgx(config)
 
-    #print(fail)
+    print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         config["seed"] = seed
         config["save_location"] = save_location
 
-        acc, valid_log = train_image_text_segmentation(config)
+        #acc, valid_log = train_image_text_segmentation(config)
 
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
