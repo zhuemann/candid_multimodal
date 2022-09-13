@@ -68,89 +68,89 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = pooled_sentence
 
         x1 = self.inc(img)
-        print(f"x1 size: {x1.size()}")
+        #print(f"x1 size: {x1.size()}")
         x2 = self.down1(x1)
-        print(f"x2 size: {x2.size()}")
+        #print(f"x2 size: {x2.size()}")
         x3 = self.down2(x2)
-        print(f"x3 size: {x3.size()}")
+        #print(f"x3 size: {x3.size()}")
         x4 = self.down3(x3)
-        print(f"x4 size: {x4.size()}")
+        #print(f"x4 size: {x4.size()}")
         x5 = self.down4(x4)
-        print(f"x5 size: {x5.size()}")
+        #print(f"x5 size: {x5.size()}")
 
 
         decode1_before = self.up1(x5)
-        print(f"decode1_before: {decode1_before.size()}")
+        #print(f"decode1_before: {decode1_before.size()}")
         lang_rep1 = self.lang_proj1(lang_rep)
-        print(f"lang_rep1 size: {lang_rep1.size()}")
+        #print(f"lang_rep1 size: {lang_rep1.size()}")
         decode1, att_matrix1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1_before)
 
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
-        print(f"x4 after vision attention: {x4.size()}")
-        print(f"decode1 size: {decode1.size()}")
+        #print(f"x4 after vision attention: {x4.size()}")
+        #print(f"decode1 size: {decode1.size()}")
         x = concatenate_layers(decode1, x4)
-        print(f"after first concatentation: {x.size()}")
+        #print(f"after first concatentation: {x.size()}")
         x = self.up_conv1(x)
 
-        print(f"before up2 is applied: {x.size()}")
+        #print(f"before up2 is applied: {x.size()}")
 
         decode2_before = self.up2(x)
-        print(f"after up2 is applied: {decode2_before.size()}")
+        #print(f"after up2 is applied: {decode2_before.size()}")
         lang_rep2 = self.lang_proj2(lang_rep)
-        print(f"lang_rep2 size: {lang_rep2.size()}")
+        #print(f"lang_rep2 size: {lang_rep2.size()}")
         decode2, att_matrix2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2_before)
 
-        print(f"output of lang_attn2: {decode2.size()}")
+        #print(f"output of lang_attn2: {decode2.size()}")
 
         x3 = self.attention2(decode2, x3)
 
-        print(f"output of vision attention 2: {x3.size()}")
+        #print(f"output of vision attention 2: {x3.size()}")
 
         x = concatenate_layers(decode2, x3)
-        print(f"after second concatentation: {x.size()}")
+        #print(f"after second concatentation: {x.size()}")
         x = self.up_conv2(x)
 
         decode3_before = self.up3(x)
 
-        print(f"after third decoder double up sample: {decode3_before.size()}")
+        #print(f"after third decoder double up sample: {decode3_before.size()}")
 
         lang_rep3 = self.lang_proj3(lang_rep)
-        print(f"lang_rep3 size: {lang_rep3.size()}")
+        #print(f"lang_rep3 size: {lang_rep3.size()}")
         decode3, att_matrix3 = self.lang_attn3(lang_rep=lang_rep3, vision_rep=decode3_before)
-        print(f"output of lang_attn3: {decode3.size()}")
+        #print(f"output of lang_attn3: {decode3.size()}")
 
         x2 = self.attention3(decode3, x2)
-        print(f"output of vision attention 3: {x2.size()}")
+        #print(f"output of vision attention 3: {x2.size()}")
 
         x = concatenate_layers(decode3, x2)
 
-        print(f"after third concatentation: {x.size()}")
+        #print(f"after third concatentation: {x.size()}")
 
         x = self.up_conv3(x)
 
         decode4_before = self.up4(x)
 
-        print(f"after fourth decoder double up sample: {decode4_before.size()}")
+        #print(f"after fourth decoder double up sample: {decode4_before.size()}")
         lang_rep4 = self.lang_proj4(lang_rep)
-        print(f"lang_rep4 size: {lang_rep4.size()}")
+        #print(f"lang_rep4 size: {lang_rep4.size()}")
         decode4, att_matrix4 = self.lang_attn4(lang_rep=lang_rep4, vision_rep=decode4_before)
-        print(f"output of lang_attn4: {decode4.size()}")
+        #print(f"output of lang_attn4: {decode4.size()}")
 
         x1 = self.attention4(decode4, x1)
-        print(f"output of vision attention 1: {x1.size()}")
+        #print(f"output of vision attention 1: {x1.size()}")
         x = concatenate_layers(decode4, x1)
-        print(f"after fourth concatentation: {x.size()}")
+        #print(f"after fourth concatentation: {x.size()}")
         x = self.up_conv4(x)
 
-        print(f"after final upconv4: {x.size()}")
+        #print(f"after final upconv4: {x.size()}")
 
         logits = self.outc(x)
 
-        #visualization_attention(img, decode1_before, decode1, lang_rep1, att_matrix1, target_batch, logits, "1")
-        #visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits, "2")
-        #visualization_attention(img, decode3_before, decode3, lang_rep3, att_matrix3, target_batch, logits, "3")
-        #visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits, "4")
+        visualization_attention(img, decode1_before, decode1, lang_rep1, att_matrix1, target_batch, logits, "1")
+        visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits, "2")
+        visualization_attention(img, decode3_before, decode3, lang_rep3, att_matrix3, target_batch, logits, "3")
+        visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits, "4")
 
 
         print(f"logits shape: {logits.size()}")
