@@ -287,7 +287,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
 
-    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights="imagenet", in_channels=3, classes=1)
+    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
