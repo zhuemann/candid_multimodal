@@ -17,7 +17,7 @@ import segmentation_models_pytorch as smp
 import albumentations as albu
 
 from models.Gloria import GLoRIA
-
+import segmentation_models_pytorch as smp
 
 from torch.optim.lr_scheduler import MultiStepLR
 
@@ -287,8 +287,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = Attention_ConTEXTual_Seg_Model_swap_v3(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
-
-    import segmentation_models_pytorch as smp
 
     model = smp.Unet(
         encoder_name="resnet50",  # choose encoder, e.g. mobilenet_v2 or efficientnet-b7
