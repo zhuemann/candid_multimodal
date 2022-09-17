@@ -97,7 +97,7 @@ if __name__ == '__main__':
     # model_obj = load_img_segmentation_model()
     # load_best_model(dir_base= directory_base)
     # seeds = [117, 295, 98, 456, 915, 1367, 712]
-    seeds = [456, 915]
+    seeds = [915]
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/smp_unet_resnet50_v15/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"

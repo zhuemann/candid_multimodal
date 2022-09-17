@@ -56,7 +56,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
     LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
-    LR = 5e-4
+    #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
 
@@ -198,7 +198,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            #albu.HorizontalFlip(p=.5),
+            albu.HorizontalFlip(p=.5),
             #albu.CLAHE(),
             albu.OneOf([
                 albu.RandomContrast(),
@@ -286,11 +286,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model_swap_v3(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
-    #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
+    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
 
-    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
-    model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-    test_obj.load_state_dict(torch.load(model_path))
+    #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
+    #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
+    #test_obj.load_state_dict(torch.load(model_path))
     #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
