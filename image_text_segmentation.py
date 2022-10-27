@@ -198,7 +198,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            albu.HorizontalFlip(p=.5),
+            #albu.HorizontalFlip(p=.5),
             #albu.CLAHE(),
             albu.OneOf([
                 albu.RandomContrast(),
