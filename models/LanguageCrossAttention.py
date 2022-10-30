@@ -18,7 +18,7 @@ class LangCrossAtt(nn.Module):
 
     def forward(self, lang_rep, vision_rep):
 
-        # gets all of the dimensions to be used in the attention
+        # gets all dimensions to be used in the attention
         input_batch   = vision_rep.size()[0]
         input_channel = vision_rep.size()[1]
         input_width   = vision_rep.size()[2]
