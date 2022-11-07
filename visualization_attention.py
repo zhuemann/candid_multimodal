@@ -50,7 +50,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     # print(np.shape(img))
     # img = (img * 255) / max
     #save_folder = "bilinear_attention"
-    save_folder = "manual_text_insertion"
+    #save_folder = "manual_text_insertion"
+    save_folder = "attention_visualization_v2"
     dir_base = "/UserData/"
     # fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/attention_visualize/test_img' + '.png')
     # cv2.imwrite(fullpath, img)

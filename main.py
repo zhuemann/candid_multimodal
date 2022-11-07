@@ -60,9 +60,9 @@ if __name__ == '__main__':
     #make_plots()
     #print(fail)
     #config["seed"] = 98
-    #make_images_on_dgx(config)
+    make_images_on_dgx(config)
 
-    #print(fail)
+    print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
@@ -114,13 +114,12 @@ if __name__ == '__main__':
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
-        #save_location = ""
+        save_location = ""
 
         config["seed"] = seed
         config["save_location"] = save_location
 
-        acc, valid_log = train_image_text_segmentation(config)
-
+        #acc, valid_log = train_image_text_segmentation(config)
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
 
