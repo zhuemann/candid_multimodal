@@ -45,10 +45,10 @@ from utility import dice_coeff
 
 import ssl
 ssl.SSLContext.verify_mode = ssl.VerifyMode.CERT_OPTIONAL
-
+import nltk
 
 def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r-fcb-isilon/research/Bradshaw/", n_classes = 2):
-
+    nltk.download('punkt')
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
