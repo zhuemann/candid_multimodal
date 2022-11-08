@@ -68,23 +68,23 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         lang_rep = pooled_sentence
 
         x1 = self.inc(img)
-        #print(f"x1 size: {x1.size()}")
+        print(f"x1 size: {x1.size()}")
         x2 = self.down1(x1)
-        #print(f"x2 size: {x2.size()}")
+        print(f"x2 size: {x2.size()}")
         x3 = self.down2(x2)
-        #print(f"x3 size: {x3.size()}")
+        print(f"x3 size: {x3.size()}")
         x4 = self.down3(x3)
-        #print(f"x4 size: {x4.size()}")
+        print(f"x4 size: {x4.size()}")
         x5 = self.down4(x4)
-        #print(f"x5 size: {x5.size()}")
+        print(f"x5 size: {x5.size()}")
 
 
         decode1_before = self.up1(x5)
-        #print(f"decode1_before: {decode1_before.size()}")
+        print(f"decode1_before: {decode1_before.size()}")
         lang_rep1 = self.lang_proj1(lang_rep)
-        #print(f"lang_rep1 size: {lang_rep1.size()}")
+        print(f"lang_rep1 size: {lang_rep1.size()}")
         decode1, att_matrix1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1_before)
-
+        print(f"decode1_after: {decode1.size()}")
         # How is used to be done, swapping for testing
         x4 = self.attention1(decode1, x4)
         #print(f"x4 after vision attention: {x4.size()}")

@@ -72,6 +72,7 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
         #pooled_sentence = encoder_output.last_hidden_state
         #lang_rep = pooled_sentence
 
+        print(f"size img: {img.size()}")
         x1 = self.inc(img)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
