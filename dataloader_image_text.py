@@ -62,7 +62,7 @@ class TextImageDataset(Dataset):
         #text = "Chest X-Ray  [ALPHANUMERICID], [date] ClinicalPneumothorax after aspiration. [PERSONALNAME] is a persistent pneumothorax in the left upper zone although this is smaller than previously."
         #text = "[PERSONALNAME] is a persistent pneumothorax in the left upper zone although this is smaller than previously."
         #text = "A [ADDRESS] chest Xray has been performed and comparison is made to the previous examination dated [DATE]. The heart size is at the upper limit of normal with signs of previous cardiac surgery with sternotomy wires and CABG clips. There is persistent left basal pleural effusion unchanged since the previous examination. The chest drain has been removed.  The appearance is suspicious for a very small left apical pneumothorax similar to the previous examination.  No further abnormality is seen."
-        text = "There is persistent small left apical pneumothorax similar to the previous examination."
+        text = "There is persistent large left apical pneumothorax similar to the previous examination."
 
 
         text = " ".join(text.split())
