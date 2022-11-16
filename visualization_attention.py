@@ -64,6 +64,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     #print(f"img shape: {np.shape(img)}")
     cv2.imwrite(fullpath, img)
 
+    print(f"image size: {img.size()}")
+
     target_batch = target_batch.cpu().detach().numpy()
     target_batch = (target_batch * 255) / np.amax(target_batch)
     #print(f"target_batch: {np.shape(target_batch)}")
