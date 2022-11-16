@@ -90,6 +90,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     print(f"img test shape before: {img_test.shape}")
 
     img_test[:,:,1] += (target_batch_unnorm[0,0,:,:]*255/np.amax(target_batch_unnorm[0,0,:,:]))
+    img_test[:,:,2] += model_output
     print(f"img test shape after: {img_test.shape}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/test_input_overlay' + '.png')
