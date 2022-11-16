@@ -108,12 +108,11 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     for i in range(0,input_channel):
         img_ch = att_img[:, 0, i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
-        img_ch = (img_ch * 255) / np.amax(img_ch)
         sum += img_ch
 
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch' + folderName +'/aa1_sum_attention' + '.png')
-    sum = sum/input_channel
+    sum = (sum*255) / np.amax(sum)
     cv2.imwrite(fullpath, sum)
 
     for i in range(0,input_channel):
