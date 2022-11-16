@@ -65,6 +65,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     img = (img * 255) / np.amax(img)
     #print(f"img shape: {np.shape(img)}")
     #cv2.imwrite(fullpath, img)
+    print(f"image size: {img.shape}")
 
     cv2.imwrite(fullpath, img_test)
 
