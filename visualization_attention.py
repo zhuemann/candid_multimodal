@@ -87,9 +87,10 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
+    print(f"img test shape before: {img_test.shape}")
 
     img_test = img_test[0,0,:,:] + target_batch_unnorm[0,0,:,:]
-    print(f" img test shape: {img_test.shape}")
+    print(f"img test shape after: {img_test.shape}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/test_input_overlay' + '.png')
     cv2.imwrite(fullpath, img_test)
