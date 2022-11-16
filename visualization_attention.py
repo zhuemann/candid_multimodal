@@ -112,7 +112,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
 
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/test_sum_attention' + '.png')
-    sum = sum/len(input_channel)
+    sum = sum/input_channel
     cv2.imwrite(fullpath, sum)
 
     for i in range(0,input_channel):
