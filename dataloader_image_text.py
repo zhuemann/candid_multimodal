@@ -59,6 +59,10 @@ class TextImageDataset(Dataset):
         #text = "Chest X-Ray Clinical Pneumothorax after aspiration. [PERSONALNAME] is a persistent pneumothorax in the right upper zone although this is smaller than previously."
         #text = "There is a moderately-sized right lower zone pneumothorax persisting after the drainage.  There is extensive consolidation in the right lower lobe."
         #text = "There is a moderately-sized right lower zone pneumothorax persisting after the drainage.  There is extensive consolidation in the right lower lobe."
+        #text = "Chest X-Ray  [ALPHANUMERICID], [date] ClinicalPneumothorax after aspiration. [PERSONALNAME] is a persistent pneumothorax in the left upper zone although this is smaller than previously."
+        text = "[PERSONALNAME] is a persistent pneumothorax in the left upper zone although this is smaller than previously."
+
+
 
         text = " ".join(text.split())
         #print(text)
