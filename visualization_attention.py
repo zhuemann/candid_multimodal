@@ -60,11 +60,11 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
                             'Zach_Analysis/dgx_images/' + save_folder + '/input' + '.png')
     img = img.cpu().detach().numpy()
     img = img[0, 0, :, :]
+    print(f"image size: {img.shape}")
     img = (img * 255) / np.amax(img)
     #print(f"img shape: {np.shape(img)}")
     cv2.imwrite(fullpath, img)
 
-    print(f"image size: {img.size()}")
 
     target_batch = target_batch.cpu().detach().numpy()
     target_batch = (target_batch * 255) / np.amax(target_batch)
