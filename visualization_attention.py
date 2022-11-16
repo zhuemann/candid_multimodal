@@ -96,12 +96,25 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
                             'Zach_Analysis/dgx_images/' + save_folder + '/test_input_overlay' + '.png')
     cv2.imwrite(fullpath, img_test)
 
-
-
     # visualizes the attention matrices
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
     vis_before_mat = vision_rep_before.cpu().detach().numpy()
+
+    # sum experimentatoin
+    sum = att_img[:,0,0]
+    sum = np.reshape(sum, (input_width, input_height))
+
+    for i in range(0,input_channel):
+        img_ch = att_img[:, 0, i]
+        img_ch = np.reshape(img_ch, (input_width, input_height))
+        sum += img_ch
+
+    fullpath = os.path.join(dir_base,
+                            'Zach_Analysis/dgx_images/' + save_folder + '/test_sum_attention' + '.png')
+    sum = sum/len(input_channel)
+    cv2.imwrite(fullpath, sum)
+
     for i in range(0,input_channel):
         img_ch = att_img[:,0,i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
