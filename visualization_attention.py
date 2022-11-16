@@ -100,7 +100,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     att_img = att_matrix.cpu().detach().numpy()
     vis_mat = vision_rep.cpu().detach().numpy()
     vis_before_mat = vision_rep_before.cpu().detach().numpy()
-
+    att_img = att_img[(-1 > att_img)]
     # sum experimentatoin
     sum = att_img[:,0,0]
     sum = np.reshape(sum, (input_width, input_height))
