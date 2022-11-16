@@ -61,9 +61,12 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     img = img.cpu().detach().numpy()
     img = img[0, 0, :, :]
     print(f"image size: {img.shape}")
+    img_test = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
     img = (img * 255) / np.amax(img)
     #print(f"img shape: {np.shape(img)}")
-    cv2.imwrite(fullpath, img)
+    #cv2.imwrite(fullpath, img)
+
+    cv2.imwrite(fullpath, img_test)
 
 
     target_batch = target_batch.cpu().detach().numpy()
