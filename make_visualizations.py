@@ -177,7 +177,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 'num_workers': 1
                 }
     test_params = {'batch_size': BATCH_SIZE,
-                   'shuffle': True,
+                   'shuffle': False,
                    'num_workers': 4
                    }
 
