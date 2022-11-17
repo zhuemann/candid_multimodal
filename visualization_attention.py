@@ -8,8 +8,6 @@ import copy
 
 def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_matrix, target_batch, model_output, folderName):
 
-    print("hi")
-
     #print(f"lang_rep size: {lang_rep.size()}")
     #print(f"vision_rep size: {vision_rep.size()}")
     #print(f"att_matix size: {att_matrix.size()}")
@@ -60,7 +58,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
                             'Zach_Analysis/dgx_images/' + save_folder + '/input' + '.png')
     img = img.cpu().detach().numpy()
     img = img[0, 0, :, :]
-    print(f"image size: {img.shape}")
+    #print(f"image size: {img.shape}")
     img_test = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
     img = (img * 255) / np.amax(img)
     cv2.imwrite(fullpath, img)
@@ -87,11 +85,11 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
-    print(f"img test shape before: {img_test.shape}")
-    print(np.sum(model_output))
+    #print(f"img test shape before: {img_test.shape}")
+    print(np.sum(model_output)/255)
     img_test[:,:,0] += (target_batch_unnorm[0,0,:,:]*(255/3)/np.amax(target_batch_unnorm[0,0,:,:]))
     img_test[:,:,2] += model_output[0, 0, :, :]/3
-    print(f"img test shape after: {img_test.shape}")
+    #print(f"img test shape after: {img_test.shape}")
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/test_input_overlay' + '.png')
     cv2.imwrite(fullpath, img_test)
