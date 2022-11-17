@@ -206,7 +206,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     test_obj.load_state_dict(torch.load(saved_path))
 
     with torch.no_grad():
-        #test_obj.eval()
+        test_obj.train()
         test_dice = []
         gc.collect()
         for i, data in tqdm(enumerate(test_loader, 0)):

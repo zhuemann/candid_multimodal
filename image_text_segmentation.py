@@ -433,7 +433,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 # torch.save(model_obj.state_dict(), '/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal')
                 torch.save(test_obj.state_dict(), save_path)
 
-    test_obj.eval()
+    #test_obj.eval()
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
     saved_path = os.path.join(config["save_location"], "best_segmentation_model_seed" + str(seed))
@@ -446,6 +446,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #                              seed))
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     test_obj.load_state_dict(torch.load(saved_path))
+    test_obj.eval()
 
     with torch.no_grad():
         test_dice = []
