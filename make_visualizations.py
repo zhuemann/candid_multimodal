@@ -178,7 +178,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 }
     test_params = {'batch_size': BATCH_SIZE,
                    'shuffle': False,
-                   'num_workers': 1
+                   'num_workers': 0
                    }
 
     test_loader = DataLoader(test_set, **test_params)
