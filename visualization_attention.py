@@ -85,6 +85,10 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
+    with open('test.npy', 'wb') as f:
+        np.save(f, model_output)
+
+
     #print(f"img test shape before: {img_test.shape}")
     print(np.sum(model_output)/255)
     img_test[:,:,0] += (target_batch_unnorm[0,0,:,:]*(255/3)/np.amax(target_batch_unnorm[0,0,:,:]))
