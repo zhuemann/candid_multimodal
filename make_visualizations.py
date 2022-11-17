@@ -144,15 +144,15 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                         seed) + '/pneumothorax_df_trainseed' + str(seed) + '.xlsx')
     train_df.to_excel(train_dataframe_location, index=True)
 
-    test_frame_locaction = os.path.join(dir_base,
-    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/pneumothorax_testset_df_seed98.xlsx")
+    #test_frame_locaction = os.path.join(dir_base,
+    #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    #"t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed98/pneumothorax_testset_df_seed98.xlsx")
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/examples_to_visualize.xlsx")
-    #test_frame_locaction = os.path.join(dir_base,
-    #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    #"multisegmentation_model_train_v13/seed98/size_change_to_visualize_v3.xlsx")
+    test_frame_locaction = os.path.join(dir_base,
+    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    "multisegmentation_model_train_v13/seed98/size_change_to_visualize_v3.xlsx")
 
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)

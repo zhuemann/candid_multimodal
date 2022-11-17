@@ -147,10 +147,10 @@ class Attention_ConTEXTual_Seg_Model(torch.nn.Module):
 
         logits = self.outc(x)
 
-        #visualization_attention(img, decode1_before, decode1, lang_rep1, att_matrix1, target_batch, logits, "1")
-        #visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits, "2")
-        #visualization_attention(img, decode3_before, decode3, lang_rep3, att_matrix3, target_batch, logits, "3")
-        #visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits, "4")
+        visualization_attention(img, decode1_before, decode1, lang_rep1, att_matrix1, target_batch, logits, "1")
+        visualization_attention(img, decode2_before, decode2, lang_rep2, att_matrix2, target_batch, logits, "2")
+        visualization_attention(img, decode3_before, decode3, lang_rep3, att_matrix3, target_batch, logits, "3")
+        visualization_attention(img, decode4_before, decode4, lang_rep4, att_matrix4, target_batch, logits, "4")
 
 
         print(f"logits shape: {logits.size()}")
@@ -262,72 +262,3 @@ class Attention_block(nn.Module):
         psi = self.psi(psi)
 
         return x * psi
-
-
-class DotProductAttention(nn.Module):
-    """
-    Compute the dot products of the query with all values and apply a softmax function to obtain the weights on the values
-    """
-
-    def __init__(self, hidden_dim):
-        super(DotProductAttention, self).__init__()
-
-    def forward(self, query: Tensor, value: Tensor) -> Tuple[Tensor, Tensor]:
-        batch_size, hidden_dim, input_size = query.size(0), query.size(2), value.size(1)
-
-        print("query:")
-        print(query.size())
-        print("value")
-        print(value.size())
-        score = torch.bmm(query, value.transpose(1, 2))
-        attn = F.softmax(score.view(-1, input_size), dim=1).view(batch_size, -1, input_size)
-        context = torch.bmm(attn, value)
-
-        return context, attn
-
-
-"""
-class LangCrossAtt(nn.Module):
-    "add documentaiton"
-
-
-    def __init__(self, emb_dim):
-        super(LangCrossAtt, self).__init__()
-
-        self.multihead_attn = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=1)
-
-    def forward(self, lang_rep, vision_rep):
-
-        # gets all of the dimensions to be used in the attention
-        input_batch = vision_rep.size()[0]
-        input_channel =  vision_rep.size()[1]
-        input_width = vision_rep.size()[2]
-        input_height =  vision_rep.size()[3]
-
-        # puts the vision representation into the right shape for attention mechanism
-        vision_rep = torch.swapaxes(vision_rep, 0, 1)
-        vision_rep_flat = torch.flatten(vision_rep, start_dim=2)
-        vision_rep = torch.swapaxes(vision_rep_flat, 2, 0)
-
-        # puts the language rep into the right shape for attention
-        lang_rep = torch.swapaxes(lang_rep, 0, 1)
-        lang_rep = torch.swapaxes(lang_rep, 1, 2)
-
-        # does cross attention between vision and language
-        att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
-
-        # gets the attention weights and repeats them to have the same size as the total channels
-        attn_output_weights = torch.swapaxes(attn_output_weights, 0, 1)
-        attn_output_weights = attn_output_weights.repeat(1, 1, input_channel)
-
-        # multiplies the attention to focus the vision rep based on the lang rep
-        vision_rep = vision_rep * attn_output_weights
-        vision_rep = vision_rep.contiguous()
-
-        # rearanges the output matrix to be the dimensions of the input
-        out = vision_rep.view(input_width, input_height, input_batch, input_channel)
-        out = torch.swapaxes(out, 0, 2)
-        out = torch.swapaxes(out, 1, 3)
-        return out
-
-"""
