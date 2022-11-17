@@ -85,8 +85,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     fullpath = os.path.join(dir_base,
                             'Zach_Analysis/dgx_images/' + save_folder + '/model_output' + '.png')
     cv2.imwrite(fullpath, model_output[0, 0, :, :])
-    with open('test.npy', 'wb') as f:
-        np.save(f, model_output)
+    #with open('test.npy', 'wb') as f:
+    #    np.save(f, model_output)
 
 
     #print(f"img test shape before: {img_test.shape}")
