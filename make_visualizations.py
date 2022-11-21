@@ -155,7 +155,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"multisegmentation_model_train_v13/seed98/size_change_to_visualize_v4.xlsx")
     test_frame_locaction = os.path.join(dir_base,
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "multisegmentation_model_train_v13/seed98/apical_to_base_text_change.xlsx") #base_to_apical_text_change
+    "multisegmentation_model_train_v13/seed98/test_example.xlsx") #base_to_apical_text_change
 
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
