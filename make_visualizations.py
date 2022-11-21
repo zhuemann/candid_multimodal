@@ -214,7 +214,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         gc.collect()
         for i, data in tqdm(enumerate(test_loader, 0)):
             print(i)
-            if i == 2:
+            if i == 1:
                 break
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
