@@ -211,6 +211,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
             ], p=.3),
             albu.ShiftScaleRotate(),
+            albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
     ])
 
     # used for empty augmentation tests
@@ -224,8 +225,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         [
             #transforms.RandomHorizontalFlip(p=1),
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             transforms.PILToTensor(),
-            # transforms.Normalize(mean=(.5, .5, .5), std=(.5, .5, .5)),
+            #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             # transforms.Normalize((0.5,), (0.5,))
             # transforms.Grayscale(num_output_channels=1),
             # transforms.Normalize([0.5], [0.5])

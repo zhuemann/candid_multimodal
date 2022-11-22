@@ -42,7 +42,7 @@ if __name__ == '__main__':
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
-              "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
+              "IMG_SIZE": 1024, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True, "save_location": ""}
 
     train_report_generation = args.report_gen  # flip this to True to do report generation
@@ -60,9 +60,9 @@ if __name__ == '__main__':
     #make_plots()
     #print(fail)
     #config["seed"] = 98
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
-    print(fail)
+    #print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
@@ -107,19 +107,19 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/roberta_attention_unet_positive_cases_vision_and_synonom_v17_v2/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/t5_unet_positive_cases_vision_and_synonom_larger_img_normalized_v18/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
 
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
-        save_location = ""
+        #save_location = ""
 
         config["seed"] = seed
         config["save_location"] = save_location
 
-        #acc, valid_log = train_image_text_segmentation(config)
+        acc, valid_log = train_image_text_segmentation(config)
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
 
