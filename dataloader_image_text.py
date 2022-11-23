@@ -172,7 +172,9 @@ class TextImageDataset(Dataset):
                     img = img["image"]
                     #img = self.norm(img)
                     img = Image.fromarray(img)
-                    image = self.transforms(img)
+                    img = Image.fromarray(np.uint8(img))
+                    img = self.resize(img)
+                    #image = self.transforms(img)
 
                     #trying to do flipping
                     #transformed = self.transforms(image=img, mask=segmentation_mask_org)
