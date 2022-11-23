@@ -23,12 +23,12 @@ class LangCrossAtt(nn.Module):
         input_channel = vision_rep.size()[1]
         input_width   = vision_rep.size()[2]
         input_height  = vision_rep.size()[3]
-        print(f"input_width: {input_width}")
-        print(f"input_height: {input_height}")
+        #print(f"input_width: {input_width}")
+        #print(f"input_height: {input_height}")
 
         #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"vision rep siz: {vision_rep.size()}")
-        print(f"language rep: {lang_rep.size()}")
+        #print(f"vision rep siz: {vision_rep.size()}")
+        #print(f"language rep: {lang_rep.size()}")
         #ision_rep = torch.zeros(vision_rep.size()).to(device, dtype=torch.float)
 
         # puts the vision representation into the right shape for attention mechanism
