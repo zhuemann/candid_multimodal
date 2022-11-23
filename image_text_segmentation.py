@@ -229,7 +229,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #transforms.PILToTensor(),
             transforms.PILToTensor(), #test was pilToTesnor
 
-            #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             # transforms.Normalize((0.5,), (0.5,))
             # transforms.Grayscale(num_output_channels=1),
@@ -401,7 +401,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 targets = data['targets'].to(device, dtype=torch.float)
                 targets = torch.squeeze(targets)
                 images = data['images'].to(device, dtype=torch.float)
-
+                print(f"max: {torch.max(images)}")
+                print(f"min: {torch.min(images)}")
                 #outputs = model_obj(images)
                 outputs = test_obj(images, ids, mask, token_type_ids)
                 #outputs = test_obj(images)
