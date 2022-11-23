@@ -149,8 +149,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print(test_dataframe_location)
     test_df.to_excel(test_dataframe_location, index=True)
 
-
-
     # delete this block later
     #train_frame_locaction = os.path.join(dir_base,
     #                                    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
@@ -211,7 +209,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
             ], p=.3),
             albu.ShiftScaleRotate(),
-            albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+            albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
 
     # used for empty augmentation tests
@@ -220,7 +218,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 #
 #        ])
 
-
+    normalize = albu.compose([
+        albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
+    ])
     transforms_valid = transforms.Compose(
         [
             #transforms.RandomHorizontalFlip(p=1),

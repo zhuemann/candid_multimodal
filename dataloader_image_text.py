@@ -10,6 +10,8 @@ import nltk
 import random
 import pandas as pd
 
+import matplotlib as plt
+
 from utility import rle_decode_modified, rle_decode
 
 
@@ -108,9 +110,9 @@ class TextImageDataset(Dataset):
         data_dir = "dataset/"
         img_path = os.path.join(self.data_path, img_name)
         # print(img_path)
-        # DCM_Img = pdcm.read_file(img_path)
-        # test = plt.imshow(DCM_Img.pixel_array, cmap=plt.cm.bone)
-        # plt.show()
+        DCM_Img = pdcm.read_file(img_path)
+        #test = plt.imshow(DCM_Img.pixel_array, cmap=plt.cm.bone)
+        #plt.show()
 
         try:
             DCM_Img = pdcm.read_file(img_path)
