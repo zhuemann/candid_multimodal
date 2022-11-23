@@ -349,11 +349,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            print(f"max: {torch.max(images)}")
-            print(f"min: {torch.min(images)}")
-
-
-
             outputs = test_obj(images, ids, mask, token_type_ids)
             #outputs = test_obj(images)
             #outputs = model_obj(images)
@@ -401,8 +396,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 targets = data['targets'].to(device, dtype=torch.float)
                 targets = torch.squeeze(targets)
                 images = data['images'].to(device, dtype=torch.float)
-                print(f"max: {torch.max(images)}")
-                print(f"min: {torch.min(images)}")
+
                 #outputs = model_obj(images)
                 outputs = test_obj(images, ids, mask, token_type_ids)
                 #outputs = test_obj(images)

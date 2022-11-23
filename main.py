@@ -41,7 +41,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 2, "dir_base": directory_base, "epochs": 100, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 256, "train_samples": .004, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": True, "save_location": ""} #batch size was 8 with image size 256 .8 can use .004
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/t5_unet_positive_cases_vision_and_synonom_larger_img_normalized_v18/seed" + str(seed) + "/"
+        folder_name = "with_augmentation/t5_unet_positive_cases_vision_and_synonom_img_normalized_v19/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
 
