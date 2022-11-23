@@ -173,7 +173,7 @@ class TextImageDataset(Dataset):
                     img = img["image"]
                     #img = self.norm(img)
                     print(type(img))
-                    img = Image.fromarray(img)
+                    img = Image.fromarray(np.uint8(img))
                     img = Image.fromarray(np.uint8(img))
                     img = self.resize(img)
                     #image = self.transforms(img)
