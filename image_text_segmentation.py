@@ -211,7 +211,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
             ], p=.3),
             albu.ShiftScaleRotate(),
-            #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+            albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
     ])
 
     # used for empty augmentation tests
@@ -427,7 +427,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
                 #print(f"save location: {config['save_location']}")
                 # save_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-                save_path = os.path.join(config["save_location"], "best_segmentation_model_seed" + str(seed))
+                save_path = os.path.join(config["save_location"], "best_segmentation_model_seed_test" + str(seed))
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
                 #save_path = os.path.join(dir_base, 'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
                 #save_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')
@@ -441,7 +441,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj.eval()
     row_ids = []
     # saved_path = os.path.join(dir_base, 'Zach_Analysis/models/vit/best_multimodal_modal_forked_candid')
-    saved_path = os.path.join(config["save_location"], "best_segmentation_model_seed" + str(seed))
+    saved_path = os.path.join(config["save_location"], "best_segmentation_model_seed_test" + str(seed))
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_2/segmentation_forked_candid2')
     #saved_path = os.path.join(dir_base,'Zach_Analysis/models/candid_finetuned_segmentation/forked_3/segmentation_forked_candid')

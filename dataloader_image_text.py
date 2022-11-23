@@ -164,7 +164,7 @@ class TextImageDataset(Dataset):
 
                 if RGB:
                     img = Image.fromarray(img).convert("RGB")  # makes the image into a PIL image
-                    image = self.transforms(img)
+                    image = self.transforms(np.float(img))
 
                     #trying to do flipping
                     #transformed = self.transforms(image=img, mask=segmentation_mask_org)
