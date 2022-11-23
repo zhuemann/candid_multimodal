@@ -166,6 +166,7 @@ class TextImageDataset(Dataset):
             else:
 
                 if RGB:
+                    img = np.array(img)
                     img = self.norm(image = img)
                     img = Image.fromarray(img).convert("RGB")  # makes the image into a PIL image
                     #img = self.norm(img)
