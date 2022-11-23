@@ -211,7 +211,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
             ], p=.3),
             albu.ShiftScaleRotate(),
-            albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+            #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
     ])
 
     # used for empty augmentation tests
@@ -348,6 +348,10 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             targets = data['targets'].to(device, dtype=torch.float)
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
+
+            print(f"max: {torch.max(images)}")
+            print(f"min: {torch.min(images)}")
+
 
 
             outputs = test_obj(images, ids, mask, token_type_ids)
