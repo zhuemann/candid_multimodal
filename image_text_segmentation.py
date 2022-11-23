@@ -218,18 +218,18 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 #
 #        ])
 
-    #normalize = albu.Compose([
-    #    albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
-    #])
+    normalize = albu.Compose([
+        albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
+    ])
     transforms_valid = transforms.Compose(
         [
             #transforms.RandomHorizontalFlip(p=1),
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            #transforms.PILToTensor(),
-            transforms.ToTensor(), #test was pilToTesnor
+            transforms.PILToTensor(),
+            #transforms.ToTensor(), #test was pilToTesnor
 
-            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0),
+            #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0),
             #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             # transforms.Normalize((0.5,), (0.5,))
             # transforms.Grayscale(num_output_channels=1),
@@ -245,9 +245,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     print(train_df)
     print("valid df")
     print(valid_df)
-    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = wordDict)
-    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = None)
-    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = None)
+    training_set = TextImageDataset(train_df, tokenizer, 512, mode="train", transforms = albu_augs, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = wordDict, norm = None)
+    valid_set =    TextImageDataset(valid_df, tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = None, norm = normalize)
+    test_set =     TextImageDataset(test_df,  tokenizer, 512,               transforms = transforms_valid, resize=transforms_resize, dir_base = dir_base, img_size=IMG_SIZE, wordDict = None, norm = normalize)
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,

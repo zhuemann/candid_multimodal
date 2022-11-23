@@ -20,7 +20,7 @@ class TextImageDataset(Dataset):
                  dir_base='/home/zmh001/r-fcb-isilon/research/Bradshaw/', mode=None, transforms=None, resize=None,
                  img_size=256,
                  wordDict = None,
-                 ngram_synonom = []):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
+                 ngram_synonom = [], norm = None):  # data_path = os.path.join(dir_base,'Lymphoma_UW_Retrospective/Data/mips/')
         self.tokenizer = tokenizer
         self.data = dataframe
         self.text = dataframe.text
@@ -36,6 +36,7 @@ class TextImageDataset(Dataset):
         self.data_path = os.path.join(dir_base, "public_datasets/candid_ptx/dataset1/dataset/")
         self.dir_base = dir_base
         self.resize = resize
+        self.norm = norm
 
     def __len__(self):
         return len(self.text)
@@ -166,6 +167,7 @@ class TextImageDataset(Dataset):
 
                 if RGB:
                     img = Image.fromarray(img).convert("RGB")  # makes the image into a PIL image
+                    img = self.norm(img)
                     image = self.transforms(img)
 
                     #trying to do flipping
