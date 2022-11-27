@@ -28,6 +28,7 @@ from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 #from models.ConTEXTual_seg_v3 import Attention_ConTEXTual_Seg_Model_swap_v3
 from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
+from models.ConTextual_seg_vis_model import Attention_ConTEXTual_Vis_Seg_Model
 
 from models.ResNetUNet import ResNetUNet
 from models.ResAttUnet import ResAttNetUNet
@@ -294,7 +295,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
     #test_obj.load_state_dict(torch.load(model_path))
