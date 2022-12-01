@@ -119,7 +119,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
     sum = (sum*255) / np.amax(sum)
     cv2.imwrite(fullpath, sum)
 
-    for i in range(0,input_channel):
+    for i in range(0, input_channel):
         img_ch = att_img[:,0,i]
         img_ch = np.reshape(img_ch, (input_width, input_height))
         max = np.amax(img_ch)
@@ -127,9 +127,9 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         #print(f"i: {i}")
         #print(f"max: {max}")
         #print(f"min: {min}")
-        img_ch = colorize_img(img_ch)
+        #mg_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
-        img_ch = ((img_ch*255)/np.amax(img_ch)*.50)
+        img_ch = ((img_ch*255)/np.amax(img_ch))
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch' + folderName + '/attention_ch'+str(i) + '.png')
         cv2.imwrite(fullpath, img_ch)
 
@@ -140,7 +140,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         #print(f"max of vis_ch: {np.amax(vis_ch)}")
         #print(f"min of vis_ch: {np.amin(vis_ch)}")
 
-        vis_ch_scale = colorize_img(vis_ch)
+        #vis_ch_scale = colorize_img(vis_ch)
+        vis_ch_scale = vis_ch
         vis_ch_scale = (vis_ch_scale*255)/np.amax(vis_ch_scale)
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch' + folderName + '/vis_ch' + str(i) + '.png')
         cv2.imwrite(fullpath, vis_ch_scale)
@@ -153,7 +154,8 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         #vis_before_scale = vis_before + abs(np.amin(vis_before))
         #vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
 
-        vis_before_scale = colorize_img((vis_before))
+        #vis_before_scale = colorize_img((vis_before))
+        vis_before_scale = vis_before
         vis_ch_before = (vis_before_scale * 255) / np.amax(vis_before_scale)
         fullpath = os.path.join(dir_base,
                                 'Zach_Analysis/dgx_images/' + save_folder + '/vis_ch_before' + folderName + '/vis_ch_before' + str(i) + '.png')
