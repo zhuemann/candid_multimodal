@@ -153,7 +153,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"multisegmentation_model_train_v13/seed98/examples_to_visualize.xlsx")
     test_frame_locaction = os.path.join(dir_base,
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "multisegmentation_model_train_v13/seed98/size_change_to_visualize_v4.xlsx")
+    "multisegmentation_model_train_v13/seed98/left_right_swap_used_in_visualization.xlsx")
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/single_example_to_visualize_v1_interactive.xlsx") #base_to_apical_text_change
