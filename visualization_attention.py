@@ -127,7 +127,7 @@ def visualization_attention(img, vision_rep_before, vision_rep, lang_rep, att_ma
         #print(f"i: {i}")
         #print(f"max: {max}")
         #print(f"min: {min}")
-        #mg_ch = colorize_img(img_ch)
+        img_ch = colorize_img(img_ch)
         #img_ch_scale = img_ch+abs(min)
         img_ch = ((img_ch*255)/np.amax(img_ch))
         fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/' + save_folder + '/attention_ch' + folderName + '/attention_ch'+str(i) + '.png')
