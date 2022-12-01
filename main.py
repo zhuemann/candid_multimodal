@@ -107,7 +107,7 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "with_augmentation/vision_language_no_text_unet_positive_cases_larger_img_v23/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
 
