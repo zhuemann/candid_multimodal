@@ -31,7 +31,7 @@ def create_parser():
 if __name__ == '__main__':
     args = create_parser()
     #local = args.local
-
+    print("newest version")
     local = False
     if local:
         directory_base = "Z:/"
