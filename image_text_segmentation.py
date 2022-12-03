@@ -255,7 +255,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 2
+                'num_workers': 0
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
