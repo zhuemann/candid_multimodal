@@ -255,7 +255,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 0
+                'num_workers': 4
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
@@ -315,8 +315,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     test_obj.to(device)
-    test_obj.cuda().half()
-
 
     criterion = nn.BCEWithLogitsLoss()
 
@@ -352,12 +350,12 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             print(torch.cuda.memory_summary(device=None, abbreviated=False))
 
-            ids = data['ids'].to(device, dtype=torch.long).cuda().half()
-            mask = data['mask'].to(device, dtype=torch.long).cuda().half()
-            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long).cuda().half()
-            targets = data['targets'].to(device, dtype=torch.float).cuda().half()
+            ids = data['ids'].to(device, dtype=torch.long)
+            mask = data['mask'].to(device, dtype=torch.long)
+            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
+            targets = data['targets'].to(device, dtype=torch.float)
             targets = torch.squeeze(targets)
-            images = data['images'].to(device, dtype=torch.float).cuda().half()
+            images = data['images'].to(device, dtype=torch.float)
 
 
             outputs = test_obj(images, ids, mask, token_type_ids)
