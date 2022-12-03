@@ -71,6 +71,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # the folder in which the test dataframe, model, results log will all be saved to
     save_location = config["save_location"]
 
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.enabled = True
 
     #dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
