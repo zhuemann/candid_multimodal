@@ -346,7 +346,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
         for _, data in tqdm(enumerate(training_loader, 0)):
 
-            torch.cuda.memory_summary(device=None, abbreviated=False)
+            print(torch.cuda.memory_summary(device=None, abbreviated=False))
 
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
