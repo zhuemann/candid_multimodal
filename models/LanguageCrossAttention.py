@@ -42,8 +42,8 @@ class LangCrossAtt(nn.Module):
         lang_rep = torch.swapaxes(lang_rep, 0, 1)
         #lang_rep = torch.swapaxes(lang_rep, 1, 2)
 
-        print(f"vision_rep dimensions: {vision_rep.size()}")
-        print(f"language_rep dimensions: {lang_rep.size()}")
+        #print(f"vision_rep dimensions: {vision_rep.size()}")
+        #print(f"language_rep dimensions: {lang_rep.size()}")
 
         # does cross attention between vision and language
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
@@ -60,8 +60,8 @@ class LangCrossAtt(nn.Module):
         out = torch.swapaxes(out, 0, 2)
         out = torch.swapaxes(out, 1, 3)
 
-        #return out
-        return out, att_matrix
+        return out
+        #return out, att_matrix
 
 
 
