@@ -60,9 +60,9 @@ if __name__ == '__main__':
     #make_plots()
     #print(fail)
     #config["seed"] = 98
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
-    print(fail)
+    #print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
@@ -107,14 +107,14 @@ if __name__ == '__main__':
     for seed in seeds:
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/roberta_language_att_with_text_aug_larger_img_v25/seed" + str(seed) + "/"
         #folder_name = "with_augmentation/baseline_vision_attention_unet_only_positive_cases/seed" + str(seed) + "/"
         #folder_name = "two_step_seg/dev_test"
 
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
         save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
         save_location = os.path.join(directory_base, save_string)
-        save_location = ""
+        #save_location = ""
 
         config["seed"] = seed
         config["save_location"] = save_location
