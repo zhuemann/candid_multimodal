@@ -352,12 +352,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
             print(torch.cuda.memory_summary(device=None, abbreviated=False))
 
-            ids = data['ids'].to(device, dtype=torch.long)
-            mask = data['mask'].to(device, dtype=torch.long)
-            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
-            targets = data['targets'].to(device, dtype=torch.float)
+            ids = data['ids'].to(device, dtype=torch.long).cuda().half()
+            mask = data['mask'].to(device, dtype=torch.long).cuda().half()
+            token_type_ids = data['token_type_ids'].to(device, dtype=torch.long).cuda().half()
+            targets = data['targets'].to(device, dtype=torch.float).cuda().half()
             targets = torch.squeeze(targets)
-            images = data['images'].to(device, dtype=torch.float)
+            images = data['images'].to(device, dtype=torch.float).cuda().half()
+
 
             outputs = test_obj(images, ids, mask, token_type_ids)
             #outputs = test_obj(images)
