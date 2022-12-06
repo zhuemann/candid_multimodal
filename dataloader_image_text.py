@@ -69,11 +69,7 @@ class TextImageDataset(Dataset):
         #text = "A [ADDRESS] chest Xray has been performed and comparison is made to the previous examination dated [DATE]. The heart size is at the upper limit of normal with signs of previous cardiac surgery with sternotomy wires and CABG clips. There is persistent left basal pleural effusion unchanged since the previous examination. The chest drain has been removed.  The appearance is suspicious for a very small left apical pneumothorax similar to the previous examination.  No further abnormality is seen."
         #text = "There is persistent large left apical pneumothorax similar to the previous examination."
 
-        #text = ""
-        #print(text)
         text = " ".join(text.split())
-        #print(text)
-        #text = ""
 
         text = text.replace("[ALPHANUMERICID]", "")
         text = text.replace("[date]", "")
@@ -86,8 +82,8 @@ class TextImageDataset(Dataset):
         text = text.replace("\n", "")
 
         if self.wordDict != None:
-            #text = TextImageDataset.synonymsReplacement(self, text)
-            text = TextImageDataset.shuffledTextAugmentation(text)
+            text = TextImageDataset.synonymsReplacement(self, text)
+            #text = TextImageDataset.shuffledTextAugmentation(text)
 
         inputs = self.tokenizer.encode_plus(
             text,

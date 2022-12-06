@@ -71,8 +71,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # the folder in which the test dataframe, model, results log will all be saved to
     save_location = config["save_location"]
 
-    torch.backends.cudnn.benchmark = True
-    torch.backends.cudnn.enabled = True
+    #torch.backends.cudnn.benchmark = True
+    #torch.backends.cudnn.enabled = True
 
     #dataframe_location = os.path.join(dir_base, "Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_text_negatives_balanced_df.xlsx")
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
@@ -215,7 +215,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             albu.ShiftScaleRotate(),
             #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
-    albu_augs = albu.Compose([])
+    #albu_augs = albu.Compose([])
     # used for empty augmentation tests
     #if not vision_only and not using_t5:
         #albu_augs = albu.Compose([
