@@ -18,21 +18,21 @@ import albumentations as albu
 from models.Gloria import GLoRIA
 import segmentation_models_pytorch as smp
 
-from torch.optim.lr_scheduler import MultiStepLR
+#from torch.optim.lr_scheduler import MultiStepLR
 
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
 #import torch.nn.functional as F
 #from models.ConTEXTual_Seg_attention_model import Attention_ConTEXTual_Seg_Model
-from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
+#from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 #from models.ConTEXTual_seg_v3 import Attention_ConTEXTual_Seg_Model_swap_v3
-from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
+#from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
-from models.ConTextual_seg_vis_model import Attention_ConTEXTual_Vis_Seg_Model
+#from models.ConTextual_seg_vis_model import Attention_ConTEXTual_Vis_Seg_Model
 
-from models.ResNetUNet import ResNetUNet
-from models.ResAttUnet import ResAttNetUNet
-from models.Base_UNet import Unet_Baseline
+#from models.ResNetUNet import ResNetUNet
+#from models.ResAttUnet import ResAttNetUNet
+#from models.Base_UNet import Unet_Baseline
 
 #from PIL import Image
 
