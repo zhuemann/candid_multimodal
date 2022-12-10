@@ -108,13 +108,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
     #language_model = None
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
-    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
+    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -200,7 +200,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     vision_only = True
     if vision_only:
         albu_augs = albu.Compose([
-            albu.HorizontalFlip(p=.5),
+            #albu.HorizontalFlip(p=.5),
             #albu.CLAHE(),
             albu.OneOf([
                 albu.RandomContrast(),

@@ -108,7 +108,7 @@ if __name__ == '__main__':
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
         #folder_name = "higher_res_for_paper/t5_language_att_with_setence_shuffle_larger_img_v27/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/t5_language_att_no_lang_aug_flipping_larger_img_v29/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/roberta_language_att_with_text_aug_larger_img_v25/seed" + str(seed) + "/"
 
         #folder_name = "higher_res_for_paper/baseline_unet_no_aug_larger_img_v28/seed" + str(seed) + "/"
 
