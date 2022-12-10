@@ -363,7 +363,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #outputs = test_obj(images)
             #outputs = model_obj(images)
             outputs = output_resize(torch.squeeze(outputs, dim=1))
-            targets = output_resize(targets)
+            #targets = output_resize(targets)
             optimizer.zero_grad()
 
             loss = criterion(outputs, targets)
