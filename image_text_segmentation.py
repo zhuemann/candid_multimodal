@@ -365,7 +365,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             print(outputs.size())
-            outputs.torch.squeeze(outputs)
+            outputs = torch.squeeze(outputs)
             print(outputs.size())
             #targets = output_resize(targets)
             optimizer.zero_grad()
