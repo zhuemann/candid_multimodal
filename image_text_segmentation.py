@@ -365,7 +365,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #print(outputs.size())
-            #outputs = torch.squeeze(outputs)
+            outputs = torch.squeeze(outputs)
             #print(outputs.size())
             #targets = output_resize(targets)
             optimizer.zero_grad()
@@ -416,7 +416,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 #outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
-                #outputs = torch.squeeze(outputs)
+                outputs = torch.squeeze(outputs)
                 targets = output_resize(targets)
 
                 # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
