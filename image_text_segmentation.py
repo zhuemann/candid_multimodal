@@ -108,13 +108,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    #language_model = T5Model.from_pretrained(t5_path)
-    #language_model = None
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
+
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -215,7 +215,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             albu.ShiftScaleRotate(),
             #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
-    albu_augs = albu.Compose([])
+    #albu_augs = albu.Compose([])
     # used for empty augmentation tests
     #if not vision_only and not using_t5:
         #albu_augs = albu.Compose([
@@ -255,12 +255,12 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     train_params = {'batch_size': BATCH_SIZE,
                 'shuffle': True,
-                'num_workers': 2
+                'num_workers': 4
                 }
 
     test_params = {'batch_size': BATCH_SIZE,
                    'shuffle': True,
-                   'num_workers': 1
+                   'num_workers': 4
                    }
 
     training_loader = DataLoader(training_set, **train_params)
@@ -296,8 +296,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = Attention_ConTEXTual_Seg_Model_swap_v3(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
-    test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
-    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
@@ -365,7 +365,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #print(outputs.size())
-            outputs = torch.squeeze(outputs)
+            #outputs = torch.squeeze(outputs)
             #print(outputs.size())
             #targets = output_resize(targets)
             optimizer.zero_grad()
@@ -416,7 +416,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 #outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
-                outputs = torch.squeeze(outputs)
+                #outputs = torch.squeeze(outputs)
                 targets = output_resize(targets)
 
                 # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
@@ -483,7 +483,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             #outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
-            outputs = outputs.squeeze(outputs)
+            #outputs = outputs.squeeze(outputs)
             targets = output_resize(targets)
 
             sigmoid = torch.sigmoid(outputs)
