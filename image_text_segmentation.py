@@ -108,13 +108,13 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    #language_model = T5Model.from_pretrained(t5_path)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
 
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    tokenizer = AutoTokenizer.from_pretrained(language_path)
-    language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
+    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
     #load in a language model used in the contrastive learning
     pretrained_model = False
@@ -215,7 +215,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             albu.ShiftScaleRotate(),
             #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
-    #albu_augs = albu.Compose([])
+    albu_augs = albu.Compose([])
     # used for empty augmentation tests
     #if not vision_only and not using_t5:
         #albu_augs = albu.Compose([
@@ -269,16 +269,16 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    load_model = False
-    if load_model:
-        # model is orginally from here which was saved and reloaded to get around SSL
-        model_obj = smp.Unet(encoder_name="vgg19", encoder_weights="imagenet", in_channels=3, classes=1)
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/vgg19')
-        torch.save(model_obj.state_dict(), save_path)
-    else:
-        model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
-        save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
-        model_obj.load_state_dict(torch.load(save_path))
+    #load_model = False
+    #if load_model:
+    #    # model is orginally from here which was saved and reloaded to get around SSL
+    #    model_obj = smp.Unet(encoder_name="vgg19", encoder_weights="imagenet", in_channels=3, classes=1)
+    #    save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/vgg19')
+    #    torch.save(model_obj.state_dict(), save_path)
+    #else:
+    #    model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
+    #    save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet50')
+    #    model_obj.load_state_dict(torch.load(save_path))
 
     run_from_checkpoint = False
     if run_from_checkpoint:
