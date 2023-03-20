@@ -61,7 +61,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
-
+    LR = 1e-3
     dir_base = config["dir_base"]
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
@@ -108,14 +108,14 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
 
-    #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
-    #tokenizer = AutoTokenizer.from_pretrained(language_path)
+    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
-
+    language_model = None
     #load in a language model used in the contrastive learning
     pretrained_model = False
     if pretrained_model:
@@ -269,11 +269,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    #load_model = False
+    #load_model = True
     #if load_model:
-    #    # model is orginally from here which was saved and reloaded to get around SSL
-    #    model_obj = smp.Unet(encoder_name="vgg19", encoder_weights="imagenet", in_channels=3, classes=1)
-    #    save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/vgg19')
+        # model is orginally from here which was saved and reloaded to get around SSL
+    #    model_obj = smp.Unet(encoder_name="resnet34", encoder_weights="imagenet", in_channels=3, classes=1)
+    #    save_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp/resnet34')
     #    torch.save(model_obj.state_dict(), save_path)
     #else:
     #    model_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=1, classes=1) #timm-efficientnet-b8 resnet34 decoder_channels=[512, 256, 128, 64, 32]
@@ -297,16 +297,19 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+
+    # was this one before coming back 3/20
+    # test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
-    #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
-    #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-    #test_obj.load_state_dict(torch.load(model_path))
+    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
+    model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
+    test_obj.load_state_dict(torch.load(model_path))
     #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
+
 
     #print("need to unfreeze lang params")
     for param in language_model.parameters():
@@ -359,8 +362,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             images = data['images'].to(device, dtype=torch.float)
 
 
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
             #outputs = model_obj(images)
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
@@ -412,8 +415,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
                 images = data['images'].to(device, dtype=torch.float)
 
                 #outputs = model_obj(images)
-                outputs = test_obj(images, ids, mask, token_type_ids)
-                #outputs = test_obj(images)
+                #outputs = test_obj(images, ids, mask, token_type_ids)
+                outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
                 #outputs = torch.squeeze(outputs)
@@ -479,8 +482,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             images = data['images'].to(device, dtype=torch.float)
 
             #outputs = model_obj(images)
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #outputs = outputs.squeeze(outputs)
