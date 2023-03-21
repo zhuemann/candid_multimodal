@@ -61,7 +61,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
-    LR = 1e-3
+    LR = 1e-4
     dir_base = config["dir_base"]
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
