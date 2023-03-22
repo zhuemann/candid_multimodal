@@ -61,7 +61,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
-    LR = 1e-4
+    #LR = 1e-4
     dir_base = config["dir_base"]
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
@@ -299,11 +299,11 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
 
     # was this one before coming back 3/20
-    # test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
-    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
-    model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
-    test_obj.load_state_dict(torch.load(model_path))
+    #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
+    #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
+    #test_obj.load_state_dict(torch.load(model_path))
     #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
