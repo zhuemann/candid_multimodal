@@ -108,9 +108,9 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     # use t5 as text encoder
-    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    #language_model = T5Model.from_pretrained(t5_path)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
 
     language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
     tokenizer = AutoTokenizer.from_pretrained(language_path)
@@ -312,8 +312,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
 
 
     #print("need to unfreeze lang params")
-    #for param in language_model.parameters():
-    #    param.requires_grad = False
+    for param in language_model.parameters():
+        param.requires_grad = False
 
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
