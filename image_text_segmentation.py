@@ -115,7 +115,6 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     #language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
-    language_model = None
     #load in a language model used in the contrastive learning
     pretrained_model = False
     if pretrained_model:
