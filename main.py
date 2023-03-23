@@ -96,7 +96,6 @@ if __name__ == '__main__':
     #train_report_generation = args.report_gen  # flip this to True to do report generation
     #if train_report_generation:
     #    report_generation(config)
-
     #train_text_classification_then_image_segmentation(config)
     #load_best_model(directory_base)
     #config["seed"] = 915
