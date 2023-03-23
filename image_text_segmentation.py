@@ -305,7 +305,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # was this one before coming back 3/20
     #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
-    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
+    #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
     #test_obj.load_state_dict(torch.load(model_path))
     #test_obj = Vision_Attention_UNet_Model(n_channels=3, n_classes=1, bilinear=False)
@@ -314,8 +314,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
-    #test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights,
-      #                                        args=args)
+    test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
 
     #print("need to unfreeze lang params")
     for param in language_model.parameters():
@@ -367,9 +366,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            #outputs = test_obj(images, ids, mask)  # for lavt
+            outputs = test_obj(images, ids, mask)  # for lavt
             #outputs = test_obj(images, ids, mask, token_type_ids)
-            outputs = test_obj(images)
+            #outputs = test_obj(images)
             #outputs = model_obj(images)
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
