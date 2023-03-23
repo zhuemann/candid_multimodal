@@ -686,6 +686,7 @@ class SpatialImageLanguageAttention(nn.Module):
         print(l_mask.size())
         query = self.f_query(x)  # (B, key_channels, H*W) if Conv1D
         query = query.permute(0, 2, 1)  # (B, H*W, key_channels)
+        print(l.size())
         key = self.f_key(l)  # (B, key_channels, N_l)
         value = self.f_value(l)  # (B, self.value_channels, N_l)
         key = key * l_mask  # (B, key_channels, N_l)
