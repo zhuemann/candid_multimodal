@@ -434,6 +434,7 @@ class MultiModalSwinTransformer(nn.Module):
                 Defaults to None.
         """
 
+
         def _init_weights(m):
             if isinstance(m, nn.Linear):
                 trunc_normal_(m.weight, std=.02)
