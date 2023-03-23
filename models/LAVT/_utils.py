@@ -35,7 +35,7 @@ class _LAVTOneSimpleDecode(nn.Module):
         self.backbone = backbone
         self.classifier = classifier
         #self.text_encoder = BertModel.from_pretrained(args.ck_bert)
-        self.text_encoder = BertModel.from_pretrained('/UserData/Zach_Analysis/models/bert/', output_hidden_states=True)
+        self.text_encoder = BertModel.from_pretrained('/UserData/Zach_Analysis/models/bert/') #, output_hidden_states=True)
         self.text_encoder.pooler = None
 
     def forward(self, x, text, l_mask):
