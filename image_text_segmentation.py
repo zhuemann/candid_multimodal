@@ -106,12 +106,16 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
 
 
-
-
+    bert_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
+    tokenizer = AutoTokenizer.from_pretrained(bert_path)
+    language_model = BertModel.from_pretrained(bert_path, output_hidden_states=True)
     # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
+
+    #language_model = None
+    #tokenizer = None
 
     #language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
     #tokenizer = AutoTokenizer.from_pretrained(language_path)
