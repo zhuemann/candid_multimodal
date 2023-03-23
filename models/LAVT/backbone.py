@@ -426,6 +426,7 @@ class MultiModalSwinTransformer(nn.Module):
                 for param in m.parameters():
                     param.requires_grad = False
 
+
     def init_weights(self, pretrained=None):
         """Initialize the weights in backbone.
         Args:
