@@ -320,8 +320,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 
     #print("need to unfreeze lang params")
-    #for param in language_model.parameters():
-    #    param.requires_grad = False
+    for param in language_model.parameters():
+        param.requires_grad = False
 
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
