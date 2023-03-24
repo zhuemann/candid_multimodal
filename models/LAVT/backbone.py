@@ -689,6 +689,8 @@ class SpatialImageLanguageAttention(nn.Module):
         print(l.size())
         key = self.f_key(l)  # (B, key_channels, N_l)
         value = self.f_value(l)  # (B, self.value_channels, N_l)
+        print(f"key: {key.size()}")
+        print(f"value: {value.size()}")
         key = key * l_mask  # (B, key_channels, N_l)
         value = value * l_mask  # (B, self.value_channels, N_l)
         n_l = value.size(-1)
