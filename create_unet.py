@@ -42,6 +42,7 @@ def load_img_segmentation_model(dir_base="/UserData/", pretrained_model=None):
         #                               'Zach_Analysis/models/candid_pretrained_models/bio_clincial_bert'
         #                               '/chexpert_resnet50.ckpt')
         pretrained_path = os.path.join(dir_base, 'Zach_Analysis/models/gloria_resnet50/chexpert_resnet50.ckpt')
+        print("loading in gloria wegihts")
         state_dict = torch.load(pretrained_path, map_location=torch.device('cpu'))  # map_location='cuda:0')
         new_state_dict = {}
         for k, v in state_dict["state_dict"].items():
