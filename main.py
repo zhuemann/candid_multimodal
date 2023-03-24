@@ -48,7 +48,7 @@ def get_parser():
     parser.add_argument('--mha', default='', help='If specified, should be in the format of a-b-c-d, e.g., 4-4-4-4,'
                                                   'where a, b, c, and d refer to the numbers of heads in stage-1,'
                                                   'stage-2, stage-3, and stage-4 PWAMs')
-    parser.add_argument('--model', default='lavt', help='model: lavt, lavt_one')
+    parser.add_argument('--model', default='lavt_one', help='model: lavt, lavt_one')
     parser.add_argument('--model_id', default='lavt', help='name to identify the model')
     parser.add_argument('--output-dir', default='./checkpoints/', help='path where to save checkpoint weights')
     parser.add_argument('--pin_mem', action='store_true',
