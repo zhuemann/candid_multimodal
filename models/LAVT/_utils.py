@@ -36,7 +36,7 @@ class _LAVTOneSimpleDecode(nn.Module):
         self.backbone = backbone
         self.classifier = classifier
         #self.text_encoder = BertModel.from_pretrained(args.ck_bert)
-        self.text_encoder = BertModel.from_pretrained('/UserData/Zach_Analysis/models/bert/', output_hidden_states=True)
+        self.text_encoder = BertModel.from_pretrained('/UserData/Zach_Analysis/models/bert/') #, output_hidden_states=True)
         self.text_encoder.pooler = None
 
     def forward(self, x, text, l_mask):
@@ -47,6 +47,8 @@ class _LAVTOneSimpleDecode(nn.Module):
         print(l_feats.size())
         l_feats = l_feats.permute(0, 2, 1)  # (B, 768, N_l) to make Conv1d happy
         l_mask = l_mask.unsqueeze(dim=-1)  # (batch, N_l, 1)
+        print(f"l mask size: {l_mask.size()}")
+        print(f"l feats: size: {l_feats.size()}")
         ##########################
         features = self.backbone(x, l_feats, l_mask)
         x_c1, x_c2, x_c3, x_c4 = features
