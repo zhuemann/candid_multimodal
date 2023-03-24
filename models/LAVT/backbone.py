@@ -5,7 +5,7 @@ import torch.utils.checkpoint as checkpoint
 import numpy as np
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 from .mmcv_custom import load_checkpoint
-f#rom mmseg.utils import get_root_logger
+#from mmseg.utils import get_root_logger
 
 """
 The backbone of the LAVT paper found here: https://github.com/yz93/LAVT-RIS
