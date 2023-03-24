@@ -42,6 +42,7 @@ class _LAVTOneSimpleDecode(nn.Module):
         input_shape = x.shape[-2:]
         ### language inference ###
         l_feats = self.text_encoder(text, attention_mask=l_mask)[0]  # (6, 10, 768)
+        print("language features in forward")
         print(l_feats.size())
         l_feats = l_feats.permute(0, 2, 1)  # (B, 768, N_l) to make Conv1d happy
         l_mask = l_mask.unsqueeze(dim=-1)  # (batch, N_l, 1)
