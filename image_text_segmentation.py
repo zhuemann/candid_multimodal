@@ -107,14 +107,14 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #ngram_synonom = pd.read_excel(ngram_synonom_path, engine='openpyxl')
 
 
-    bert_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
-    tokenizer = AutoTokenizer.from_pretrained(bert_path)
+    #bert_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
+    #tokenizer = AutoTokenizer.from_pretrained(bert_path)
     #language_model = BertModel.from_pretrained(bert_path, output_hidden_states=True)
-    language_model = None
+    #language_model = None
     # use t5 as text encoder
-    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    #language_model = T5Model.from_pretrained(t5_path)
+    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    language_model = T5Model.from_pretrained(t5_path)
 
     #language_model = None
     #tokenizer = None
@@ -305,7 +305,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
 
     # was this one before coming back 3/20
-    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     #model_path = os.path.join(dir_base, 'Zach_Analysis/models/smp_models/default_from_smp_three_channel/resnet50')
@@ -316,7 +316,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
-    test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
+    #test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 
     #print("need to unfreeze lang params")
@@ -370,8 +370,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             images = data['images'].to(device, dtype=torch.float)
 
             #print(images.size())
-            outputs = test_obj(images, ids, mask)  # for lavt
-            #outputs = test_obj(images, ids, mask, token_type_ids)
+            #outputs = test_obj(images, ids, mask)  # for lavt
+            outputs = test_obj(images, ids, mask, token_type_ids)
             #outputs = test_obj(images)
             #outputs = model_obj(images)
             #print(outputs.size())
@@ -424,8 +424,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 images = data['images'].to(device, dtype=torch.float)
 
                 #outputs = model_obj(images)
-                outputs = test_obj(images, ids, mask)  # for lavt
-                #outputs = test_obj(images, ids, mask, token_type_ids)
+                #outputs = test_obj(images, ids, mask)  # for lavt
+                outputs = test_obj(images, ids, mask, token_type_ids)
                 #outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
@@ -492,8 +492,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             images = data['images'].to(device, dtype=torch.float)
 
             #outputs = model_obj(images)
-            outputs = test_obj(images, ids, mask) #for lavt
-            #outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
+            #outputs = test_obj(images, ids, mask) #for lavt
+            outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
             #outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
