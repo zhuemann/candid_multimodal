@@ -14,6 +14,7 @@ class _LAVTSimpleDecode(nn.Module):
 
     def forward(self, x, l_feats, l_mask):
         input_shape = x.shape[-2:]
+        print(f"l feats before fail: {l_feats.size()}")
         features = self.backbone(x, l_feats, l_mask)
         x_c1, x_c2, x_c3, x_c4 = features
         x = self.classifier(x_c4, x_c3, x_c2, x_c1)
