@@ -18,6 +18,7 @@ import albumentations as albu
 from models.Gloria import GLoRIA
 import segmentation_models_pytorch as smp
 from models.LAVT import segmentation
+from create_unet import load_img_segmentation_model
 
 #from torch.optim.lr_scheduler import MultiStepLR
 
@@ -108,7 +109,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     bert_path = os.path.join(dir_base, 'Zach_Analysis/models/bert/')
     tokenizer = AutoTokenizer.from_pretrained(bert_path)
-    language_model = BertModel.from_pretrained(bert_path, output_hidden_states=True)
+    #language_model = BertModel.from_pretrained(bert_path, output_hidden_states=True)
+    language_model = None
     # use t5 as text encoder
     #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
@@ -314,11 +316,12 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
 
-    test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
+    #test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
+    test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 
     #print("need to unfreeze lang params")
-    for param in language_model.parameters():
-        param.requires_grad = False
+    #for param in language_model.parameters():
+    #    param.requires_grad = False
 
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
@@ -367,9 +370,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             images = data['images'].to(device, dtype=torch.float)
 
             print(images.size())
-            outputs = test_obj(images, ids, mask)  # for lavt
+            #outputs = test_obj(images, ids, mask)  # for lavt
             #outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            outputs = test_obj(images)
             #outputs = model_obj(images)
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
@@ -421,9 +424,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 images = data['images'].to(device, dtype=torch.float)
 
                 #outputs = model_obj(images)
-                outputs = test_obj(images, ids, mask)  # for lavt
+                #outputs = test_obj(images, ids, mask)  # for lavt
                 #outputs = test_obj(images, ids, mask, token_type_ids)
-                #outputs = test_obj(images)
+                outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
                 #outputs = torch.squeeze(outputs)
@@ -489,9 +492,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             images = data['images'].to(device, dtype=torch.float)
 
             #outputs = model_obj(images)
-            outputs = test_obj(images, ids, mask) #for lavt
+            #outputs = test_obj(images, ids, mask) #for lavt
             #outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
-            #outputs = test_obj(images)
+            outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #outputs = outputs.squeeze(outputs)

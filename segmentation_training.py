@@ -28,7 +28,9 @@ def segmentation_training(seed, batch_size=8, epoch=1, dir_base="/home/zmh001/r-
     N_CLASS = n_classes
     seed = seed
 
-    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
+    #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
+    dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
+
     # dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/weak_supervision/model2/test_df.xlsx')
     # dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_df_testset.xlsx')
     # gets the candid labels and saves it off to the location
