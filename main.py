@@ -148,7 +148,8 @@ if __name__ == '__main__':
     #seeds = [98, 98, 98, 98, 98, 98, 98, 98, 98, 98]
     #seeds = [456, 915]
     # seeds = [295]
-    seeds = [98, 117, 295, 456, 915]
+    #seeds = [98, 117, 295, 456, 915]
+    seed = [117]
     accuracy_list = []
 
     for seed in seeds:
