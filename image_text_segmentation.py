@@ -154,6 +154,13 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
+    train_dataframe_location = os.path.join(save_location,'pneumothorax_train_df_seed' + str(config["seed"]) + '.xlsx')
+    print(train_dataframe_location)
+    train_df.to_excel(train_dataframe_location, index=True)
+
+    valid_dataframe_location = os.path.join(save_location,'pneumothorax_valid_df_seed' + str(config["seed"]) + '.xlsx')
+    print(valid_dataframe_location)
+    valid_df.to_excel(valid_dataframe_location, index=True)
 
     test_dataframe_location = os.path.join(save_location, 'pneumothorax_testset_df_seed' + str(config["seed"]) + '.xlsx')
     print(test_dataframe_location)
