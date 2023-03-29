@@ -385,9 +385,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
             #print(images.size())
             #outputs = test_obj(images, ids, mask)  # for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
-            #outputs = model_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
+
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #print(outputs.size())
@@ -439,8 +439,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
                 #outputs = model_obj(images)
                 #outputs = test_obj(images, ids, mask)  # for lavt
-                outputs = test_obj(images, ids, mask, token_type_ids)
-                #outputs = test_obj(images)
+                #outputs = test_obj(images, ids, mask, token_type_ids)
+                outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
                 #outputs = torch.squeeze(outputs)
@@ -507,8 +507,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
             #outputs = model_obj(images)
             #outputs = test_obj(images, ids, mask) #for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
+            outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #outputs = outputs.squeeze(outputs)
