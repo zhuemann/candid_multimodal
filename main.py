@@ -89,7 +89,7 @@ if __name__ == '__main__':
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
     config = {"seed": 1, "batch_size": 2, "dir_base": directory_base, "epochs": 1, "n_classes": 2, "LR": 1e-3,
-              "IMG_SIZE": 1024, "train_samples": .01, "test_samples": .5, "data_path": "D:/candid_ptx/",
+              "IMG_SIZE": 1024, "train_samples": .08, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": False, "save_location": ""} #batch size was 8 with image size 256 .8 can use .004 train_samples = .8
     #image size was 1024 batch size 2
     #args = {}
