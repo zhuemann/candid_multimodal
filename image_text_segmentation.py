@@ -20,6 +20,8 @@ import segmentation_models_pytorch as smp
 from models.LAVT import segmentation
 from create_unet import load_img_segmentation_model
 
+from utility import mask2rle
+
 #from torch.optim.lr_scheduler import MultiStepLR
 #from monai.networks.nets import SwinUNETR
 
@@ -493,7 +495,10 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # model_obj.load_state_dict(torch.load('/home/zmh001/r-fcb-isilon/research/Bradshaw/Zach_Analysis/models/vit/best_multimodal_modal'))
     test_obj.load_state_dict(torch.load(saved_path))
     test_obj.eval()
-
+    pred_rle_list = []
+    target_rle_list = []
+    ids_list = []
+    dice_list = []
     with torch.no_grad():
         test_dice = []
         gc.collect()
@@ -514,19 +519,38 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             #outputs = outputs.squeeze(outputs)
             targets = output_resize(targets)
 
+
+
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
+                pred_rle = mask2rle(outputs[i])
+                target_rle= mask2rle(targets[i])
+                ids_example = ids[i]
+
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
                 test_dice.append(dice)
+                pred_rle_list.append(pred_rle)
+                target_rle_list.append(target_rle)
+                ids_list.append(ids_example)
+                dice_list.append(dice)
 
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+
+        test_df_data = pd.DataFrame(valid_log)
+        test_df_data["ids"] = ids_list
+        test_df_data["dice"] = dice_list
+        test_df_data["target"] = target_rle_list
+        test_df_data["prediction"] = pred_rle_list
+
+        filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
+        df.to_excel(filepath, index=False)
 
         return avg_test_dice, valid_log
 
