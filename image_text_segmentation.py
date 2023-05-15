@@ -323,13 +323,13 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
-    test_obj = SwinUNETR(
-        img_size=(960, 960, 96),
-        in_channels=3,
-        out_channels=1,
-        feature_size=48,
-        use_checkpoint=True,
-    ).to(device)
+    #test_obj = SwinUNETR(
+    #    img_size=(960, 960, 96),
+    #    in_channels=3,
+    #    out_channels=1,
+    #    feature_size=48,
+    #    use_checkpoint=True,
+    #).to(device)
     #test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
 

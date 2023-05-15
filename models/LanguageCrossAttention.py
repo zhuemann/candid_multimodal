@@ -50,8 +50,8 @@ class LangCrossAtt(nn.Module):
         att_matrix, attn_output_weights = self.multihead_attn(query=vision_rep, key=lang_rep, value=lang_rep)
 
         #att_matrix = self.sigmoid(att_matrix)
-        #att_matrix = self.tanh(att_matrix)
-        att_matrix = self.relu(att_matrix)
+        att_matrix = self.tanh(att_matrix)
+        #att_matrix = self.relu(att_matrix)
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
