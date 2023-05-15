@@ -21,7 +21,7 @@ from models.LAVT import segmentation
 from create_unet import load_img_segmentation_model
 
 #from torch.optim.lr_scheduler import MultiStepLR
-from monai.networks.nets import SwinUNETR
+#from monai.networks.nets import SwinUNETR
 
 #from albumentations.pytorch.transforms import ToTensorV2
 #from pytorch_metric_learning import losses
