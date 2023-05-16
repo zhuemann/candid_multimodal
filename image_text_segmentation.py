@@ -532,14 +532,14 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 target_item = targets[i].cpu().data.numpy()
                 #print(outputs[i].size())
                 #print(output_item)
-                print(type(output_item))
+                #print(type(output_item))
 
                 #print(output_item.size())
                 #print(outputs[i].item())
                 #print(type(outputs[i].item()))
                 pred_rle = mask2rle(output_item)
                 target_rle= mask2rle(target_item)
-                ids_example = ids[i].item()
+                ids_example = ids[i].cpu().data
 
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
