@@ -538,7 +538,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 #print(outputs[i].item())
                 #print(type(outputs[i].item()))
                 pred_rle = mask2rle(output_item)
-                print(pred_rle)
+                #print(pred_rle)
                 target_rle= mask2rle(target_item)
                 ids_example = row_ids[i]
 
@@ -556,8 +556,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
         #print(f"target: {target_rle_list}")
-        print(f"pred rle: {pred_rle_list}")
-        print(f"length pred rle: {len(pred_rle_list)}")
+        #print(f"pred rle: {pred_rle_list}")
+        #print(f"length pred rle: {len(pred_rle_list)}")
         #print(f"ids: {ids_list}")
         #print(f"dice: {dice_list}")
 
