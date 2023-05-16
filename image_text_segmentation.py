@@ -555,8 +555,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
-        print(f"target: {target_rle_list}")
+        #print(f"target: {target_rle_list}")
         print(f"pred rle: {pred_rle_list}")
+        print(f"length pred rle: {len(pred_rle)}")
         #print(f"ids: {ids_list}")
         #print(f"dice: {dice_list}")
 
