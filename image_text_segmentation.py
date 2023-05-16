@@ -526,8 +526,10 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
-                output_item = [t.numpy() for t in outputs[i]]
-                target_item = [t.numpy() for t in targets[i]]
+                #output_item = [t.numpy() for t in outputs[i]]
+                #target_item = [t.numpy() for t in targets[i]]
+                output_item = outputs[i].cpu().data.numpy()
+                target_item = targets[i].cpu().data.numpy()
                 #print(outputs[i].size())
                 #print(output_item)
                 print(type(output_item))
