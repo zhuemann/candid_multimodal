@@ -526,7 +526,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
-                output_item = outputs[i].item()
+                output_item = outputs[i]
                 #print(outputs[i].size())
                 #print(output_item)
                 print(type(output_item))
