@@ -526,33 +526,33 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
-                print(outputs[i].item())
-                print(type(outputs[i].item()))
-                pred_rle = mask2rle(outputs[i].item())
-                target_rle= mask2rle(targets[i].item())
-                ids_example = ids[i].item()
+                #print(outputs[i].item())
+                #print(type(outputs[i].item()))
+                #pred_rle = mask2rle(outputs[i].item())
+                #target_rle= mask2rle(targets[i].item())
+                #ids_example = ids[i].item()
 
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
                 test_dice.append(dice)
-                pred_rle_list.append(pred_rle)
-                target_rle_list.append(target_rle)
-                ids_list.append(ids_example)
-                dice_list.append(dice)
+                #pred_rle_list.append(pred_rle)
+                #target_rle_list.append(target_rle)
+                #ids_list.append(ids_example)
+                #dice_list.append(dice)
 
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
 
-        test_df_data = pd.DataFrame(valid_log)
-        test_df_data["ids"] = ids_list
-        test_df_data["dice"] = dice_list
-        test_df_data["target"] = target_rle_list
-        test_df_data["prediction"] = pred_rle_list
+        #test_df_data = pd.DataFrame(valid_log)
+        #test_df_data["ids"] = ids_list
+        #test_df_data["dice"] = dice_list
+        #test_df_data["target"] = target_rle_list
+        #test_df_data["prediction"] = pred_rle_list
 
-        filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        #filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
+        #df.to_excel(filepath, index=False)
 
         return avg_test_dice, valid_log
 
