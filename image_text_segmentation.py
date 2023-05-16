@@ -539,7 +539,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 #print(type(outputs[i].item()))
                 pred_rle = mask2rle(output_item)
                 target_rle= mask2rle(target_item)
-                ids_example = row_ids[i].cpu().data
+                ids_example = row_ids[i]
 
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
