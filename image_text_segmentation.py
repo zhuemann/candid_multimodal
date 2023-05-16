@@ -566,7 +566,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         test_df_data["prediction"] =  pd.Series(pred_rle_list)
 
         filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
-        df.to_excel(filepath, index=False)
+        test_df_data.to_excel(filepath, index=False)
 
         return avg_test_dice, valid_log
 
