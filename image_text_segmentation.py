@@ -509,7 +509,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             targets = data['targets'].to(device, dtype=torch.float)
             targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
-
+            row_ids = data['row_ids']
             #outputs = model_obj(images)
             #outputs = test_obj(images, ids, mask) #for lavt
             outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
@@ -539,7 +539,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 #print(type(outputs[i].item()))
                 pred_rle = mask2rle(output_item)
                 target_rle= mask2rle(target_item)
-                ids_example = ids[i].cpu().data
+                ids_example = row_ids[i].cpu().data
 
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
