@@ -560,10 +560,10 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         print(f"dice: {dice_list}")
 
         test_df_data = pd.DataFrame(valid_log)
-        test_df_data["ids"] = ids_list
-        test_df_data["dice"] = dice_list
-        test_df_data["target"] = target_rle_list
-        test_df_data["prediction"] = pred_rle_list
+        test_df_data["ids"] = pd.Series(ids_list)
+        test_df_data["dice"] = pd.Series(dice_list)
+        test_df_data["target"] =  pd.Series(target_rle_list)
+        test_df_data["prediction"] =  pd.Series(pred_rle_list)
 
         filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
         df.to_excel(filepath, index=False)
