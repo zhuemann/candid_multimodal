@@ -51,7 +51,7 @@ class LangCrossAtt(nn.Module):
 
         #att_matrix = self.sigmoid(att_matrix)
         #att_matrix = self.tanh(att_matrix)
-        #att_matrix = self.relu(att_matrix)
+        att_matrix = self.relu(att_matrix)
 
         vision_rep = vision_rep * att_matrix
         vision_rep = vision_rep.contiguous()
