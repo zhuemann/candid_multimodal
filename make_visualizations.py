@@ -232,8 +232,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         gc.collect()
         for i, data in tqdm(enumerate(test_loader, 0)):
             print(i)
-            #if i == 2:
-            #    break
+            if i == 2:
+                break
             ids = data['ids'].to(device, dtype=torch.long)
             mask = data['mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
@@ -273,10 +273,12 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target = targets.cpu().detach().numpy()
                 target = target[0, :, :]
                 max = np.amax(target)
+                print(max)
                 target = (target * 255) / max
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i) + '.png')
                 cv2.imwrite(fullpath, target)
 
+                """
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
                 max = np.amax(output)
@@ -290,6 +292,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(i) + '.png')
                 cv2.imwrite(fullpath, image)
+                """
 
 
                 test_dice.append(dice)
