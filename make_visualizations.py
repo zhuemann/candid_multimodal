@@ -136,14 +136,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         test_valid_df, test_size=config["test_samples"], random_state=seed, shuffle=True #stratify=test_valid_df.label.values
     )
 
-    valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
-    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(seed) +'/pneumothorax_df_validseed' + str(seed) + '.xlsx')
-    valid_df.to_excel(valid_dataframe_location, index=True)
+    #valid_dataframe_location = os.path.join(dir_base, 'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
+    #'t5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(seed) +'/pneumothorax_df_validseed' + str(seed) + '.xlsx')
+    #valid_df.to_excel(valid_dataframe_location, index=True)
 
-    train_dataframe_location = os.path.join(dir_base,'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
-                        't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(
-                        seed) + '/pneumothorax_df_trainseed' + str(seed) + '.xlsx')
-    train_df.to_excel(train_dataframe_location, index=True)
+    #train_dataframe_location = os.path.join(dir_base,'Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/' +
+    #                    't5_vis_attention_positive_cases_with_bilinear_interp_v11/seed' + str(
+    #                    seed) + '/pneumothorax_df_trainseed' + str(seed) + '.xlsx')
+    #train_df.to_excel(train_dataframe_location, index=True)
 
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
@@ -151,13 +151,15 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/examples_to_visualize.xlsx")
-    test_frame_locaction = os.path.join(dir_base,
-    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "multisegmentation_model_train_v13/seed98/left_right_swap_used_in_visualization.xlsx")
+    #test_frame_locaction = os.path.join(dir_base,
+    #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    #"multisegmentation_model_train_v13/seed98/left_right_swap_used_in_visualization.xlsx")
     #test_frame_locaction = os.path.join(dir_base,
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/single_example_to_visualize_v1_interactive.xlsx") #base_to_apical_text_change
 
+    test_frame_locaction = os.path.join(dir_base,"Z:/Zach_Analysis/result_logs/candid_result/" +
+       "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/pneumothorax_testset_df_seed915.xlsx")
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
 
@@ -244,21 +246,21 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target = target[0, :, :]
                 max = np.amax(target)
                 target = (target * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/targets/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/targets/' + str(i) + '.png')
                 cv2.imwrite(fullpath, target)
 
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
                 max = np.amax(output)
                 output = (output * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/outputs/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/outputs/' + str(i) + '.png')
                 cv2.imwrite(fullpath, output)
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/negative_cases/images/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/images/' + str(i) + '.png')
                 cv2.imwrite(fullpath, image)
 
 
