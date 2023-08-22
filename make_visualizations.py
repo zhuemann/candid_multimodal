@@ -241,8 +241,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             #targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            #outputs = model_obj(images)
-            outputs = test_obj(images, ids, mask, token_type_ids, targets)
+            outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids, targets)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
