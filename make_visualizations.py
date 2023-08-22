@@ -20,6 +20,8 @@ import albumentations as albu
 
 from models.Gloria import GLoRIA
 import cv2
+from utility import mask2rle
+
 
 
 from torch.optim.lr_scheduler import MultiStepLR
@@ -64,7 +66,12 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     BATCH_SIZE = config["batch_size"]
     BATCH_SIZE = 1
     N_EPOCHS = config["epochs"]
-    seed = 98
+
+    #config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
+    #   "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/")
+    config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
+       "image_text_segmentation_for_paper/higher_res_for_paper/basic_unet_from_smp_v34/seed915/")
+    seed = 915
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -160,8 +167,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/single_example_to_visualize_v1_interactive.xlsx") #base_to_apical_text_change
 
-    test_frame_locaction = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
-       "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/pneumothorax_testset_df_seed915.xlsx")
+    test_frame_locaction = os.path.join(dir_base, config["save_location"] + "pneumothorax_testset_df_seed915.xlsx")
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
 
@@ -193,8 +199,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
-
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
+    test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     test_obj.to(device)
 
     print("visualization run")
@@ -211,10 +217,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     "multisegmentation_model_train_v13/seed98/best_segmentation_model_seed98")
 
-    saved_path = os.path.join(dir_base, "Zach_Analysis/result_logs/candid_result/" +
-    "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/best_segmentation_model_seed_test915")
+    saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test915")
 
     test_obj.load_state_dict(torch.load(saved_path))
+
+    pred_rle_list = []
+    target_rle_list = []
+    ids_list = []
+    dice_list = []
 
     with torch.no_grad():
         test_obj.eval()
@@ -242,30 +252,43 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
+                output_item = outputs[i].cpu().data.numpy()
+                target_item = targets[i].cpu().data.numpy()
+                pred_rle = mask2rle(output_item)
+                target_rle = mask2rle(target_item)
+                ids_example = row_ids[i]
+
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
+
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
+                test_dice.append(dice)
+                pred_rle_list.append(pred_rle)
+                target_rle_list.append(target_rle)
+                ids_list.append(ids_example)
+                dice_list.append(dice)
+
 
                 target = targets.cpu().detach().numpy()
                 target = target[0, :, :]
                 max = np.amax(target)
                 target = (target * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/targets/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i) + '.png')
                 cv2.imwrite(fullpath, target)
 
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
                 max = np.amax(output)
                 output = (output * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/outputs/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(i) + '.png')
                 cv2.imwrite(fullpath, output)
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/images/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(i) + '.png')
                 cv2.imwrite(fullpath, image)
 
 
@@ -274,6 +297,15 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         print(len(test_dice))
         avg_test_dice = np.average(test_dice)
         print(f"Epoch {str(epoch)}, Average Test Dice Score = {avg_test_dice}")
+
+        test_df_data = pd.DataFrame(pd.Series(ids_list))
+        # test_df_data["ids"] = pd.Series(ids_list)
+        test_df_data["dice"] = pd.Series(dice_list)
+        test_df_data["target"] = pd.Series(target_rle_list)
+        test_df_data["prediction"] = pd.Series(pred_rle_list)
+
+        filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
+        test_df_data.to_excel(filepath, index=False)
 
         return avg_test_dice, valid_log
 

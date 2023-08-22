@@ -526,24 +526,15 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             row_ids.extend(data['row_ids'])
 
             for i in range(0, outputs.shape[0]):
-                #output_item = [t.numpy() for t in outputs[i]]
-                #target_item = [t.numpy() for t in targets[i]]
                 output_item = outputs[i].cpu().data.numpy()
                 target_item = targets[i].cpu().data.numpy()
-                #print(outputs[i].size())
-                #print(output_item)
-                #print(type(output_item))
-
-                #print(output_item.size())
-                #print(outputs[i].item())
-                #print(type(outputs[i].item()))
                 pred_rle = mask2rle(output_item)
-                #print(pred_rle)
                 target_rle= mask2rle(target_item)
                 ids_example = row_ids[i]
 
                 dice = dice_coeff(outputs[i], targets[i])
                 dice = dice.item()
+
                 if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
                     dice = 1
                 test_dice.append(dice)
