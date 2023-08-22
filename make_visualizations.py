@@ -56,7 +56,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     N_EPOCHS = epoch
     N_CLASS = n_classes
-
+    print("making visualizations")
     dir_base = config["dir_base"]
     seed = config["seed"]
     BATCH_SIZE = config["batch_size"]
