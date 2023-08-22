@@ -269,9 +269,9 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-                #print(target.size())
+                print(targets.size())
                 target = targets.cpu().detach().numpy()
-                print(target.size())
+                #print(target.size())
 
                 target = target[0, :, :]
                 #print(f"initial target: {target}")
