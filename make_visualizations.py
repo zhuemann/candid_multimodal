@@ -14,6 +14,8 @@ from collections import OrderedDict
 import numpy as np
 import gc
 import segmentation_models_pytorch as smp
+from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
+
 import albumentations as albu
 
 from models.Gloria import GLoRIA
@@ -191,7 +193,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
+    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
 
     test_obj.to(device)
 
