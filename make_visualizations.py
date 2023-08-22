@@ -277,7 +277,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target = (target * 255) / max
                 print(f"after normalizatin target: {target}")
 
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(j) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i*j + j) + '.png')
                 print(fullpath)
                 cv2.imwrite(fullpath, target)
 
@@ -286,14 +286,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 output = output[0, :, :]
                 max = np.amax(output)
                 output = (output * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(j) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(i*j + j) + '.png')
                 cv2.imwrite(fullpath, output)
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(j) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(i*j + j) + '.png')
                 cv2.imwrite(fullpath, image)
 
 
