@@ -273,7 +273,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target = targets.cpu().detach().numpy()
                 #print(target.size())
 
-                target = target[0, :, :]
+                target = target[j, :, :]
                 #print(f"initial target: {target}")
                 max = np.amax(target)
                 target = (target * 255) / max
