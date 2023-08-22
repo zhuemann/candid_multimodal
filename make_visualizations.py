@@ -272,9 +272,11 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 target = targets.cpu().detach().numpy()
                 target = target[0, :, :]
+                print(f"initial target: {target}")
                 max = np.amax(target)
-                print(max)
                 target = (target * 255) / max
+                print(f"after normalizatin target: {target}")
+
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i) + '.png')
                 cv2.imwrite(fullpath, target)
 
