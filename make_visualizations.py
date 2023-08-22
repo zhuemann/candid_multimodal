@@ -251,17 +251,17 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             outputs = torch.round(sigmoid)
             row_ids.extend(data['row_ids'])
 
-            for i in range(0, outputs.shape[0]):
-                output_item = outputs[i].cpu().data.numpy()
-                target_item = targets[i].cpu().data.numpy()
+            for j in range(0, outputs.shape[0]):
+                output_item = outputs[j].cpu().data.numpy()
+                target_item = targets[j].cpu().data.numpy()
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
-                ids_example = row_ids[i]
+                ids_example = row_ids[j]
 
-                dice = dice_coeff(outputs[i], targets[i])
+                dice = dice_coeff(outputs[j], targets[j])
                 dice = dice.item()
 
-                if torch.max(outputs[i]) == 0 and torch.max(targets[i]) == 0:
+                if torch.max(outputs[j]) == 0 and torch.max(targets[j]) == 0:
                     dice = 1
                 test_dice.append(dice)
                 pred_rle_list.append(pred_rle)
@@ -277,7 +277,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target = (target * 255) / max
                 print(f"after normalizatin target: {target}")
 
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(j) + '.png')
                 print(fullpath)
                 cv2.imwrite(fullpath, target)
 
@@ -286,14 +286,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 output = output[0, :, :]
                 max = np.amax(output)
                 output = (output * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(j) + '.png')
                 cv2.imwrite(fullpath, output)
 
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(i) + '.png')
+                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(j) + '.png')
                 cv2.imwrite(fullpath, image)
                 """
 
