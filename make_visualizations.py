@@ -269,16 +269,16 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-
+                print(target.size())
                 target = targets.cpu().detach().numpy()
                 target = target[0, :, :]
-                print(f"initial target: {target}")
+                #print(f"initial target: {target}")
                 max = np.amax(target)
                 target = (target * 255) / max
-                print(f"after normalizatin target: {target}")
+                #print(f"after normalizatin target: {target}")
 
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(i*j + j) + '.png')
-                print(fullpath)
+                #print(fullpath)
                 cv2.imwrite(fullpath, target)
 
 
