@@ -281,7 +281,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 print(fullpath)
                 cv2.imwrite(fullpath, target)
 
-                """
+
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
                 max = np.amax(output)
@@ -295,7 +295,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(j) + '.png')
                 cv2.imwrite(fullpath, image)
-                """
+
 
 
                 test_dice.append(dice)
