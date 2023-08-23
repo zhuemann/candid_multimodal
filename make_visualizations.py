@@ -246,6 +246,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
+            print(outputs.size())
 
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
