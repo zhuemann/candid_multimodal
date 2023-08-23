@@ -311,7 +311,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 print(output_overlay.shape)
                 np.squeeze(output_overlay)
                 print(output_overlay.shape)
-                img_overlay[:, :, 1] += output_overlay
+                img_overlay[:, :, 1] += output_overlay[0,:,:]
                 #img_overlay[:, :, 1] += output_overlay[j, 0, :, :]
 
                 # print(f"model_output: {np.shape(model_output)}")
