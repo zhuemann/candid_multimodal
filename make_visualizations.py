@@ -250,7 +250,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
             row_ids.extend(data['row_ids'])
-            print(f" In train loop data: {data['row_ids']}")
+            # print(f" In train loop data: {data['row_ids']}")
 
             for j in range(0, outputs.shape[0]):
                 output_item = outputs[j].cpu().data.numpy()
@@ -258,8 +258,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
                 ids_example = row_ids[i*2 + j]
-                print(f"In save loop: {ids_example}")
-                print(f"Index: {i*2 + j}")
+                # print(f"In save loop: {ids_example}")
+                # print(f"Index: {i*2 + j}")
 
                 dice = dice_coeff(outputs[j], targets[j])
                 dice = dice.item()
@@ -272,7 +272,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-                #print(targets.size())
+                print(f"Target size: {targets.size()}")
                 target = targets.cpu().detach().numpy()
                 #print(target.size())
 
@@ -286,7 +286,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 #print(fullpath)
                 cv2.imwrite(fullpath, target)
 
-
+                print(f"outputs: {outputs.size()}")
                 output = outputs.cpu().detach().numpy()
                 output = output[0, :, :]
                 max = np.amax(output)
@@ -294,12 +294,22 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, output)
 
+                print(f"Images size: {images.size()}")
+
                 #image = images.cpu().detach().numpy()
                 image = images[0, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, image)
+
+                #img_test = cv2.cvtColor(image[0,0,:,:], cv2.COLOR_GRAY2RGB)
+
+                #print(np.sum(model_output) / 255)
+                #img_overlay[:, :, 1] += (target_batch_unnorm[0, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[0, 0, :, :]))
+                #fullpath = os.path.join(dir_base,
+                #                        'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay' + str(ids_example) + '.png')
+                #cv2.imwrite(fullpath, img_overlay)
 
 
 
