@@ -246,11 +246,11 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
-            print(outputs.size())
 
             sigmoid = torch.sigmoid(outputs)
             outputs = torch.round(sigmoid)
             row_ids.extend(data['row_ids'])
+            print(f" In train loop data: {data['row_ids']}")
 
             for j in range(0, outputs.shape[0]):
                 output_item = outputs[j].cpu().data.numpy()
@@ -258,7 +258,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
                 ids_example = row_ids[i*2 + j]
-                print(ids_example)
+                print(f"In save loop: {ids_example}")
 
                 dice = dice_coeff(outputs[j], targets[j])
                 dice = dice.item()
