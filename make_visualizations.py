@@ -297,7 +297,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, image)
 
-                img_overlay = cv2.cvtColor(images[j,0,:,:], cv2.COLOR_GRAY2RGB)
+                img_overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
                 #print(np.sum(model_output) / 255)
                 target_batch_unnorm = targets
                 img_overlay[:, :, 1] += (target_batch_unnorm[j, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[j, 0, :, :]))
