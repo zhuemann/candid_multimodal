@@ -274,42 +274,35 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 print(f"Target size: {targets.size()}")
                 target = targets.cpu().detach().numpy()
-                #print(target.size())
-
                 target = target[j, 0, :, :]
-                #print(f"initial target: {target}")
                 max = np.amax(target)
                 target = (target * 255) / max
-                #print(f"after normalizatin target: {target}")
-
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(ids_example) + '.png')
-                #print(fullpath)
                 cv2.imwrite(fullpath, target)
 
                 print(f"outputs: {outputs.size()}")
                 output = outputs.cpu().detach().numpy()
-                output = output[0, :, :]
+                output = output[j, :, :]
                 max = np.amax(output)
                 output = (output * 255) / max
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, output)
 
-                print(f"Images size: {images.size()}")
+                print(f"images size: {images.size()}")
 
                 #image = images.cpu().detach().numpy()
-                image = images[0, 0, :, :]
+                image = images[j, 0, :, :]
                 image = image.cpu().detach().numpy()
                 #images = images[0, :, :]
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, image)
 
-                #img_test = cv2.cvtColor(image[0,0,:,:], cv2.COLOR_GRAY2RGB)
-
+                img_overlay = cv2.cvtColor(images[j,0,:,:], cv2.COLOR_GRAY2RGB)
                 #print(np.sum(model_output) / 255)
-                #img_overlay[:, :, 1] += (target_batch_unnorm[0, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[0, 0, :, :]))
-                #fullpath = os.path.join(dir_base,
-                #                        'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay' + str(ids_example) + '.png')
-                #cv2.imwrite(fullpath, img_overlay)
+                target_batch_unnorm = targets
+                img_overlay[:, :, 1] += (target_batch_unnorm[j, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[j, 0, :, :]))
+                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay/' + str(ids_example) + '.png')
+                cv2.imwrite(fullpath, img_overlay)
 
 
 
