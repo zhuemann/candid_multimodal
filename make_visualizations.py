@@ -259,6 +259,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target_rle = mask2rle(target_item)
                 ids_example = row_ids[i*2 + j]
                 print(f"In save loop: {ids_example}")
+                print(f"Index: {i*2 + j}")
 
                 dice = dice_coeff(outputs[j], targets[j])
                 dice = dice.item()
