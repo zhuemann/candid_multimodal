@@ -272,7 +272,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-                print(f"Target size: {targets.size()}")
+                #print(f"Target size: {targets.size()}")
                 target = targets.cpu().detach().numpy()
                 target = target[j, 0, :, :]
                 max = np.amax(target)
@@ -280,7 +280,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, target)
 
-                print(f"outputs: {outputs.size()}")
+                #print(f"outputs: {outputs.size()}")
                 output = outputs.cpu().detach().numpy()
                 output = output[j, :, :]
                 max = np.amax(output)
@@ -288,7 +288,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, output)
 
-                print(f"images size: {images.size()}")
+                #print(f"images size: {images.size()}")
 
                 #image = images.cpu().detach().numpy()
                 image = images[j, 0, :, :]
