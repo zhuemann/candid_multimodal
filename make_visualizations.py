@@ -288,6 +288,12 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, output)
 
+                model_output = outputs.cpu().detach().numpy()
+                output_overlay = (model_output * 255) / np.amax(model_output)
+                # print(f"model_output: {np.shape(model_output)}")
+                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay/' +  str(ids_example) + '.png')
+                cv2.imwrite(fullpath, output_overlay[j, 0, :, :])
+
                 #print(f"images size: {images.size()}")
 
                 #image = images.cpu().detach().numpy()
@@ -301,7 +307,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 #print(np.sum(model_output) / 255)
                 target_batch_unnorm = targets.cpu().detach().numpy()
                 img_overlay[:, :, 1] += (target_batch_unnorm[j, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[j, 0, :, :]))
-                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay/' + str(ids_example) + '.png')
+                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/target_overlay/' + str(ids_example) + '.png')
                 cv2.imwrite(fullpath, img_overlay)
 
 
