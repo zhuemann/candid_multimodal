@@ -257,7 +257,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 target_item = targets[j].cpu().data.numpy()
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
-                ids_example = row_ids[j]
+                ids_example = row_ids[i*j + j]
                 print(ids_example)
 
                 dice = dice_coeff(outputs[j], targets[j])
