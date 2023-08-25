@@ -217,7 +217,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/best_segmentation_model_seed98")
 
-    saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test" + config["seed"])
+    saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test" + str(config["seed"]))
 
     test_obj.load_state_dict(torch.load(saved_path))
 
@@ -338,7 +338,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         test_df_data["target"] = pd.Series(target_rle_list)
         test_df_data["prediction"] = pd.Series(pred_rle_list)
 
-        filepath = os.path.join(config["save_location"], "prediction_dataframe" + str(seed) + '.xlsx')
+        filepath = os.path.join(config["save_location"], "prediction_dataframe_seed" + str(seed) + '.xlsx')
         print(filepath)
         test_df_data.to_excel(filepath, index=False)
 
