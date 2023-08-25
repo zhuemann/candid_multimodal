@@ -276,7 +276,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-                make_images = True
+                make_images = False
                 if make_images:
                     folder_name = "contextual_net"
                     #print(f"Target size: {targets.size()}")
