@@ -70,7 +70,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
     #   "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/")
     config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
-       "image_text_segmentation_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(config["seed"]) + "/")
+       "image_text_segmentation_for_paper/higher_res_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(config["seed"]) + "/")
     seed = config["seed"]
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
