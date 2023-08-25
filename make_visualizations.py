@@ -231,7 +231,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
         test_dice = []
         gc.collect()
         for i, data in tqdm(enumerate(test_loader, 0)):
-            print(i)
+            # print(i)
             #if i == 2:
             #    break
             ids = data['ids'].to(device, dtype=torch.long)
@@ -255,6 +255,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             for j in range(0, outputs.shape[0]):
                 output_item = outputs[j].cpu().data.numpy()
                 target_item = targets[j].cpu().data.numpy()
+                print(f"output_item: {output_item.shape}")
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
                 ids_example = row_ids[i*2 + j]
