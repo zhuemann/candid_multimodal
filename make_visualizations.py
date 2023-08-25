@@ -70,7 +70,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
     #   "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/")
     config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
-       "image_text_segmentation_for_paper/higher_res_for_paper/gloria_image_encoder_v36/seed" + str(config["seed"]) + "/")
+       "image_text_segmentation_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(config["seed"]) + "/")
     seed = config["seed"]
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
@@ -198,8 +198,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     test_loader = DataLoader(test_set, **test_params)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
-
+    #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
+    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     test_obj.to(device)
@@ -278,7 +278,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 make_images = True
                 if make_images:
-                    folder_name = "gloria"
+                    folder_name = "contextual_net"
                     #print(f"Target size: {targets.size()}")
                     target = targets.cpu().detach().numpy()
                     target = target[j, 0, :, :]
