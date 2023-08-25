@@ -74,6 +74,8 @@ def get_parser():
 
 
 if __name__ == '__main__':
+    #make_plots()
+    #print(fail)
     args = create_parser()
     parser = get_parser()
     args_dict = parser.parse_args()
@@ -107,9 +109,9 @@ if __name__ == '__main__':
     #make_plots()
     #print(fail)
     #config["seed"] = 98
-    make_images_on_dgx(config)
+    #make_images_on_dgx(config)
 
-    print(fail)
+    #print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
@@ -169,15 +171,16 @@ if __name__ == '__main__':
         #save_location = ""
 
         config["seed"] = seed
-        config["save_location"] = save_location
-
+        #config["save_location"] = save_location
+        make_images_on_dgx(config)
+        """
         acc, valid_log = train_image_text_segmentation(config, args=args_dict)
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
 
         filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
         df.to_excel(filepath, index=False)
-
+        """
     """
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:

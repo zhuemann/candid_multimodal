@@ -70,8 +70,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
     #   "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/")
     config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
-       "image_text_segmentation_for_paper/higher_res_for_paper/basic_unet_from_smp_v34/seed915/")
-    seed = 915
+       "image_text_segmentation_for_paper/higher_res_for_paper/basic_unet_from_smp_v34/seed" + str(config[seed]) + "/")
+    seed = config["seed"]
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_large_df.xlsx')
@@ -167,7 +167,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/single_example_to_visualize_v1_interactive.xlsx") #base_to_apical_text_change
 
-    test_frame_locaction = os.path.join(dir_base, config["save_location"] + "pneumothorax_testset_df_seed915.xlsx")
+    test_frame_locaction = os.path.join(dir_base, config["save_location"] + "pneumothorax_testset_df_seed" + str(config["seed"]) + ".xlsx")
     test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
 
@@ -213,11 +213,11 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #saved_path = os.path.join(dir_base,
     #                          'Zach_Analysis/models/candid_finetuned_segmentation/forked_1/segmentation_forked_candid_negatives_seed98')
 
-    saved_path = os.path.join(dir_base,
-    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
-    "multisegmentation_model_train_v13/seed98/best_segmentation_model_seed98")
+    #saved_path = os.path.join(dir_base,
+    #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
+    #"multisegmentation_model_train_v13/seed98/best_segmentation_model_seed98")
 
-    saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test915")
+    saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test" + config["seed"])
 
     test_obj.load_state_dict(torch.load(saved_path))
 
@@ -275,51 +275,54 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 ids_list.append(ids_example)
                 dice_list.append(dice)
 
-                #print(f"Target size: {targets.size()}")
-                target = targets.cpu().detach().numpy()
-                target = target[j, 0, :, :]
-                max = np.amax(target)
-                target = (target * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/targets/' + str(ids_example) + '.png')
-                cv2.imwrite(fullpath, target)
+                make_images = False
+                if make_images:
+                    folder_name = "smp_unet"
+                    #print(f"Target size: {targets.size()}")
+                    target = targets.cpu().detach().numpy()
+                    target = target[j, 0, :, :]
+                    max = np.amax(target)
+                    target = (target * 255) / max
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/' + folder_name + '/targets/' + str(ids_example) + '.png')
+                    cv2.imwrite(fullpath, target)
 
-                #print(f"outputs: {outputs.size()}")
-                output = outputs.cpu().detach().numpy()
-                output = output[j, :, :]
-                max = np.amax(output)
-                output = (output * 255) / max
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/outputs/' + str(ids_example) + '.png')
-                cv2.imwrite(fullpath, output)
+                    #print(f"outputs: {outputs.size()}")
+                    output = outputs.cpu().detach().numpy()
+                    output = output[j, :, :]
+                    max = np.amax(output)
+                    output = (output * 255) / max
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/' + folder_name + '/outputs/' + str(ids_example) + '.png')
+                    cv2.imwrite(fullpath, output)
 
-                #print(f"images size: {images.size()}")
+                    #print(f"images size: {images.size()}")
 
-                #image = images.cpu().detach().numpy()
-                image = images[j, 0, :, :]
-                image = image.cpu().detach().numpy()
-                #images = images[0, :, :]
-                fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/images/' + str(ids_example) + '.png')
-                cv2.imwrite(fullpath, image)
+                    #image = images.cpu().detach().numpy()
+                    image = images[j, 0, :, :]
+                    image = image.cpu().detach().numpy()
+                    #images = images[0, :, :]
+                    fullpath = os.path.join(dir_base, 'Zach_Analysis/dgx_images/model_output_comparisons/' + folder_name + '/images/' + str(ids_example) + '.png')
+                    cv2.imwrite(fullpath, image)
 
-                img_overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-                #print(np.sum(model_output) / 255)
-                target_batch_unnorm = targets.cpu().detach().numpy()
-                img_overlay[:, :, 1] += (target_batch_unnorm[j, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[j, 0, :, :]))
-                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/target_overlay/' + str(ids_example) + '.png')
-                cv2.imwrite(fullpath, img_overlay)
+                    img_overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+                    #print(np.sum(model_output) / 255)
+                    target_batch_unnorm = targets.cpu().detach().numpy()
+                    img_overlay[:, :, 1] += (target_batch_unnorm[j, 0, :, :] * (255 / 3) / np.amax(target_batch_unnorm[j, 0, :, :]))
+                    fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/' + folder_name + '/target_overlay/' + str(ids_example) + '.png')
+                    cv2.imwrite(fullpath, img_overlay)
 
-                img_overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-                model_output = outputs.cpu().detach().numpy()
-                output_overlay = (model_output[j, :, :] * 255 / 3) / np.amax(model_output[j, :, :])
+                    img_overlay = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+                    model_output = outputs.cpu().detach().numpy()
+                    output_overlay = (model_output[j, :, :] * 255 / 3) / np.amax(model_output[j, :, :])
 
-                #print(output_overlay.shape)
-                np.squeeze(output_overlay)
-                #print(output_overlay.shape)
-                img_overlay[:, :, 1] += output_overlay[:, :]
-                #img_overlay[:, :, 1] += output_overlay[j, 0, :, :]
+                    #print(output_overlay.shape)
+                    np.squeeze(output_overlay)
+                    #print(output_overlay.shape)
+                    img_overlay[:, :, 1] += output_overlay[:, :]
+                    #img_overlay[:, :, 1] += output_overlay[j, 0, :, :]
 
-                # print(f"model_output: {np.shape(model_output)}")
-                fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/smp_unet/output_overlay/' +  str(ids_example) + '.png')
-                cv2.imwrite(fullpath, img_overlay)
+                    # print(f"model_output: {np.shape(model_output)}")
+                    fullpath = os.path.join(dir_base,'Zach_Analysis/dgx_images/model_output_comparisons/' + folder_name + '/output_overlay/' +  str(ids_example) + '.png')
+                    cv2.imwrite(fullpath, img_overlay)
 
 
 

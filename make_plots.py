@@ -60,10 +60,11 @@ def make_plots():
     #prediction = "49640 16 50116 22 50592 28 51070 31 51547 35 52024 39 52501 43 52979 46 53457 49 53933 54 54410 57 54886 62 55364 64 55841 68 56319 70 56797 21 56827 43 57274 20 57312 38 57753 17 57797 33 58231 16 58280 30 58710 15 58763 28 59188 14 59245 26 59666 13 59726 25 60145 12 60207 24 60625 10 60688 23 61103 10 61170 21 61582 9 61651 20 62060 10 62132 19 62540 8 62613 18 63019 7 63094 17 63498 6 63575 16 63978 5 64056 15 64458 2 64537 13 64938 1 65018 12 65499 11 65980 9 66461 8 66942 6 67423 5 67905 3 151766 1 152245 2 152725 2 153205 3 153684 4 154164 4 154643 6 155122 7 155602 8 156081 9 156561 10 157041 10 157520 12 158000 13 158479 14 158959 15 159438 16 159918 17 160398 17 160877 20 160940 3 161357 21 161418 5 161837 22 161897 7 162317 24 162376 9 162796 26 162855 8 163276 27 163334 7 163756 28 163809 10 164236 29 164285 13 164715 31 164762 13 165195 33 165238 16 165675 37 165715 18 166155 58 166634 57 167114 54 167594 52 168074 51 168554 49 169033 48 169513 46 169993 44 170473 43 170953 41 171432 40 171912 39 172392 37 172872 35 173352 33 173832 32 174312 30 174791 30 175271 28 175751 27 176231 25 176711 24 177191 21 177671 19 178151 18 178631 17 179111 16 179591 14 180070 14 180550 13 181030 12 181510 11 181990 9 182470 8 182950 7 183430 6 183911 4 184392 3 184873 1"
     #target = rle_decode(target, (480, 480))
     #prediction = rle_decode(prediction, (480, 480))
-    target = resize_array(target, (1024, 1024))
-    prediction = resize_array(prediction, (1024, 1024))
+    #target = resize_array(target, (1024, 1024))
+    #prediction = resize_array(prediction, (1024, 1024))
     #pneumo_tot = pn1 + pn2 + pn3 + pn4 + pn5
-
+    target = rle_decode(target, (1024,1024))
+    prediction = rle_decode(prediction, (1024,1024))
     #pneumo_tot[pneumo_tot > 1] = 1
 
     #pneumo_added = pneumo1# + pneumo2
@@ -103,10 +104,10 @@ def make_plots():
     ax[0].set_title('Chest X-ray', size=20)
     ax[1].imshow(target, cmap=plt.cm.bone)
     ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
-    ax[1].set_title('Physician Segmentation', size=20)
+    ax[1].set_title('Target Segmentation', size=20)
     ax[2].imshow(prediction, cmap="jet", alpha=1)
     # ax[2].title.set_text('Segmentation on X-Ray', size=10)
-    ax[2].set_title('Segmentation on X-Ray', size=20)
+    ax[2].set_title('Model Segmentation on X-Ray', size=20)
     ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
     ax[0].axes.xaxis.set_visible(False)
