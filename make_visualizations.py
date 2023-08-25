@@ -256,6 +256,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
                 output_item = outputs[j].cpu().data.numpy()
                 target_item = targets[j].cpu().data.numpy()
                 print(f"output_item: {output_item.shape}")
+                print(f"type: {type(output_item)}")
+
                 pred_rle = mask2rle(output_item)
                 target_rle = mask2rle(target_item)
                 ids_example = row_ids[i*2 + j]
