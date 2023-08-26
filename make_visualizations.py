@@ -281,7 +281,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
                 make_images = True
                 if make_images:
-                    folder_name = "contextual_net_vis_only"
+                    folder_name = "contextual_net_seed456"
                     #print(f"Target size: {targets.size()}")
                     target = targets.cpu().detach().numpy()
                     target = target[j, 0, :, :]
