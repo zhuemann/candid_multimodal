@@ -21,6 +21,7 @@ from create_unet import load_img_segmentation_model
 from models.Gloria import GLoRIA
 import cv2
 from utility import mask2rle
+from models.Base_UNet import Unet_Baseline
 
 
 
@@ -70,7 +71,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
     #   "image_text_segmentation_for_paper/higher_res_for_paper/Contextual_rerun_v41/seed915/")
     config["save_location"] = os.path.join(dir_base,"Zach_Analysis/result_logs/candid_result/" +
-       "image_text_segmentation_for_paper/higher_res_for_paper/language_att_no_text_aug_larger_img_v24/seed" + str(config["seed"]) + "/")
+       "image_text_segmentation_for_paper/higher_res_for_paper/baseline_unet_positive_cases_vision_larger_img_v20/seed" + str(config["seed"]) + "/")
     seed = config["seed"]
     dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_multisegmentation_positive_text_df.xlsx')
     #dataframe_location = os.path.join(dir_base, 'Zach_Analysis/candid_data/pneumothorax_with_text_df.xlsx') #pneumothorax_df chest_tube_df rib_fracture
@@ -199,7 +200,9 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+
+    test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False) #contexut net u net
     #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=True)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
     test_obj.to(device)
@@ -242,8 +245,8 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
             #targets = torch.squeeze(targets)
             images = data['images'].to(device, dtype=torch.float)
 
-            #outputs = test_obj(images)
-            outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             targets = output_resize(targets)
