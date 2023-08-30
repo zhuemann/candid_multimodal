@@ -350,7 +350,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     # defines which optimizer is being used
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=12500, eta_min=1e-7, last_epoch=-1, verbose=False)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=60000, eta_min=1e-7, last_epoch=-1, verbose=False)
 
     #optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR) # was used for all the baselines
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
