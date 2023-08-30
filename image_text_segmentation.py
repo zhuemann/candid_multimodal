@@ -62,7 +62,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
-    LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 1e-4 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
@@ -223,11 +223,11 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 albu.RandomGamma(),
                 albu.RandomBrightness(),
             ], p=.3),
-            albu.OneOf([
-                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-                albu.GridDistortion(),
-                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-            ], p=.3),
+            #albu.OneOf([
+            #    albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+            #    albu.GridDistortion(),
+            #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+            #], p=.3),
             albu.ShiftScaleRotate(),
             #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
@@ -350,6 +350,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     # defines which optimizer is being used
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=12500, eta_min=1e-7, last_epoch=-1, verbose=False)
 
     #optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR) # was used for all the baselines
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)

@@ -130,10 +130,10 @@ def resize_array(input_array, target_shape):
 
 
 def make_plots_for_all_models(img_name, seed):
-    # target = "153187 19 154203 31 155218 44 156234 56 157254 64 158273 72 159294 78 160316 83 161337 88 162360 90 163382 94 164405 97 165427 100 166450 102 167473 105 168496 107 169519 109 170543 110 171566 112 172589 114 173612 116 174635 118 175658 120 176682 121 177705 123 178728 125 179751 128 180774 130 181798 131 182821 133 183844 135 184867 137 185891 138 186914 140 187938 141 188961 143 189985 144 191008 146 192032 147 193055 149 194079 150 195102 152 196126 153 197149 155 198173 156 199196 158 200220 159 201243 161 202267 162 203290 164 204314 164 205337 166 206361 167 207384 169 208408 170 209431 172 210455 173 211479 174 212502 176 213526 177 214549 179 215573 180 216596 182 217620 183 218643 185 219667 186 220690 188 221714 189 222738 190 223761 192 224785 193 225809 194 226832 196 227856 197 228880 198 229904 199 230927 201 231951 202 232975 203 233999 204 235022 206 236046 206 237070 207 238094 208 239117 210 240141 211 241165 211 242189 212 243212 214 244236 215 245260 215 246284 216 247308 217 248332 218 249355 219 250379 220 251403 221 252427 222 253451 223 254475 224 255499 225 256523 225 257547 226 258570 228 259594 229 260618 230 261642 230 262666 231 263690 231 264714 232 265738 232 266761 234 267785 235 268809 235 269833 236 270857 236 271881 128 272021 97 272905 124 273053 90 273929 122 274082 85 274953 120 275110 82 275977 118 276138 78 277001 116 277166 75 278025 114 278194 71 279049 112 279222 67 280073 110 280248 66 281097 108 281274 64 282121 100 282300 63 283145 91 283326 61 284169 74 284352 59 285193 71 285378 58 286217 69 286404 56 287241 66 287430 55 288265 63 288456 53 289289 61 289482 52 290313 58 290507 51 291337 56 291533 50 292361 54 292558 49 293385 52 293584 48 294409 50 294609 47 295433 48 295635 45 296457 46 296660 45 297481 45 297685 44 298505 43 298710 44 299529 42 299736 42 300553 41 300761 41 301578 38 301786 40 302602 37 302811 40 303626 36 303836 39 304650 35 304861 38 305674 34 305886 37 306698 33 306911 37 307722 32 307936 36 308746 31 308961 35 309770 30 309986 35 310794 29 311011 34 311818 29 312036 33 312842 28 313060 34 313866 28 314085 33 314890 27 315110 33 315914 27 316135 32 316938 27 317160 31 317962 26 318185 31 318986 26 319209 31 320011 25 320234 30 321035 24 321259 30 322059 24 322284 29 323083 23 323309 29 324107 23 324334 28 325131 23 325359 27 326156 21 326383 28 327180 21 327408 27 328204 20 328433 26 329228 20 329458 26 330253 18 330483 25 331277 18 331508 25 332301 17 332533 24 333325 17 333557 24 334350 15 334582 23 335374 15 335607 23 336399 13 336632 22 337423 13 337656 22 338447 12 338681 21 339472 10 339706 21 340496 9 340731 20 341524 5 341755 20 342551 1 342780 20 343805 19 344829 19 345854 19 346878 19 347903 19 348927 19 349952 18 350976 19 352001 18 353025 18 354050 18 355075 17 356100 16 357124 17 358149 16 359174 15 360198 15 361223 15 362248 14 363273 13 364297 13 365322 13 366347 12 367372 11 368397 10 369421 11 370446 10 371471 9 372496 8 373521 8 374545 8 375570 7 376594 7 377619 6 378643 7 379668 6 380693 5 381717 5 382742 5 383766 5 384791 3 385815 3 386840 1 387864 1"
-    # prediction = "159323 12 160336 38 161351 56 162372 62 163391 70 164414 76 165436 81 166458 86 167480 91 168503 95 169524 99 170547 102 171569 105 172591 109 173614 111 174637 113 175659 117 176682 120 177705 122 178728 124 179751 126 180774 128 181797 129 182821 131 183844 132 184867 134 185890 136 186913 137 187936 139 188959 141 189983 141 191006 143 192030 144 193054 145 194077 147 195101 148 196125 149 197148 152 198172 153 199196 154 200220 156 201244 157 202268 158 203291 160 204315 161 205339 163 206362 165 207386 166 208409 168 209433 169 210456 171 211480 172 212503 174 213527 175 214551 177 215574 179 216598 180 217622 180 218645 182 219669 183 220692 185 221716 186 222740 187 223763 189 224787 190 225811 191 226834 192 227858 193 228882 194 229905 196 230929 197 231953 197 232977 198 234000 200 235024 200 236048 201 237072 202 238095 203 239119 203 240143 204 241167 205 242191 205 243215 206 244239 207 245263 207 246287 208 247310 210 248334 211 249358 212 250381 215 251405 216 252429 217 253453 218 254477 219 255500 221 256524 222 257548 223 258572 223 259595 225 260619 226 261643 226 262667 227 263690 229 264714 229 265738 230 266762 230 267785 232 268809 232 269833 233 270857 233 271881 233 272905 45 272951 101 273057 82 273929 42 273977 21 274042 7 274059 9 274084 79 274953 39 275003 14 275111 77 275977 37 276032 1 276138 74 277001 35 277167 69 278025 33 278192 69 279049 32 279219 67 280073 31 280245 65 281097 29 281271 64 282121 29 282297 63 283145 27 283324 60 284170 26 284350 59 285194 24 285376 57 286218 23 286401 57 287244 20 287426 56 288268 19 288452 54 289293 16 289478 53 290318 9 290503 52 291529 51 292555 49 293582 47 294607 46 295632 45 296657 45 297683 43 298707 43 299733 42 300758 41 301783 40 302808 39 303833 39 304858 38 305883 38 306909 36 307934 36 308959 35 309984 34 311009 34 312034 33 313059 33 314085 31 315110 30 316135 30 317159 31 318184 30 319209 29 320234 29 321259 28 322284 27 323309 27 324334 27 325359 26 326383 27 327408 26 328433 26 329458 25 330483 25 331508 24 332533 23 333557 24 334582 23 335607 23 336632 22 337656 22 338681 22 339706 21 340730 21 341755 20 342780 20 343804 20 344829 20 345854 19 346878 20 347903 19 348928 18 349952 18 350977 17 352002 16 353026 17 354051 16 355076 15 356100 16 357125 15 358150 14 359175 13 360199 14 361224 13 362248 13 363273 12 364298 12 365322 12 366346 12 367371 11 368395 11 369420 10 370444 10 371468 11 372493 10 373517 10 374541 10 375566 9 376590 9 377614 9 378638 9 379663 8 380687 8 381711 8 382736 7 383760 7 384784 7 385809 6 386833 6 387858 5 388882 5 389906 5 390930 5 391954 5 392979 4 394003 4 395027 4 396051 4 397075 3 398100 2 399124 2"
-    img_name = "3.5.42.942629.53.2.0.6.90921253161.7144624509648.6"
-    seed = 915
+    #img_name = "3.5.42.942629.53.2.0.6.90921253161.7144624509648.6"
+    #img_name = "8.2.871.805351.9.703.0.9967444461.1812958023.411720"
+    #img_name = "7.0.31.925295.30.8.2.1.086175070283447.4416060742930.8"
+    #seed = 915
     # dir_base = "/UserData/"
     dir_base = "Z:/"
     target_path_base = os.path.join(dir_base, "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/higher_res_for_paper/")
@@ -151,9 +151,9 @@ def make_plots_for_all_models(img_name, seed):
 
     df_res_unet = pd.read_excel(res_unet_path, engine='openpyxl', index_col=0)
     df_unet = pd.read_excel(unet_path, engine='openpyxl', index_col=0)
-    df_contextual = pd.read_excel(unet_path, engine='openpyxl', index_col=0)
-    df_gloria = pd.read_excel(unet_path, engine='openpyxl', index_col=0)
-    df_lavt = pd.read_excel(unet_path, engine='openpyxl', index_col=0)
+    df_contextual = pd.read_excel(contextual_path, engine='openpyxl', index_col=0)
+    df_gloria = pd.read_excel(gloria_path, engine='openpyxl', index_col=0)
+    df_lavt = pd.read_excel(lavt_path, engine='openpyxl', index_col=0)
 
     # gets the prediction from the dataframe for the image specified for all 5 examples
     row_res_unet = df_res_unet.loc[img_name]
@@ -162,6 +162,8 @@ def make_plots_for_all_models(img_name, seed):
     row_unet = df_unet.loc[img_name]
     prediction_unet = row_unet['prediction']
 
+    if str(prediction_unet) == "":
+        prediction_unet = "0"
     row_contextual = df_contextual.loc[img_name]
     prediction_contextual = row_contextual['prediction']
 
@@ -173,14 +175,21 @@ def make_plots_for_all_models(img_name, seed):
 
     target = row_contextual['target']
 
+    print(f"resnet 50 dice: {row_res_unet['dice']}")
+    print(f"Unet dice: {row_unet['dice']}")
+    print(f"Gloria dice: {row_gloria['dice']}")
+    print(f"LAVT dice: {row_lavt['dice']}")
+    print(f"Contextual net dice: {row_contextual['dice']}")
+
+
+
     target = rle_decode(target, (1024, 1024))
     prediction_res_unet = rle_decode(prediction_res_unet, (1024, 1024))
     prediction_unet = rle_decode(prediction_unet, (1024, 1024))
     prediction_contextual = rle_decode(prediction_contextual, (1024, 1024))
     prediction_gloria = rle_decode(prediction_gloria, (1024, 1024))
-    prediction_lavt = rle_decode_modified(prediction_lavt, (480, 480))
+    prediction_lavt = rle_decode(prediction_lavt, (480, 480))
     prediction_lavt = resize_array(prediction_lavt, (1024, 1024))
-
 
 
     data_path = "Z:/public_datasets/candid_ptx/dataset1/dataset/"
@@ -191,34 +200,35 @@ def make_plots_for_all_models(img_name, seed):
     img_raw = img_raw * (255 / np.amax(img_raw))  # puts the highest value at 255
     img_raw = np.uint8(img_raw)
 
-    f, ax = plt.subplots(1, 7)
-    ax[0].imshow(img_raw, cmap=plt.cm.bone)
-    ax[0].set_title('Chest X-ray', size=20)
+    f, ax = plt.subplots(1, 6)
+    #ax[0].imshow(img_raw, cmap=plt.cm.bone)
+    #ax[0].set_title('Chest X-ray', size=20)
     #ax[1].imshow(target, cmap=plt.cm.bone)
-    ax[1].imshow(target, cmap="jet", alpha=1)
-    ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
-    ax[1].set_title('Target', size=20)
+    ax[0].imshow(target, cmap="jet", alpha=1)
+    ax[0].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    ax[0].set_title('Target', size=10)
 
     ax[2].imshow(prediction_res_unet, cmap="jet", alpha=1)
     # ax[2].title.set_text('Segmentation on X-Ray', size=10)
-    ax[2].set_title('ResNet50', size=20)
+    ax[2].set_title(f'Res50: {float(row_res_unet["dice"]):.2f}', size=10)
     ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
     ax[3].imshow(prediction_unet, cmap="jet", alpha=1)
-    ax[3].set_title('Unet', size=20)
+    ax[3].set_title(f"Unet: {float(row_unet['dice']):.2f}", size=10)
+    #plt.title('f model: T= {}'.format(t))
     ax[3].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
     ax[4].imshow(prediction_gloria, cmap="jet", alpha=1)
-    ax[4].set_title('Gloria', size=20)
+    ax[4].set_title(f'Gloria: {float(row_gloria["dice"]):.2f}', size=10)
     ax[4].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
     ax[5].imshow(prediction_lavt, cmap="jet", alpha=1)
-    ax[5].set_title('LAVT', size=20)
+    ax[5].set_title(f'LAVT: {float(row_lavt["dice"]):.2f}', size=10)
     ax[5].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
-    ax[6].imshow(prediction_contextual, cmap="jet", alpha=1)
-    ax[6].set_title('Contextual Net', size=20)
-    ax[6].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    ax[1].imshow(prediction_contextual, cmap="jet", alpha=1)
+    ax[1].set_title(f'CON: {float(row_contextual["dice"]):.2f}', size=10)
+    ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
     ax[0].axes.xaxis.set_visible(False)
     ax[0].axes.yaxis.set_visible(False)
@@ -232,9 +242,42 @@ def make_plots_for_all_models(img_name, seed):
     ax[4].axes.yaxis.set_visible(False)
     ax[5].axes.xaxis.set_visible(False)
     ax[5].axes.yaxis.set_visible(False)
-    ax[6].axes.xaxis.set_visible(False)
-    ax[6].axes.yaxis.set_visible(False)
-    plt.show()
+    #ax[6].axes.xaxis.set_visible(False)
+    #ax[6].axes.yaxis.set_visible(False)
+
+    path_location = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/seed915/" + str(img_name) + ".png"
+    plt.savefig(path_location)
+    #plt.show()
 
 if __name__ == '__main__':
-    make_plots_for_all_models(img_name = "3.5.42.942629.53.2.0.6.90921253161.7144624509648.6", seed = 915)
+    dir_base = "Z:/"
+    seed = 915
+    target_path_base = os.path.join(dir_base, "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/higher_res_for_paper/")
+    target_location_contextual_net = "language_att_no_text_aug_larger_img_v24/seed" + str(seed) + "/prediction_dataframe_seed" + str(seed) + ".xlsx"
+    contextual_path = os.path.join(target_path_base, target_location_contextual_net)
+    df_contextual = pd.read_excel(contextual_path, engine='openpyxl', index_col=0)
+    i = 0
+    for index_value in df_contextual.index:
+        i += 1
+        print(f"new example {i}: {index_value}")
+        if i < 128:
+            continue
+        if str(index_value) == "0.2.50.730231.92.5.4.1.314336352870188.8483026847266.4":
+            continue
+        if str(index_value) == "8.7.12.678862.93.2.6.9.42461290125.8525434177974.6":
+            continue
+        if str(index_value) == "0.4.21.415218.39.8.5.0.52241367825.7164808880857.9":
+            continue
+        if str(index_value) == "2.3.81.066684.31.9.3.7.46810491640.2716489975341.6":
+            continue
+        if str(index_value) == "0.4.21.415218.39.8.5.0.52241367825.7164808880857.9":
+            continue
+        if str(index_value) == "4.6.70.702017.08.2.0.6.85597211337.5119477991144.9":
+            continue
+        if str(index_value) == "7.3.04.247026.65.3.1.1.41446145466.5569643033283.7":
+            continue
+        if str(index_value) == "6.3.22.989742.96.9.5.9.40215523280607.5765116345701.5":
+            continue
+        if str(index_value) == "9.1.85.802197.50.6.3.3.18536138675.3712321442536.3":
+            continue
+        make_plots_for_all_models(img_name = index_value, seed = 915)

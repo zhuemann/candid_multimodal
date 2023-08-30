@@ -153,7 +153,7 @@ if __name__ == '__main__':
     #seeds = [98, 117, 295, 456, 915]
     #seeds = [98, 117, 295, 456]
     seeds = [915]
-    seeds = [456]
+    #seeds = [456]
 
     accuracy_list = []
 
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
         #folder_name = "higher_res_for_paper/t5_language_att_with_setence_shuffle_larger_img_v27/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/Contextual_attention_l1_l2_l3_v49/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/contextual_net_less_augmentations_v51/seed" + str(seed) + "/"
 
         #folder_name = "higher_res_for_paper/baseline_unet_no_aug_larger_img_v28/seed" + str(seed) + "/"
 
@@ -174,16 +174,16 @@ if __name__ == '__main__':
         #save_location = ""
 
         config["seed"] = seed
-        #config["save_location"] = save_location
-        make_images_on_dgx(config)
-        """
+        config["save_location"] = save_location
+        # make_images_on_dgx(config)
+
         acc, valid_log = train_image_text_segmentation(config, args=args_dict)
         df = pd.DataFrame(valid_log)
         df["test_accuracy"] = acc
 
         filepath = os.path.join(config["save_location"], "valid_150ep_seed" + str(seed) + '.xlsx')
         df.to_excel(filepath, index=False)
-        """
+
     """
     # loops through the segmentation training multiple times with different seeds
     for seed in seeds:
