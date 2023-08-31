@@ -108,10 +108,10 @@ if __name__ == '__main__':
     #df = get_pneumothorax_image(dir_base=directory_base)
     #make_plots()
     #print(fail)
-    config["seed"] = 915
-    make_images_on_dgx(config)
+    #config["seed"] = 915
+    #make_images_on_dgx(config)
 
-    print(fail)
+    #print(fail)
 
     """
     acc, valid_log = train_image_text_segmentation(config)
