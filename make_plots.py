@@ -7,6 +7,7 @@ from scipy.ndimage import zoom
 
 from utility import rle_decode_modified, mask2rle, rle_decode
 import pandas as pd
+import cv2
 
 
 def make_plots():
@@ -129,7 +130,7 @@ def resize_array(input_array, target_shape):
     return resized_array
 
 
-def make_plots_for_all_models(img_name, seed):
+def make_plots_for_all_models(img_name, seed, lavt_cnt, con_cnt):
     #img_name = "3.5.42.942629.53.2.0.6.90921253161.7144624509648.6"
     #img_name = "8.2.871.805351.9.703.0.9967444461.1812958023.411720"
     #img_name = "7.0.31.925295.30.8.2.1.086175070283447.4416060742930.8"
@@ -181,15 +182,34 @@ def make_plots_for_all_models(img_name, seed):
     print(f"LAVT dice: {row_lavt['dice']}")
     print(f"Contextual net dice: {row_contextual['dice']}")
 
+    if row_contextual['dice'] > row_lavt['dice']:
+        con_cnt+=1
+    else:
+        lavt_cnt+=1
 
 
     target = rle_decode(target, (1024, 1024))
-    prediction_res_unet = rle_decode(prediction_res_unet, (1024, 1024))
-    prediction_unet = rle_decode(prediction_unet, (1024, 1024))
-    prediction_contextual = rle_decode(prediction_contextual, (1024, 1024))
-    prediction_gloria = rle_decode(prediction_gloria, (1024, 1024))
-    prediction_lavt = rle_decode(prediction_lavt, (480, 480))
-    prediction_lavt = resize_array(prediction_lavt, (1024, 1024))
+    try:
+        prediction_res_unet = rle_decode(prediction_res_unet, (1024, 1024))
+    except:
+        prediction_res_unet = np.zeros((1024, 1024))
+    try:
+        prediction_unet = rle_decode(prediction_unet, (1024, 1024))
+    except:
+        prediction_unet = np.zeros((1024, 1024))
+    try:
+        prediction_contextual = rle_decode(prediction_contextual, (1024, 1024))
+    except:
+        prediction_contextual = np.zeros((1024, 1024))
+    try:
+        prediction_gloria = rle_decode(prediction_gloria, (1024, 1024))
+    except:
+        prediction_gloria = np.zeros((1024, 1024))
+    try:
+        prediction_lavt = rle_decode(prediction_lavt, (480, 480))
+        prediction_lavt = resize_array(prediction_lavt, (1024, 1024))
+    except:
+        prediction_lavt = np.zeros((1024, 1024))
 
 
     data_path = "Z:/public_datasets/candid_ptx/dataset1/dataset/"
@@ -199,36 +219,54 @@ def make_plots_for_all_models(img_name, seed):
     img_raw = DCM_Img.pixel_array
     img_raw = img_raw * (255 / np.amax(img_raw))  # puts the highest value at 255
     img_raw = np.uint8(img_raw)
+    img_raw = cv2.cvtColor(img_raw, cv2.COLOR_GRAY2RGB)
 
-    f, ax = plt.subplots(1, 6)
-    #ax[0].imshow(img_raw, cmap=plt.cm.bone)
-    #ax[0].set_title('Chest X-ray', size=20)
-    #ax[1].imshow(target, cmap=plt.cm.bone)
-    ax[0].imshow(target, cmap="jet", alpha=1)
-    ax[0].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
-    ax[0].set_title('Target', size=10)
+    f, ax = plt.subplots(1, 7)
 
-    ax[2].imshow(prediction_res_unet, cmap="jet", alpha=1)
-    # ax[2].title.set_text('Segmentation on X-Ray', size=10)
-    ax[2].set_title(f'Res50: {float(row_res_unet["dice"]):.2f}', size=10)
-    ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    ax[0].imshow(img_raw)
+    ax[0].set_title('Input', size=10)
 
-    ax[3].imshow(prediction_unet, cmap="jet", alpha=1)
-    ax[3].set_title(f"Unet: {float(row_unet['dice']):.2f}", size=10)
-    #plt.title('f model: T= {}'.format(t))
-    ax[3].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    res_image = np.copy(img_raw).astype(np.float32)
+    res_image[:,:,1] += prediction_res_unet * np.round(255 / 3)
+    res_image = res_image/np.max(res_image)
+    ax[1].imshow(res_image)
+    ax[1].set_title(f'Res {float(row_res_unet["dice"]):.2f}', size=10)
+    #ax[2].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
-    ax[4].imshow(prediction_gloria, cmap="jet", alpha=1)
-    ax[4].set_title(f'Gloria: {float(row_gloria["dice"]):.2f}', size=10)
-    ax[4].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    unet_image = np.copy(img_raw).astype(np.float32)
+    unet_image[:,:,1] += prediction_unet * np.round(255 / 3)
+    unet_image = unet_image/np.max(unet_image)
+    ax[2].imshow(unet_image)
+    ax[2].set_title(f"Unet {float(row_unet['dice']):.2f}", size=10)
 
-    ax[5].imshow(prediction_lavt, cmap="jet", alpha=1)
-    ax[5].set_title(f'LAVT: {float(row_lavt["dice"]):.2f}', size=10)
-    ax[5].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    gloria_image = np.copy(img_raw).astype(np.float32)
+    gloria_image[:, :, 1] += prediction_gloria * np.round(255 / 3)
+    gloria_image = gloria_image / np.max(gloria_image)
+    ax[3].imshow(gloria_image)
+    ax[3].set_title(f'Glria {float(row_gloria["dice"]):.2f}', size=10)
+    #ax[4].imshow(prediction_gloria, cmap="jet", alpha=1)
+    #ax[4].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
 
-    ax[1].imshow(prediction_contextual, cmap="jet", alpha=1)
-    ax[1].set_title(f'CON: {float(row_contextual["dice"]):.2f}', size=10)
-    ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    lavt_image = np.copy(img_raw).astype(np.float32)
+    lavt_image[:, :, 1] += prediction_lavt * np.round(255 / 3)
+    lavt_image = lavt_image / np.max(lavt_image)
+    ax[4].imshow(lavt_image)
+    ax[4].set_title(f'LAVT: {float(row_lavt["dice"]):.2f}', size=10)
+    #ax[5].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+
+    contextual_image = np.copy(img_raw).astype(np.float32)
+    contextual_image[:, :, 1] += prediction_contextual * np.round(255 / 3)
+    contextual_image = contextual_image / np.max(contextual_image)
+    ax[5].imshow(contextual_image)
+    ax[5].set_title(f'CON: {float(row_contextual["dice"]):.2f}', size=10)
+    #ax[1].imshow(prediction_contextual, cmap="jet", alpha=1)
+    #ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+
+    target_image = np.copy(img_raw).astype(np.float32)
+    target_image[:,:,1] += target * np.round(255 / 3)
+    target_image = target_image/np.max(target_image)
+    ax[6].imshow(target_image)
+    ax[6].set_title('Target', size=10)
 
     ax[0].axes.xaxis.set_visible(False)
     ax[0].axes.yaxis.set_visible(False)
@@ -242,12 +280,15 @@ def make_plots_for_all_models(img_name, seed):
     ax[4].axes.yaxis.set_visible(False)
     ax[5].axes.xaxis.set_visible(False)
     ax[5].axes.yaxis.set_visible(False)
-    #ax[6].axes.xaxis.set_visible(False)
-    #ax[6].axes.yaxis.set_visible(False)
+    ax[6].axes.xaxis.set_visible(False)
+    ax[6].axes.yaxis.set_visible(False)
 
-    path_location = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/seed915/" + str(img_name) + ".png"
+    path_location = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/channel_method/seed915/" + str(img_name) + ".png"
     plt.savefig(path_location)
     #plt.show()
+    plt.clf()
+    plt.cla()
+    return lavt_cnt, con_cnt
 
 if __name__ == '__main__':
     dir_base = "Z:/"
@@ -257,11 +298,14 @@ if __name__ == '__main__':
     contextual_path = os.path.join(target_path_base, target_location_contextual_net)
     df_contextual = pd.read_excel(contextual_path, engine='openpyxl', index_col=0)
     i = 0
+    lavt_count = 0
+    con_count = 0
     for index_value in df_contextual.index:
         i += 1
         print(f"new example {i}: {index_value}")
-        if i < 128:
+        if i < 0:
             continue
+        """
         if str(index_value) == "0.2.50.730231.92.5.4.1.314336352870188.8483026847266.4":
             continue
         if str(index_value) == "8.7.12.678862.93.2.6.9.42461290125.8525434177974.6":
@@ -280,4 +324,11 @@ if __name__ == '__main__':
             continue
         if str(index_value) == "9.1.85.802197.50.6.3.3.18536138675.3712321442536.3":
             continue
-        make_plots_for_all_models(img_name = index_value, seed = 915)
+        #if str(index_value) == "0.3.93.315974.51.9.5.2.37382908224.8932572096838.8":
+        #    continue
+        """
+        lavt_count, con_count = make_plots_for_all_models(img_name = index_value, seed = 915, lavt_cnt = lavt_count, con_cnt = con_count)
+        print(f"lavt count: {lavt_count}")
+        print(f"contextual count: {con_count}")
+    print(f"lavt count: {lavt_count}")
+    print(f"contextual count: {con_count}")
