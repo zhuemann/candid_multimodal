@@ -176,11 +176,16 @@ def make_plots_for_all_models(img_name, seed, lavt_cnt, con_cnt):
 
     target = row_contextual['target']
 
-    print(f"resnet 50 dice: {row_res_unet['dice']}")
-    print(f"Unet dice: {row_unet['dice']}")
-    print(f"Gloria dice: {row_gloria['dice']}")
-    print(f"LAVT dice: {row_lavt['dice']}")
-    print(f"Contextual net dice: {row_contextual['dice']}")
+    #print(f"resnet 50 dice: {row_res_unet['dice']}")
+    #print(f"Unet dice: {row_unet['dice']}")
+    #print(f"Gloria dice: {row_gloria['dice']}")
+    #print(f"LAVT dice: {row_lavt['dice']}")
+    #print(f"Contextual net dice: {row_contextual['dice']}")
+
+    vision_max = min(row_res_unet['dice'], row_unet['dice'],row_gloria['dice'])
+    if row_contextual['dice'] > vision_max or row_lavt['dice'] > vision_max:
+        print("multimodal_outperformed outperformed")
+        return lavt_cnt, con_cnt
 
     if row_contextual['dice'] > row_lavt['dice']:
         con_cnt+=1
@@ -221,7 +226,7 @@ def make_plots_for_all_models(img_name, seed, lavt_cnt, con_cnt):
     img_raw = np.uint8(img_raw)
     img_raw = cv2.cvtColor(img_raw, cv2.COLOR_GRAY2RGB)
 
-    f, ax = plt.subplots(1, 7)
+    f, ax = plt.subplots(1, 7, figsize=(10, 8), dpi=300)
 
     ax[0].imshow(img_raw)
     ax[0].set_title('Input', size=10)
@@ -283,12 +288,197 @@ def make_plots_for_all_models(img_name, seed, lavt_cnt, con_cnt):
     ax[6].axes.xaxis.set_visible(False)
     ax[6].axes.yaxis.set_visible(False)
 
-    path_location = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/channel_method/seed915/" + str(img_name) + ".png"
+    path_location = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/multimodal_worse/seed915/" + str(img_name) + ".png"
     plt.savefig(path_location)
     #plt.show()
     plt.clf()
     plt.cla()
     return lavt_cnt, con_cnt
+
+
+
+
+def save_off_individual_images(img_name, seed):
+    # img_name = "3.5.42.942629.53.2.0.6.90921253161.7144624509648.6"
+    # img_name = "8.2.871.805351.9.703.0.9967444461.1812958023.411720"
+    # img_name = "7.0.31.925295.30.8.2.1.086175070283447.4416060742930.8"
+    # seed = 915
+    # dir_base = "/UserData/"
+    dir_base = "Z:/"
+    target_path_base = os.path.join(dir_base,
+                                    "Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/higher_res_for_paper/")
+
+    target_location_res_unet = "basic_unet_from_smp_v34/seed" + str(seed) + "/prediction_dataframe_seed" + str(
+        seed) + ".xlsx"
+    target_location_unet = "baseline_unet_positive_cases_vision_larger_img_v20/seed" + str(
+        seed) + "/prediction_dataframe_seed" + str(seed) + ".xlsx"
+    target_location_contextual_net = "language_att_no_text_aug_larger_img_v24/seed" + str(
+        seed) + "/prediction_dataframe_seed" + str(seed) + ".xlsx"
+    target_location_gloria = "gloria_image_encoder_v36/seed" + str(seed) + "/prediction_dataframe_seed" + str(
+        seed) + ".xlsx"
+    target_lavt = "Z:/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/higher_res_for_paper/LAVT_v50/seed" + str(seed) + "/prediction_dataframe_seed" + str(
+        seed) + ".xlsx"
+    res_unet_path = os.path.join(target_path_base, target_location_res_unet)
+    unet_path = os.path.join(target_path_base, target_location_unet)
+    contextual_path = os.path.join(target_path_base, target_location_contextual_net)
+    gloria_path = os.path.join(target_path_base, target_location_gloria)
+    lavt_path = os.path.join(target_path_base, target_lavt)
+
+    df_res_unet = pd.read_excel(res_unet_path, engine='openpyxl', index_col=0)
+    df_unet = pd.read_excel(unet_path, engine='openpyxl', index_col=0)
+    df_contextual = pd.read_excel(contextual_path, engine='openpyxl', index_col=0)
+    df_gloria = pd.read_excel(gloria_path, engine='openpyxl', index_col=0)
+    df_lavt = pd.read_excel(lavt_path, engine='openpyxl', index_col=0)
+
+    # gets the prediction from the dataframe for the image specified for all 5 examples
+    row_res_unet = df_res_unet.loc[img_name]
+    prediction_res_unet = row_res_unet['prediction']
+
+    row_unet = df_unet.loc[img_name]
+    prediction_unet = row_unet['prediction']
+
+    if str(prediction_unet) == "":
+        prediction_unet = "0"
+    row_contextual = df_contextual.loc[img_name]
+    prediction_contextual = row_contextual['prediction']
+
+    row_gloria = df_gloria.loc[img_name]
+    prediction_gloria = row_gloria['prediction']
+
+    row_lavt = df_lavt.loc[img_name]
+    prediction_lavt = row_lavt['prediction']
+
+    target = row_contextual['target']
+
+    print(f"resnet 50 dice: {row_res_unet['dice']}")
+    print(f"Unet dice: {row_unet['dice']}")
+    print(f"Gloria dice: {row_gloria['dice']}")
+    print(f"LAVT dice: {row_lavt['dice']}")
+    print(f"Contextual net dice: {row_contextual['dice']}")
+
+    target = rle_decode(target, (1024, 1024))
+    try:
+        prediction_res_unet = rle_decode(prediction_res_unet, (1024, 1024))
+    except:
+        prediction_res_unet = np.zeros((1024, 1024))
+    try:
+        prediction_unet = rle_decode(prediction_unet, (1024, 1024))
+    except:
+        prediction_unet = np.zeros((1024, 1024))
+    try:
+        prediction_contextual = rle_decode(prediction_contextual, (1024, 1024))
+    except:
+        prediction_contextual = np.zeros((1024, 1024))
+    try:
+        prediction_gloria = rle_decode(prediction_gloria, (1024, 1024))
+    except:
+        prediction_gloria = np.zeros((1024, 1024))
+    try:
+        prediction_lavt = rle_decode(prediction_lavt, (480, 480))
+        prediction_lavt = resize_array(prediction_lavt, (1024, 1024))
+    except:
+        prediction_lavt = np.zeros((1024, 1024))
+
+    data_path = "Z:/public_datasets/candid_ptx/dataset1/dataset/"
+
+    # if folder doesn't exist create it
+    folder_path = "Z:/Zach_Analysis/dgx_images/model_output_comparisons/all_models_plotted/individual_plots_red/seed915/"
+    folder_name = str(img_name) + "cropped"
+    folder_path = os.path.join(folder_path, folder_name)
+    if not os.path.exists(folder_path):
+        # Create the folder if it doesn't exist
+        os.makedirs(folder_path)
+
+
+    img_path = os.path.join(data_path, img_name)
+    DCM_Img = pdcm.read_file(img_path)
+    img_raw = DCM_Img.pixel_array
+    print(f"max value in img_raw: {np.amax(img_raw)}")
+    img_raw = img_raw * (255 / np.amax(img_raw))  # puts the highest value at 255
+    img_raw = np.uint8(img_raw)
+    img_raw = cv2.cvtColor(img_raw[0:750, 130:880], cv2.COLOR_GRAY2RGB)
+
+    plt.figure()
+
+    plt.imshow(img_raw)
+    #plt.title("name of raw image")
+    plt.axis("off")
+    plt.savefig(folder_path + "/raw_image.png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    plt.figure()
+    res_image = np.copy(img_raw).astype(np.float32)
+    res_image[:, :, 0] += prediction_res_unet[0:750, 130:880] * np.round(255 / 3)
+    res_image = res_image / np.max(res_image)
+    plt.imshow(res_image)
+    #plt.title(f'Res {float(row_res_unet["dice"]):.2f}', size=10)
+    plt.axis("off")
+    plt.savefig(folder_path + "/resnet_dice_" + str(row_res_unet["dice"]) + ".png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    plt.figure()
+    unet_image = np.copy(img_raw).astype(np.float32)
+    unet_image[:, :, 0] += prediction_unet[0:750, 130:880] * np.round(255 / 3)
+    unet_image = unet_image/np.max(unet_image)
+    plt.imshow(unet_image)
+    #ax[2].imshow(unet_image)
+    #ax[2].set_title(f"Unet {float(row_unet['dice']):.2f}", size=10)
+    plt.axis("off")
+    plt.savefig(folder_path + "/unet_" + str(row_unet["dice"]) + ".png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+
+    plt.figure()
+    gloria_image = np.copy(img_raw).astype(np.float32)
+    gloria_image[:, :, 0] += prediction_gloria[0:750, 130:880] * np.round(255 / 3)
+    gloria_image = gloria_image / np.max(gloria_image)
+    #ax[3].imshow(gloria_image)
+    #ax[3].set_title(f'Glria {float(row_gloria["dice"]):.2f}', size=10)
+    plt.imshow(gloria_image)
+    #ax[4].imshow(prediction_gloria, cmap="jet", alpha=1)
+    #ax[4].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    plt.axis("off")
+    plt.savefig(folder_path + "/gloria_dice_" + str(row_gloria["dice"]) + ".png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+
+    plt.figure()
+    lavt_image = np.copy(img_raw).astype(np.float32)
+    lavt_image[:, :, 0] += prediction_lavt[0:750, 130:880] * np.round(255 / 3)
+    lavt_image = lavt_image / np.max(lavt_image)
+    plt.imshow(lavt_image)
+    #ax[4].imshow(lavt_image)
+    #ax[4].set_title(f'LAVT: {float(row_lavt["dice"]):.2f}', size=10)
+    #ax[5].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    plt.axis("off")
+    plt.savefig(folder_path + "/lavt_dice_" + str(row_lavt["dice"]) + ".png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    plt.figure()
+    contextual_image = np.copy(img_raw).astype(np.float32)
+    contextual_image[:, :, 0] += prediction_contextual[0:750, 130:880] * np.round(255 / 3)
+    contextual_image = contextual_image / np.max(contextual_image)
+    plt.imshow(contextual_image)
+    #ax[5].imshow(contextual_image)
+    #ax[5].set_title(f'CON: {float(row_contextual["dice"]):.2f}', size=10)
+    #ax[1].imshow(prediction_contextual, cmap="jet", alpha=1)
+    #ax[1].imshow(img_raw, cmap=plt.cm.bone, alpha=.5)
+    plt.axis("off")
+    plt.savefig(folder_path + "/contextual_dice_" + str(row_contextual["dice"]) + ".png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    plt.figure()
+    target_image = np.copy(img_raw).astype(np.float32)
+    target_image[:, :, 1] += target[0:750, 130:880] * np.round(255 / 3)
+    target_image = target_image/np.max(target_image)
+    plt.imshow(target_image)
+    #ax[6].imshow(target_image)
+    #ax[6].set_title('Target', size=10)
+    plt.axis("off")
+    plt.savefig(folder_path + "/target_overlay.png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+
 
 if __name__ == '__main__':
     dir_base = "Z:/"
@@ -305,30 +495,14 @@ if __name__ == '__main__':
         print(f"new example {i}: {index_value}")
         if i < 0:
             continue
-        """
-        if str(index_value) == "0.2.50.730231.92.5.4.1.314336352870188.8483026847266.4":
+
+        if index_value != "2.7.93.934186.71.0.1.2.38838910557.3554800357493.5":
             continue
-        if str(index_value) == "8.7.12.678862.93.2.6.9.42461290125.8525434177974.6":
-            continue
-        if str(index_value) == "0.4.21.415218.39.8.5.0.52241367825.7164808880857.9":
-            continue
-        if str(index_value) == "2.3.81.066684.31.9.3.7.46810491640.2716489975341.6":
-            continue
-        if str(index_value) == "0.4.21.415218.39.8.5.0.52241367825.7164808880857.9":
-            continue
-        if str(index_value) == "4.6.70.702017.08.2.0.6.85597211337.5119477991144.9":
-            continue
-        if str(index_value) == "7.3.04.247026.65.3.1.1.41446145466.5569643033283.7":
-            continue
-        if str(index_value) == "6.3.22.989742.96.9.5.9.40215523280607.5765116345701.5":
-            continue
-        if str(index_value) == "9.1.85.802197.50.6.3.3.18536138675.3712321442536.3":
-            continue
-        #if str(index_value) == "0.3.93.315974.51.9.5.2.37382908224.8932572096838.8":
-        #    continue
-        """
-        lavt_count, con_count = make_plots_for_all_models(img_name = index_value, seed = 915, lavt_cnt = lavt_count, con_cnt = con_count)
-        print(f"lavt count: {lavt_count}")
-        print(f"contextual count: {con_count}")
-    print(f"lavt count: {lavt_count}")
-    print(f"contextual count: {con_count}")
+
+
+        #lavt_count, con_count = make_plots_for_all_models(img_name = index_value, seed = 915, lavt_cnt = lavt_count, con_cnt = con_count)
+        save_off_individual_images(img_name = index_value, seed = 915)
+        #print(f"lavt count: {lavt_count}")
+        #print(f"contextual count: {con_count}")
+    #print(f"lavt count: {lavt_count}")
+    #print(f"contextual count: {con_count}")
