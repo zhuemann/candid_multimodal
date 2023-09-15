@@ -47,13 +47,14 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
 
         self.outc = OutConv(64, n_classes)
 
-        self.lang_proj1 = nn.Linear(1024, 512)
+        lang_dimension = 768
+        self.lang_proj1 = nn.Linear(lang_dimension, 512)
         self.lang_attn1 = LangCrossAtt(emb_dim=512)
-        self.lang_proj2 = nn.Linear(1024, 256)
+        self.lang_proj2 = nn.Linear(lang_dimension, 256)
         self.lang_attn2 = LangCrossAtt(emb_dim=256)
-        self.lang_proj3 = nn.Linear(1024, 128)
+        self.lang_proj3 = nn.Linear(lang_dimension, 128)
         self.lang_attn3 = LangCrossAtt(emb_dim=128)
-        self.lang_proj4 = nn.Linear(1024, 64)
+        self.lang_proj4 = nn.Linear(lang_dimension, 64)
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
     def forward(self, img, ids, mask, token_type_ids):
