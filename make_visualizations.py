@@ -109,9 +109,14 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
 
     # use t5 as text encoder
-    t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
-    tokenizer = T5Tokenizer.from_pretrained(t5_path)
-    language_model = T5Model.from_pretrained(t5_path)
+    #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
+    #tokenizer = T5Tokenizer.from_pretrained(t5_path)
+    #language_model = T5Model.from_pretrained(t5_path)
+
+    # use t5 as text encoder
+    lang_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
+    tokenizer = AutoTokenizer.from_pretrained(lang_path)
+    language_model = RobertaModel.from_pretrained(lang_path, output_hidden_states=True)
 
 
     #load in a language model used in the contrastive learning
