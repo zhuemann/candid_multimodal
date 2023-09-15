@@ -154,7 +154,7 @@ if __name__ == '__main__':
     seeds = [915]
     #seeds = [456]
     #seeds = [1289, 1734]
-    seeds = [915]
+    seeds = [456]
 
     accuracy_list = []
 
