@@ -81,7 +81,7 @@ if __name__ == '__main__':
     args_dict = parser.parse_args()
     #local = args.local
     print("newest version")
-    local = False
+    local = True
     if local:
         directory_base = "Z:/"
     else:
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     seeds = [915]
     #seeds = [456]
     #seeds = [1289, 1734]
-    seeds = [456]
+    seeds = [915]
 
     accuracy_list = []
 
@@ -171,7 +171,9 @@ if __name__ == '__main__':
         #folder_name = "two_step_seg/dev_test"
 
         #folder_name = "no_augmentation/attention_unet_frozen_t5_negative_cases/seed" + str(seed) + "/"
-        save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
+        # save_string = "/UserData/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
+        save_string = "/Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/" + folder_name
+
         save_location = os.path.join(directory_base, save_string)
         #save_location = ""
 

@@ -113,7 +113,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
     #language_model = T5Model.from_pretrained(t5_path)
 
-    # use t5 as text encoder
+    # use Roberta as text encoder
     lang_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
     tokenizer = AutoTokenizer.from_pretrained(lang_path)
     language_model = RobertaModel.from_pretrained(lang_path, output_hidden_states=True)
@@ -227,7 +227,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"multisegmentation_model_train_v13/seed98/best_segmentation_model_seed98")
 
     saved_path = os.path.join(dir_base, config["save_location"] + "best_segmentation_model_seed_test" + str(config["seed"]))
-
+    print(saved_path)
     test_obj.load_state_dict(torch.load(saved_path))
 
     pred_rle_list = []
