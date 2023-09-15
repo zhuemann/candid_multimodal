@@ -204,7 +204,7 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
 
     test_loader = DataLoader(test_set, **test_params)
 
-    print(f"cuda print: {torch.cuda.is_available}")
+    print(f"cuda print: {torch.cuda.is_available()}")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
     test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
