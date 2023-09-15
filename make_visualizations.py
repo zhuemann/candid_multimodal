@@ -173,8 +173,9 @@ def make_images_on_dgx(config, batch_size=8, epoch=1, dir_base = "/home/zmh001/r
     #"Zach_Analysis/result_logs/candid_result/image_text_segmentation_for_paper/with_augmentation/" +
     #"multisegmentation_model_train_v13/seed98/single_example_to_visualize_v1_interactive.xlsx") #base_to_apical_text_change
 
-    test_frame_locaction = os.path.join(dir_base, config["save_location"] + "pneumothorax_testset_df_seed" + str(config["seed"]) + ".xlsx")
-    test_df = pd.read_excel(test_frame_locaction, engine='openpyxl')
+    test_frame_path = os.path.join(dir_base, config["save_location"] + "pneumothorax_testset_df_seed" + str(config["seed"]) + ".xlsx")
+    print(test_frame_path)
+    test_df = pd.read_excel(test_frame_path, engine='openpyxl')
     test_df.set_index("image_id", inplace=True)
 
     albu_augs = albu.Compose([
