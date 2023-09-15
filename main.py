@@ -155,6 +155,7 @@ if __name__ == '__main__':
     seeds = [915]
     #seeds = [456]
     seeds = [1289, 1734]
+    seed = [456]
 
     accuracy_list = []
 
@@ -162,7 +163,7 @@ if __name__ == '__main__':
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
         #folder_name = "higher_res_for_paper/t5_language_att_with_setence_shuffle_larger_img_v27/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/contextual_net_less_augmentations_v51/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/radbert_language_att_with_text_aug_larger_img_v53/seed" + str(seed) + "/"
 
         #folder_name = "higher_res_for_paper/baseline_unet_no_aug_larger_img_v28/seed" + str(seed) + "/"
 
@@ -176,7 +177,8 @@ if __name__ == '__main__':
 
         config["seed"] = seed
         config["save_location"] = save_location
-        # make_images_on_dgx(config)
+        make_images_on_dgx(config)
+        print(fail)
 
         acc, valid_log = train_image_text_segmentation(config, args=args_dict)
         df = pd.DataFrame(valid_log)
