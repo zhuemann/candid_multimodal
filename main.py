@@ -80,8 +80,7 @@ if __name__ == '__main__':
     parser = get_parser()
     args_dict = parser.parse_args()
     #local = args.local
-    print("newest version")
-    local = True
+    local = False
     if local:
         directory_base = "Z:/"
     else:
