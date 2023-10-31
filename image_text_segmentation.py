@@ -57,8 +57,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
-    LR = 5e-5 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
-    #LR = 5e-4
+    LR = 1e-4 # used with scheduler #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 5e-5
     N_EPOCHS = epoch
     N_CLASS = n_classes
 
@@ -112,7 +112,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
     #language_model = T5Model.from_pretrained(t5_path)
 
-    language_path = os.path.join(dir_base, 'Zach_Analysis/roberta_large/')
+    language_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
     tokenizer = AutoTokenizer.from_pretrained(language_path)
     language_model = RobertaModel.from_pretrained(language_path, output_hidden_states=True)
 
@@ -307,12 +307,18 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #test_obj = Vision_Attention_UNet_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=True)
     #test_obj = ResAttNetUNet(lang_model=language_model, n_class=1, dir_base=dir_base)
-
+    #ii = 0
     #print("need to unfreeze lang params")
     for param in language_model.parameters():
+        #param.requires_grad = True
+        #print(param.requires_grad)
+    #    if ii < 170:
         param.requires_grad = False
+        #print(ii)
+    #    ii += 1
 
-
+    #for param in language_model.parameters():
+    #    print(param.name)
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     test_obj.to(device)
@@ -326,7 +332,7 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer_lang = torch.optim.Adam(params=language_model.parameters(), lr=LR, weight_decay=1e-6)
     #optimizer = torch.optim.Adam(params= list(vision_model.parameters()) + list(language_model.parameters()), lr=LR, weight_decay=1e-6)
-    #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
+    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=255600, eta_min=20e-6)
     #scheduler = MultiStepLR(optimizer, milestones=[5, 10, 25, 37, 50, 75], gamma=0.50)
 
     #print(test_dataframe_location)
@@ -340,11 +346,21 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
         #vision_model.train()
         #language_model.train()
         #model_obj.train()
+        if epoch > 200:
+            ii = 0
+            #print("need to unfreeze lang params")
+            for param in language_model.parameters():
+                param.requires_grad = True
+                                        #print(param.requires_grad)
+                if ii < 170:
+                    param.requires_grad = False
+                    ii += 1
+
         test_obj.train()
         training_dice = []
         gc.collect()
         torch.cuda.empty_cache()
-
+        #print(f"learning rate: {scheduler.get_lr()}")
         loss_list = []
 
         for _, data in tqdm(enumerate(training_loader, 0)):
@@ -378,6 +394,8 @@ def train_image_text_segmentation(config, batch_size=8, epoch=1, dir_base = "/ho
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            #scheduler.step()
+
 
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
             sigmoid = torch.sigmoid(outputs)
