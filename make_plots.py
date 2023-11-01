@@ -396,7 +396,7 @@ def save_off_individual_images(img_name, seed):
     print(f"max value in img_raw: {np.amax(img_raw)}")
     img_raw = img_raw * (255 / np.amax(img_raw))  # puts the highest value at 255
     img_raw = np.uint8(img_raw)
-    img_raw = cv2.cvtColor(img_raw[0:750, 130:880], cv2.COLOR_GRAY2RGB)
+    img_raw = cv2.cvtColor(img_raw[75:949, 100:974], cv2.COLOR_GRAY2RGB)
 
     plt.figure()
 
@@ -408,7 +408,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     res_image = np.copy(img_raw).astype(np.float32)
-    res_image[:, :, 0] += prediction_res_unet[0:750, 130:880] * np.round(255 / 3)
+    res_image[:, :, 0] += prediction_res_unet[75:949, 100:974] * np.round(255 / 3)
     res_image = res_image / np.max(res_image)
     plt.imshow(res_image)
     #plt.title(f'Res {float(row_res_unet["dice"]):.2f}', size=10)
@@ -418,7 +418,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     unet_image = np.copy(img_raw).astype(np.float32)
-    unet_image[:, :, 0] += prediction_unet[0:750, 130:880] * np.round(255 / 3)
+    unet_image[:, :, 0] += prediction_unet[75:949, 100:974] * np.round(255 / 3)
     unet_image = unet_image/np.max(unet_image)
     plt.imshow(unet_image)
     #ax[2].imshow(unet_image)
@@ -430,7 +430,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     gloria_image = np.copy(img_raw).astype(np.float32)
-    gloria_image[:, :, 0] += prediction_gloria[0:750, 130:880] * np.round(255 / 3)
+    gloria_image[:, :, 0] += prediction_gloria[75:949, 100:974] * np.round(255 / 3)
     gloria_image = gloria_image / np.max(gloria_image)
     #ax[3].imshow(gloria_image)
     #ax[3].set_title(f'Glria {float(row_gloria["dice"]):.2f}', size=10)
@@ -444,7 +444,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     lavt_image = np.copy(img_raw).astype(np.float32)
-    lavt_image[:, :, 0] += prediction_lavt[0:750, 130:880] * np.round(255 / 3)
+    lavt_image[:, :, 0] += prediction_lavt[75:949, 100:974] * np.round(255 / 3)
     lavt_image = lavt_image / np.max(lavt_image)
     plt.imshow(lavt_image)
     #ax[4].imshow(lavt_image)
@@ -456,7 +456,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     contextual_image = np.copy(img_raw).astype(np.float32)
-    contextual_image[:, :, 0] += prediction_contextual[0:750, 130:880] * np.round(255 / 3)
+    contextual_image[:, :, 0] += prediction_contextual[75:949, 100:974] * np.round(255 / 3)
     contextual_image = contextual_image / np.max(contextual_image)
     plt.imshow(contextual_image)
     #ax[5].imshow(contextual_image)
@@ -469,7 +469,7 @@ def save_off_individual_images(img_name, seed):
 
     plt.figure()
     target_image = np.copy(img_raw).astype(np.float32)
-    target_image[:, :, 1] += target[0:750, 130:880] * np.round(255 / 3)
+    target_image[:, :, 1] += target[75:949, 100:974] * np.round(255 / 3)
     target_image = target_image/np.max(target_image)
     plt.imshow(target_image)
     #ax[6].imshow(target_image)
@@ -496,7 +496,7 @@ if __name__ == '__main__':
         if i < 0:
             continue
 
-        if index_value != "2.7.93.934186.71.0.1.2.38838910557.3554800357493.5":
+        if index_value != "0.4.21.415218.39.8.5.0.52241367825.7164808880857.9":
             continue
 
 
