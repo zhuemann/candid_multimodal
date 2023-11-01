@@ -113,7 +113,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     bert_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
     tokenizer = AutoTokenizer.from_pretrained(bert_path)
-    language_model = BertModel.from_pretrained(bert_path, output_hidden_states=True)
+    language_model = RobertaModel.from_pretrained(bert_path, output_hidden_states=True)
     #language_model = None
     # use t5 as text encoder
     #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
