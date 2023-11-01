@@ -57,6 +57,8 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
         self.lang_proj4 = nn.Linear(lang_dimension, 64)
         self.lang_attn4 = LangCrossAtt(emb_dim=64)
 
+        self.lang_proj5_encoder = nn.Linear(lang_dimension, 1024)
+        self.lang_attn5_encoder = LangCrossAtt(emb_dim=1024)
         self.lang_proj4_encoder = nn.Linear(lang_dimension, 512)
         self.lang_attn4_encoder = LangCrossAtt(emb_dim=512)
         self.lang_proj3_encoder = nn.Linear(lang_dimension, 256)
@@ -103,6 +105,8 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
 
         x5 = self.down4(x4)
 
+        print(f"x5 size: {x5.size()}")
+
         lang_rep5_encoder = self.lang_proj5_encoder(lang_rep)
         x5 = self.lang_attn5_encoder(lang_rep=lang_rep5_encoder, vision_rep=x5)
 
@@ -110,6 +114,8 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
 
         lang_rep1 = self.lang_proj1(lang_rep)
         decode1 = self.lang_attn1(lang_rep=lang_rep1, vision_rep=decode1)
+
+        print(f"decode1 size: {decode1.size()}")
 
         # How is used to be done, swapping for testing
         #x4 = self.attention1(decode1, x4)
