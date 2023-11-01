@@ -50,8 +50,8 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
         lang_dimension = 768
         self.lang_proj1 = nn.Linear(lang_dimension, 512)
         self.lang_attn1 = LangCrossAtt(emb_dim=512)
-        #self.lang_proj2 = nn.Linear(lang_dimension, 256)
-        #self.lang_attn2 = LangCrossAtt(emb_dim=256)
+        self.lang_proj2 = nn.Linear(lang_dimension, 256)
+        self.lang_attn2 = LangCrossAtt(emb_dim=256)
         #self.lang_proj3 = nn.Linear(lang_dimension, 128)
         #self.lang_attn3 = LangCrossAtt(emb_dim=128)
         #self.lang_proj4 = nn.Linear(lang_dimension, 64)
@@ -119,8 +119,8 @@ class Attention_ConTEXTual_Lang_Seg_Model(torch.nn.Module):
         x = self.up_conv1(x)
 
         decode2 = self.up2(x)
-        #lang_rep2 = self.lang_proj2(lang_rep)
-        #decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
+        lang_rep2 = self.lang_proj2(lang_rep)
+        decode2 = self.lang_attn2(lang_rep=lang_rep2, vision_rep=decode2)
 
         #x3 = self.attention2(decode2, x3)
         x = concatenate_layers(decode2, x3)
