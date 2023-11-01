@@ -89,7 +89,7 @@ if __name__ == '__main__':
     config = {"seed": 1, "batch_size": 8, "dir_base": directory_base, "epochs": 150, "n_classes": 2, "LR": 1e-5,
               "IMG_SIZE": 256, "train_samples": .8, "test_samples": .5, "data_path": "D:/candid_ptx/", "report_gen":False, "mlm_pretraining":False, "contrastive_training": True}
 
-    config = {"seed": 1, "batch_size": 2, "dir_base": directory_base, "epochs": 50, "n_classes": 2, "LR": 1e-3,
+    config = {"seed": 1, "batch_size": 2, "dir_base": directory_base, "epochs": 100, "n_classes": 2, "LR": 1e-3,
               "IMG_SIZE": 1024, "train_samples":.8, "test_samples": .5, "data_path": "D:/candid_ptx/",
               "report_gen": False, "mlm_pretraining": False, "contrastive_training": False, "save_location": ""} #batch size was 8 with image size 256 .8 can use .004 train_samples = .8
     #image size was 1024 batch size 2
@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
         #folder_name = "higher_res_for_paper/t5_language_att_with_setence_shuffle_larger_img_v27/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/t5_with_encoder_attention_v61/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/radbert_with_encoder_attention_max_decoder_v62/seed" + str(seed) + "/"
 
         #folder_name = "higher_res_for_paper/baseline_unet_no_aug_larger_img_v28/seed" + str(seed) + "/"
 
