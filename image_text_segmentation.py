@@ -32,7 +32,8 @@ from utility import mask2rle
 #from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 #from models.ConTEXTual_seg_v3 import Attention_ConTEXTual_Seg_Model_swap_v3
 #from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
-from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
+#from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
+from models.ConTextual_seg_lang_model_encoder_attention import Attention_ConTEXTual_Lang_Seg_Model
 #from models.ConTextual_seg_vis_model import Attention_ConTEXTual_Vis_Seg_Model
 
 #from models.ResNetUNet import ResNetUNet
