@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
         #folder_name = "with_augmentation/attention_unet_frozen_positive_cases_all_aug_100flip/seed" + str(seed) + "/"
         #folder_name = "higher_res_for_paper/t5_language_att_with_setence_shuffle_larger_img_v27/seed" + str(seed) + "/"
-        folder_name = "higher_res_for_paper/radbert_with_encoder_attention_max_decoder_v62/seed" + str(seed) + "/"
+        folder_name = "higher_res_for_paper/radbert_with_unfreeze_at_50_v63/seed" + str(seed) + "/"
 
         #folder_name = "higher_res_for_paper/baseline_unet_no_aug_larger_img_v28/seed" + str(seed) + "/"
 

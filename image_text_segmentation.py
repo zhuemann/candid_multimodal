@@ -32,8 +32,8 @@ from utility import mask2rle
 #from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
 #from models.ConTEXTual_seg_v3 import Attention_ConTEXTual_Seg_Model_swap_v3
 #from models.Vision_Attention_UNet import Vision_Attention_UNet_Model
-#from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
-from models.ConTextual_seg_lang_model_encoder_attention import Attention_ConTEXTual_Lang_Seg_Model
+from models.ConTextual_seg_lang_model import Attention_ConTEXTual_Lang_Seg_Model
+#from models.ConTextual_seg_lang_model_encoder_attention import Attention_ConTEXTual_Lang_Seg_Model
 #from models.ConTextual_seg_vis_model import Attention_ConTEXTual_Vis_Seg_Model
 
 #from models.ResNetUNet import ResNetUNet
@@ -196,7 +196,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #print(test_dataframe_location)
 
     # report invariant augmentaitons
-    using_t5 = False
+    using_t5 = True
     if using_t5:
         albu_augs = albu.Compose([
             albu.OneOf([
@@ -214,7 +214,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
 
     # emprically the good augmentations, taken from kaggle winner
-    vision_only = True
+    vision_only = False
     if vision_only:
         albu_augs = albu.Compose([
             #albu.HorizontalFlip(p=.5),
@@ -224,11 +224,11 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 albu.RandomGamma(),
                 albu.RandomBrightness(),
             ], p=.3),
-            #albu.OneOf([
-            #    albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
-            #    albu.GridDistortion(),
-            #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-            #], p=.3),
+            albu.OneOf([
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+            ], p=.3),
             albu.ShiftScaleRotate(),
             #albu.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0)
     ])
@@ -342,6 +342,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     for param in language_model.parameters():
         param.requires_grad = False
 
+    num_unfrozen_layers = 2  # Replace N with the number of layers you want to unfreeze
+    #for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
+    #    param.requires_grad = True
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
@@ -375,6 +378,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         training_dice = []
         gc.collect()
         torch.cuda.empty_cache()
+        if epoch > 50:
+            for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
+                param.requires_grad = True
 
         loss_list = []
         #print(scheduler.get_lr())
