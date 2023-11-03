@@ -383,7 +383,6 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 param.requires_grad = True
 
         loss_list = []
-
         #print(scheduler.get_lr())
 
         for _, data in tqdm(enumerate(training_loader, 0)):
