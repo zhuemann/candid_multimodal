@@ -199,6 +199,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     using_t5 = True
     if using_t5:
         albu_augs = albu.Compose([
+            albu.RandomCrop(height = 256, width=256, always_apply=True),    #take out later
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
@@ -342,9 +343,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     for param in language_model.parameters():
         param.requires_grad = False
 
-    num_unfrozen_layers = 2  # Replace N with the number of layers you want to unfreeze
-    for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
-        param.requires_grad = True
+    #num_unfrozen_layers = 2  # Replace N with the number of layers you want to unfreeze
+    #for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
+    #    param.requires_grad = True
 
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
