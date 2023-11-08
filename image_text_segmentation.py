@@ -15,6 +15,8 @@ import numpy as np
 import gc
 import albumentations as albu
 
+
+from transformers import SwinConfig, SwinModel
 from models.Gloria import GLoRIA
 import segmentation_models_pytorch as smp
 from models.LAVT import segmentation
@@ -199,7 +201,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     using_t5 = True
     if using_t5:
         albu_augs = albu.Compose([
-            albu.RandomCrop(height = 256, width=256, always_apply=True),    #take out later
+            #albu.RandomCrop(height = 256, width=256, always_apply=True),    #take out later
             albu.OneOf([
                 albu.RandomContrast(),
                 albu.RandomGamma(),
@@ -245,7 +247,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     ])
     transforms_valid = transforms.Compose(
         [
-            transforms.RandomCrop(size=(256, 256)),
+            #transforms.RandomCrop(size=(256, 256)),
             #transforms.RandomHorizontalFlip(p=1),
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
             #transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
@@ -317,8 +319,19 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = Attention_ConTEXTual_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False) #<----- this one
     #test_obj = Unet_Baseline(n_channels=3, n_classes=1, bilinear=False)
 
+    # Initializing a Swin microsoft/swin-tiny-patch4-window7-224 style configuration
+    configuration = SwinConfig(image_size = 1024, num_channels=1)
+
+    # Initializing a model (with random weights) from the microsoft/swin-tiny-patch4-window7-224 style configuration
+    test_obj = SwinModel(configuration)
+
+    test_obj.head = nn.Sequential(
+        nn.Conv2d(in_channels=test_obj.num_channels, out_channels=1, kernel_size=1),
+        nn.Sigmoid()
+    )
+
     # was this one before coming back 3/20
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
@@ -400,8 +413,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
             #print(images.size())
             #outputs = test_obj(images, ids, mask)  # for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
 
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
