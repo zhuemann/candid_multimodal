@@ -15,6 +15,7 @@ import numpy as np
 import gc
 import albumentations as albu
 
+import monai
 from timm.models.swin_transformer import SwinTransformer
 from models.swin_model import SwinModel
 #from transformers import SwinConfig, SwinModel
@@ -67,7 +68,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
-    LR = 5e-6 #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 5e-5 #5e-5 was lr for contextualnet runs #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
@@ -342,8 +343,10 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #)
     #test_obj = SwinModel(backbone=model)
 
+    test_obj = monai.networks.nets.SwinUNETR(img_size=(1024,1024), in_channels= 1, out_channels = 1, depths=(2, 2, 2, 2), num_heads=(3, 6, 12, 24), feature_size=24, norm_name='instance', drop_rate=0.0, attn_drop_rate=0.0, dropout_path_rate=0.0, normalize=True, use_checkpoint=False, spatial_dims=2, downsample='merging', use_v2=False)
+
     # was this one before coming back 3/20
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    # test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
