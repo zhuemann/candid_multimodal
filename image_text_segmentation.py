@@ -15,6 +15,7 @@ import numpy as np
 import gc
 import albumentations as albu
 
+from timm.models.swin_transformer import SwinTransformer
 from models.swin_model import SwinModel
 #from transformers import SwinConfig, SwinModel
 import timm
@@ -330,12 +331,16 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #    nn.Conv2d(in_channels=test_obj.num_channels, out_channels=1, kernel_size=1),
     #    nn.Sigmoid()
     #)
-    swin_transformer = timm.create_model(
-        'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k',
-        pretrained=True,
-        features_only=True,
-    )
-    test_obj = SwinModel(backbone=swin_transformer)
+    model = SwinTransformer(img_size=224, patch_size=4, in_chans=3, num_classes=1000, embed_dim=96, depths=[2, 2, 6, 2],
+                            num_heads=[3, 6, 12, 24], window_size=7)
+
+    #swin_path = "/UserData/Zach_Analysis/git_multimodal/lavt/LAVT/pretrained_weights/swin_base_patch4_window12_384_22k.pth"
+    #swin_transformer = timm.create_model(
+    #    'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k',
+    #    pretrained=True,
+    #    features_only=True,
+    #)
+    test_obj = SwinModel(backbone=model)
 
     # was this one before coming back 3/20
     #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
