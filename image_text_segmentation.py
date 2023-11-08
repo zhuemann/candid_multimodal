@@ -15,7 +15,7 @@ import numpy as np
 import gc
 import albumentations as albu
 
-
+from models.swin_model import SwinModel
 #from transformers import SwinConfig, SwinModel
 import timm
 from models.Gloria import GLoRIA
@@ -330,9 +330,15 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #    nn.Conv2d(in_channels=test_obj.num_channels, out_channels=1, kernel_size=1),
     #    nn.Sigmoid()
     #)
+    swin_transformer = timm.create_model(
+        'swinv2_base_window12to24_192to384.ms_in22k_ft_in1k',
+        pretrained=True,
+        features_only=True,
+    )
+    test_obj = SwinModel(backbone=swin_transformer)
 
     # was this one before coming back 3/20
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
@@ -414,8 +420,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
             #print(images.size())
             #outputs = test_obj(images, ids, mask)  # for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
 
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
