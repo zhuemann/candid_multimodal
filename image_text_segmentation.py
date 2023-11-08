@@ -331,7 +331,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #    nn.Conv2d(in_channels=test_obj.num_channels, out_channels=1, kernel_size=1),
     #    nn.Sigmoid()
     #)
-    model = SwinTransformer(img_size=224, patch_size=4, in_chans=3, num_classes=1000, embed_dim=96, depths=[2, 2, 6, 2],
+    model = SwinTransformer(img_size=1024, patch_size=4, in_chans=3, num_classes=1000, embed_dim=96, depths=[2, 2, 6, 2],
                             num_heads=[3, 6, 12, 24], window_size=7)
 
     #swin_path = "/UserData/Zach_Analysis/git_multimodal/lavt/LAVT/pretrained_weights/swin_base_patch4_window12_384_22k.pth"
