@@ -345,6 +345,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     test_obj = monai.networks.nets.SwinUNETR(img_size=(1024, 1024), in_channels= 3, out_channels = 1, depths=(2, 2, 2, 2), num_heads=(3, 6, 12, 24), feature_size=24, norm_name='instance', drop_rate=0.0, attn_drop_rate=0.0, dropout_path_rate=0.0, normalize=True, use_checkpoint=False, spatial_dims=2, downsample='merging', use_v2=False)
 
+
+
     # was this one before coming back 3/20
     # test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
@@ -367,6 +369,10 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # This is for LAVT
     #test_obj = segmentation.__dict__[args.model](pretrained=args.pretrained_swin_weights, args=args)
     #test_obj = load_img_segmentation_model(dir_base = dir_base, pretrained_model=False)
+
+    # Print the total number of parameters
+    total_params = sum(p.numel() for p in test_obj.parameters())
+    print(f"Total Parameters: {total_params}")
 
     #print("need to unfreeze lang params")
     for param in language_model.parameters():
