@@ -27,7 +27,7 @@ from create_unet import load_img_segmentation_model
 
 from utility import mask2rle
 
-#from torch.optim.lr_scheduler import MultiStepLR
+from torch.optim.lr_scheduler import MultiStepLR
 #from monai.networks.nets import SwinUNETR
 
 #from albumentations.pytorch.transforms import ToTensorV2
@@ -68,7 +68,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
-    LR = 5e-5 #5e-5 was lr for contextualnet runs #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 8e-4 #5e-5 #5e-5 was lr for contextualnet runs #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
@@ -390,7 +390,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     # defines which optimizer is being used
     optimizer = torch.optim.AdamW(params=test_obj.parameters(), lr=LR)
-    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=60000, eta_min=1e-6, last_epoch=-1, verbose=False)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=127800, eta_min=8e-6, last_epoch=-1, verbose=False)
 
     #optimizer = torch.optim.Adam(params=test_obj.parameters(), lr=LR) # was used for all the baselines
     #optimizer_vis = torch.optim.Adam(params = vision_model.parameters(), lr=LR, weight_decay=1e-6)
@@ -419,7 +419,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         #        param.requires_grad = True
 
         loss_list = []
-        #print(scheduler.get_lr())
+        print(scheduler.get_lr())
 
         for _, data in tqdm(enumerate(training_loader, 0)):
 
@@ -453,7 +453,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            #scheduler.step()
+            scheduler.step()
 
 
             # put output between 0 and 1 and rounds to nearest integer ie 0 or 1 labels
