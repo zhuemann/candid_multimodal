@@ -399,6 +399,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-6)
     #scheduler = MultiStepLR(optimizer, milestones=[5, 10, 25, 37, 50, 75], gamma=0.50)
 
+
     #print(test_dataframe_location)
     print("about to start training loop")
     lowest_loss = 100
