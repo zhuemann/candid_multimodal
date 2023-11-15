@@ -344,7 +344,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = SwinModel(backbone=model)
 
     #test_obj = monai.networks.nets.SwinUNETR(img_size=(1024, 1024), in_channels= 3, out_channels = 1, depths=(2, 2, 2, 2), num_heads=(3, 6, 12, 24), feature_size=24, norm_name='instance', drop_rate=0.0, attn_drop_rate=0.0, dropout_path_rate=0.0, normalize=True, use_checkpoint=False, spatial_dims=2, downsample='merging', use_v2=False)
-    test_obj = monai.networks.nets.DynUNet(spatial_dims=2, in_channels=3, out_channels=1, filters=None, dropout=0.1, norm_name=('INSTANCE', {'affine': True}), act_name=('leakyrelu', {'inplace': True, 'negative_slope': 0.01}), deep_supervision=False, deep_supr_num=1, res_block=False, trans_bias=False)
+    test_obj = monai.networks.nets.DynUNet(spatial_dims=2, in_channels=3, out_channels=1, kernel_size = (3, 3), strides = (1, 1), upsample_kernel_size = (2, 2), filters=None, dropout=0.1, norm_name=('INSTANCE', {'affine': True}), act_name=('leakyrelu', {'inplace': True, 'negative_slope': 0.01}), deep_supervision=False, deep_supr_num=1, res_block=False, trans_bias=False)
 
 
     # was this one before coming back 3/20
