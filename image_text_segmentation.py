@@ -118,8 +118,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     bert_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
     tokenizer = AutoTokenizer.from_pretrained(bert_path)
-    #language_model = RobertaModel.from_pretrained(bert_path, output_hidden_states=True)
-    language_model = None
+    language_model = RobertaModel.from_pretrained(bert_path, output_hidden_states=True)
+    #language_model = None
     # use t5 as text encoder
     #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
@@ -375,8 +375,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     print(f"Total Parameters: {total_params}")
 
     #print("need to unfreeze lang params")
-    #for param in language_model.parameters():
-    #    param.requires_grad = False
+    for param in language_model.parameters():
+        param.requires_grad = False
 
     num_unfrozen_layers = 2  # Replace N with the number of layers you want to unfreeze
     #for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
