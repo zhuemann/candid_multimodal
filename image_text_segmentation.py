@@ -118,8 +118,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
     bert_path = os.path.join(dir_base, 'Zach_Analysis/models/rad_bert/')
     tokenizer = AutoTokenizer.from_pretrained(bert_path)
-    language_model = RobertaModel.from_pretrained(bert_path, output_hidden_states=True)
-    #language_model = None
+    #language_model = RobertaModel.from_pretrained(bert_path, output_hidden_states=True)
+    language_model = None
     # use t5 as text encoder
     #t5_path = os.path.join(dir_base, 'Zach_Analysis/models/t5_large/')
     #tokenizer = T5Tokenizer.from_pretrained(t5_path)
@@ -344,11 +344,11 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = SwinModel(backbone=model)
 
     #test_obj = monai.networks.nets.SwinUNETR(img_size=(1024, 1024), in_channels= 3, out_channels = 1, depths=(2, 2, 2, 2), num_heads=(3, 6, 12, 24), feature_size=24, norm_name='instance', drop_rate=0.0, attn_drop_rate=0.0, dropout_path_rate=0.0, normalize=True, use_checkpoint=False, spatial_dims=2, downsample='merging', use_v2=False)
-
+    test_obj = monai.networks.nets.DynUNet(spatial_dims=2, in_channels=3, out_channels=1, filters=None, dropout=None, norm_name=('INSTANCE', {'affine': True}), act_name=('leakyrelu', {'inplace': True, 'negative_slope': 0.01}), deep_supervision=False, deep_supr_num=1, res_block=False, trans_bias=False)
 
 
     # was this one before coming back 3/20
-    test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
+    #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
     #test_obj = Attention_ConTEXTual_Vis_Seg_Model(n_channels=3, n_classes=1, bilinear=False)
     #test_obj = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=1)
@@ -415,9 +415,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
         training_dice = []
         gc.collect()
         torch.cuda.empty_cache()
-        if epoch > 0:
-            for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
-                param.requires_grad = True
+        #if epoch > 0:
+        #    for param in language_model.encoder.layer[-num_unfrozen_layers:].parameters():
+        #        param.requires_grad = True
 
         loss_list = []
         #print(scheduler.get_lr())
@@ -435,8 +435,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
             #print(images.size())
             #outputs = test_obj(images, ids, mask)  # for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids)
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids)
+            outputs = test_obj(images)
 
             #print(outputs.size())
             outputs = output_resize(torch.squeeze(outputs, dim=1))
@@ -491,8 +491,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
 
                 #outputs = model_obj(images)
                 #outputs = test_obj(images, ids, mask)  # for lavt
-                outputs = test_obj(images, ids, mask, token_type_ids)
-                #outputs = test_obj(images)
+                #outputs = test_obj(images, ids, mask, token_type_ids)
+                outputs = test_obj(images)
 
                 outputs = output_resize(torch.squeeze(outputs, dim=1))
                 #outputs = torch.squeeze(outputs)
@@ -562,8 +562,8 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
             row_ids = data['row_ids']
             #outputs = model_obj(images)
             #outputs = test_obj(images, ids, mask) #for lavt
-            outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
-            #outputs = test_obj(images)
+            #outputs = test_obj(images, ids, mask, token_type_ids) #for contextual net
+            outputs = test_obj(images)
 
             outputs = output_resize(torch.squeeze(outputs, dim=1))
             #outputs = outputs.squeeze(outputs)
