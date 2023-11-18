@@ -347,7 +347,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = monai.networks.nets.DynUNet(spatial_dims=2, in_channels=3, out_channels=1, kernel_size = (3,3,3,3,3), strides=(2,2,2,2,2), upsample_kernel_size = (2, 2, 2, 2), filters=None, dropout=0.1, norm_name=('INSTANCE', {'affine': True}), act_name=('leakyrelu', {'inplace': True, 'negative_slope': 0.01}), deep_supervision=False, deep_supr_num=1, res_block=False, trans_bias=False)
     #test_obj = monai.networks.nets.BasicUNet(spatial_dims=3, in_channels=1, out_channels=2, features=(32, 32, 64, 128, 256, 32), act=('LeakyReLU', {'inplace': True, 'negative_slope': 0.1}), norm=('instance', {'affine': True}), bias=True, dropout=0.0, upsample='deconv')
 
-    weight = torch.load("\\UserData\\\\Zach_Analysis\\models\\swin\\model_swinvit.pt")
+    weight = torch.load("\\UserData\\Zach_Analysis\\models\\swin\\model_swinvit.pt")
     test_obj.load_from(weights=weight)
     print("Using pretrained self-supervied Swin UNETR backbone weights !")
     # was this one before coming back 3/20
