@@ -68,7 +68,7 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     # model specific global variables
     IMG_SIZE = config["IMG_SIZE"] #256 #1024 #512 #384
     #BATCH_SIZE = batch_size
-    LR = 10e-4 #1e-4 #5e-5 #5e-5 was lr for contextualnet runs #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
+    LR = 1e-4 #1e-4 #5e-5 #5e-5 was lr for contextualnet runs #8e-5  # 1e-4 was for efficient #1e-06 #2e-6 1e-6 for transformer 1e-4 for efficientnet
     #LR = 5e-4
     N_EPOCHS = epoch
     N_CLASS = n_classes
@@ -210,12 +210,12 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
                 albu.RandomGamma(),
                 albu.RandomBrightness(),
                        ], p=.3),
-            #albu.OneOf([
-            #    albu.GridDistortion(),
-            #    albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
-            #    albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
-            #], p=.3),
-            #albu.ShiftScaleRotate()
+            albu.OneOf([
+                albu.GridDistortion(),
+                albu.OpticalDistortion(distort_limit=2, shift_limit=0.5),
+                albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03)
+            ], p=.3),
+            albu.ShiftScaleRotate()
         ])
 
 
@@ -347,6 +347,9 @@ def train_image_text_segmentation(config, args , batch_size=8, epoch=1, dir_base
     #test_obj = monai.networks.nets.DynUNet(spatial_dims=2, in_channels=3, out_channels=1, kernel_size = (3,3,3,3,3), strides=(2,2,2,2,2), upsample_kernel_size = (2, 2, 2, 2), filters=None, dropout=0.1, norm_name=('INSTANCE', {'affine': True}), act_name=('leakyrelu', {'inplace': True, 'negative_slope': 0.01}), deep_supervision=False, deep_supr_num=1, res_block=False, trans_bias=False)
     #test_obj = monai.networks.nets.BasicUNet(spatial_dims=3, in_channels=1, out_channels=2, features=(32, 32, 64, 128, 256, 32), act=('LeakyReLU', {'inplace': True, 'negative_slope': 0.1}), norm=('instance', {'affine': True}), bias=True, dropout=0.0, upsample='deconv')
 
+    weight = torch.load("\\UserData\\\\Zach_Analysis\\models\\swin\\model_swinvit.pt")
+    test_obj.load_from(weights=weight)
+    print("Using pretrained self-supervied Swin UNETR backbone weights !")
     # was this one before coming back 3/20
     #test_obj = Attention_ConTEXTual_Lang_Seg_Model(lang_model=language_model, n_channels=3, n_classes=1, bilinear=False)
 
